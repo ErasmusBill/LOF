@@ -1,0 +1,227 @@
+{% extends 'church/base.html' %}
+{% block title %}Fruitful Youth - Home{% endblock %}
+
+{% block content %}
+<main>
+    <!-- Hero Section with Carousel -->
+    <section class="hero-section">
+        <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for event in events %}
+                    <button type="button" 
+                            data-bs-target="#mainCarousel" 
+                            data-bs-slide-to="{{ forloop.counter0 }}" 
+                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                            aria-label="Slide {{ forloop.counter }}">
+                    </button>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-inner">
+                {% for event in events %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="5000">
+                        <div class="carousel-image-container">
+                            <img src="{{ event.image.url }}" class="d-block w-100" alt="{{ event.title }}">
+                            <div class="carousel-caption">
+                                <h2>{{ event.title }}</h2>
+                                <p>{{ event.description }}</p>
+                                {% if event.link %}
+                                    <a href="{{ event.link }}" class="btn btn-primary">Learn More</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section py-5">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Welcome to Fruitful Youth</h1>
+            <p class="lead mb-4">Empowering young people through faith, fellowship, and service</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <p class="mb-4">Join us in our journey of spiritual growth, community service, and meaningful connections.</p>
+                    <a href="#groups" class="btn btn-primary btn-lg">Explore Our Groups</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links Section -->
+    <section class="quick-links py-5 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
+                            <h3 class="card-title">Upcoming Events</h3>
+                            <p class="card-text">Stay updated with our latest events and activities</p>
+                            <a href="#events" class="btn btn-outline-primary">View Calendar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                            <h3 class="card-title">Join a Group</h3>
+                            <p class="card-text">Find your perfect fit in our community</p>
+                            <a href="#groups" class="btn btn-outline-primary">Browse Groups</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-hands-helping fa-3x mb-3 text-primary"></i>
+                            <h3 class="card-title">Get Involved</h3>
+                            <p class="card-text">Discover ways to serve and make a difference</p>
+                            <a href="#contact" class="btn btn-outline-primary">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Groups Section -->
+    <section id="groups" class="groups-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Ministry Groups</h2>
+            {% for group in groups %}
+                <div class="row featurette align-items-center {% if forloop.counter|divisibleby:2 %}flex-row-reverse{% endif %} mb-5">
+                    <div class="col-md-7">
+                        <div class="p-4">
+                            <h2 class="display-5 mb-3">{{ group.name }}</h2>
+                            <p class="lead mb-4">{{ group.description }}</p>
+                            {% if group.meeting_time %}
+                                <p class="mb-3"><i class="fas fa-clock me-2"></i>{{ group.meeting_time }}</p>
+                            {% endif %}
+                            {% if group.location %}
+                                <p class="mb-4"><i class="fas fa-map-marker-alt me-2"></i>{{ group.location }}</p>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="image-container overflow-hidden rounded shadow">
+                            <img src="{{ group.image.url }}" 
+                                 class="img-fluid hover-zoom" 
+                                 alt="{{ group.name }}"
+                                 loading="lazy">
+                        </div>
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                    <hr class="featurette-divider">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section py-5 bg-primary text-white text-center">
+        <div class="container">
+            <h2 class="display-5 mb-4">Ready to Join Our Community?</h2>
+            <p class="lead mb-4">Take the first step towards growing in faith and friendship</p>
+            <a href="#contact" class="btn btn-light btn-lg">Contact Us Today</a>
+        </div>
+    </section>
+    
+</main>
+
+<style>
+    /* Hero Section Styles */
+    .hero-section {
+        margin-bottom: 3rem;
+    }
+    
+    .carousel-image-container {
+        position: relative;
+        height: 600px;
+        overflow: hidden;
+    }
+    
+    .carousel-image-container img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+    
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 80%;
+        margin: 0 auto;
+    }
+    
+    /* Quick Links Section Styles */
+    .quick-links .card {
+        transition: transform 0.3s ease;
+    }
+    
+    .quick-links .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    /* Groups Section Styles */
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+    
+    .hover-zoom {
+        transition: transform 0.3s ease;
+    }
+    
+    .image-container:hover .hover-zoom {
+        transform: scale(1.05);
+    }
+    
+    /* Featurette Styles */
+    .featurette {
+        padding: 2rem 0;
+    }
+    
+    .featurette-divider {
+        margin: 4rem 0;
+    }
+    
+    /* Call to Action Section Styles */
+    .cta-section {
+        background: linear-gradient(rgba(0, 123, 255, 0.9), rgba(0, 123, 255, 0.9));
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .carousel-image-container {
+            height: 400px;
+        }
+        
+        .carousel-caption {
+            padding: 1rem;
+        }
+        
+        .featurette {
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

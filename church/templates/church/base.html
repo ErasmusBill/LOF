@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" style="border-radius: 50%;">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Footer Styles */
+        .footer-section {
+            background-color: #f8f9fa;
+            padding: 60px 0 30px;
+            margin-top: 100px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .social-links {
+            margin: 25px 0;
+        }
+        
+        .social-links .btn {
+            margin-right: 10px;
+            padding: 8px 20px;
+        }
+        
+        .contact-form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .map-container {
+            margin-top: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+
+    {% include 'church/navbar.html' %}
+
+    <!-- Display messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Content Block -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer Section -->
+    <footer class="footer-section" id="contact">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Information -->
+                <div class="col-md-6">
+                    <h2 class="mb-4">Contact Us</h2>
+                    <ul class="list-unstyled contact-info">
+                        <li>
+                            <i class="fa-regular fa-envelope me-2"></i>
+                            <strong>Email:</strong> 
+                            <a href="mailto:fruitfulyouth01@gmail.com" class="text-decoration-none">
+                                fruitfulyouth01@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone me-2"></i>
+                            <strong>Phone:</strong> +233 532 617 734
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-location-dot me-2"></i>
+                            <strong>Address:</strong> 69 Beach Drive, Accra-Ghana
+                        </li>
+                    </ul>
+
+                    <h4 class="mt-4">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/GlicFruitfulYouth?mibextid=ZbWKwL" 
+                           target="_blank" 
+                           class="btn btn-primary">
+                            <i class="fa-brands fa-facebook-f me-2"></i> Facebook
+                        </a>
+                        <a href="https://twitter.com" 
+                           target="_blank" 
+                           class="btn btn-info">
+                            <i class="fa-brands fa-twitter me-2"></i> Twitter
+                        </a>
+                        <a href="https://www.instagram.com/glicfruitfulyouth?igsh=MXVjNm5rbWhwcWJ5eA==" 
+                           target="_blank" 
+                           class="btn btn-danger">
+                            <i class="fa-brands fa-instagram me-2"></i> Instagram
+                        </a>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="col-md-6">
+                    <div class="contact-form">
+                        <h2 class="mb-4">Send Us a Message</h2>
+                        <form action="{% url 'church:home' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea class="form-control" id="message" rows="5" placeholder="Your message" name="message" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <p>&copy; {% now "Y" %} Erasmus Charway. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = L.map('map').setView([5.596611, -0.070812], 14);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add a marker
+            L.marker([5.596611, -0.070812]).addTo(map)
+                .bindPopup('<b>Your Church Name</b><br>69 Beach Drive, Accra-Ghana')
+                .openPopup();
+        });
+
+        function scrollToContact() {
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

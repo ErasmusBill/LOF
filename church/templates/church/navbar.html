@@ -1,0 +1,260 @@
+{% load static %}
+<header class="church-header">
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="{% url 'church:home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Fruitfulyouth" width="120" height="60" class="logo-img">
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" 
+                    aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Main Navigation -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                           href="{% url 'church:home' %}">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+                           href="{% url 'church:about' %}">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                    </li>
+                    
+                    <!-- Ministries Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ministriesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-church me-1"></i> Ministries
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="ministriesDropdown">
+                            <li><h6 class="dropdown-header">Our Programs</h6></li>
+                            <li><a class="dropdown-item" href="{% url 'church:service' %}">
+                                <i class="fas fa-pray me-2"></i> Church Service
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!----------
+                            <li><h6 class="dropdown-header">Youth Activities</h6></li>
+                            <li><a class="dropdown-item" href="#bible-study">
+                                <i class="fas fa-book-reader me-2"></i> Bible Study
+                            </a></li>
+
+                            <li><a class="dropdown-item" href="#youth-fellowship">
+                                <i class="fas fa-users me-2"></i> Youth Fellowship
+                            </a></li>
+                            ------->
+                        </ul>
+                    </li>
+
+                    <!-- Resources Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-book me-1"></i> Resources
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="resourcesDropdown">
+                            <li><a class="dropdown-item" href="{% url 'church:history' %}">
+                                <i class="fas fa-history me-2"></i> Our History
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'church:mission' %}">
+                                <i class="fas fa-bullseye me-2"></i> Our Mission
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'church:vision' %}">
+                                <i class="fas fa-eye me-2"></i> Our Vision
+                            </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" onclick="scrollToContact()">
+                            <i class="fas fa-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+
+                    <!-- Call to Action Button -->
+                     <!----------
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary nav-btn" href="#join-us">
+                            Join Us <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </li>
+                    ------>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<style>
+    /* Navbar Styling */
+    .church-header {
+        height: 80px;
+    }
+
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar.scrolled {
+        padding: 0.3rem 1rem;
+        background-color: rgba(255, 255, 255, 0.98);
+    }
+
+    /* Logo */
+    .logo-img {
+        transition: all 0.3s ease;
+    }
+
+    .scrolled .logo-img {
+        transform: scale(0.9);
+    }
+
+    /* Navigation Links */
+    .nav-link {
+        color: #333;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        color: var(--bs-primary);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: var(--bs-primary);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: 100%;
+    }
+
+    /* Dropdowns */
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 1rem 0;
+        min-width: 230px;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1.5rem;
+        color: #666;
+        transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
+        color: var(--bs-primary);
+        transform: translateX(5px);
+    }
+
+    .dropdown-header {
+        color: #333;
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+    }
+
+    /* Call to Action Button */
+    .nav-btn {
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);
+    }
+
+    /* Mobile Navigation */
+    @media (max-width: 991.98px) {
+        .navbar-collapse {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            margin: 0.5rem 0;
+        }
+
+        .dropdown-menu {
+            box-shadow: none;
+            border-left: 2px solid var(--bs-primary);
+            margin-left: 1rem;
+        }
+
+        .nav-btn {
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    }
+
+    /* Dropdown Animation */
+    .animate {
+        animation-duration: 0.3s;
+        -webkit-animation-duration: 0.3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+    }
+
+    @keyframes slideIn {
+        0% {
+            transform: translateY(1rem);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0rem);
+            opacity: 1;
+        }
+    }
+
+    .slideIn {
+        -webkit-animation-name: slideIn;
+        animation-name: slideIn;
+    }
+</style>
+
+<script>
+    // Navbar Scroll Effect
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.querySelector('.navbar');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    });
+</script>

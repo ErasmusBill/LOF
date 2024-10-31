@@ -1,0 +1,257 @@
+{% extends 'church/base.html' %}
+{% load static %}
+{% block title %}Fruitful Youth Vision{% endblock %}
+{% block content %}
+
+<!-- Custom CSS -->
+<style>
+  .vision-banner {
+    position: relative;
+    height: 600px;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vision-container {
+    background: white;
+    position: relative;
+    margin-top: -100px;
+    border-radius: 30px 30px 0 0;
+    padding: 60px 30px;
+    box-shadow: 0 -20px 40px rgba(0,0,0,0.1);
+  }
+
+  .vision-card {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .vision-title {
+    font-size: 2.8rem;
+    color: #1a365d;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .vision-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, #3182ce, #63b3ed);
+  }
+
+  .vision-section {
+    padding: 40px;
+    background: #f7fafc;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .vision-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  }
+
+  .vision-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+  }
+
+  .vision-pillar {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-top: 4px solid #3182ce;
+    transition: transform 0.3s ease;
+  }
+
+  .vision-pillar:hover {
+    transform: translateY(-3px);
+  }
+
+  .vision-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #2d3748;
+  }
+
+  .scripture-quote {
+    background: #ebf8ff;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 30px 0;
+    position: relative;
+    font-style: italic;
+    color: #2c5282;
+  }
+
+  .scripture-quote::before {
+    content: '"';
+    font-size: 60px;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    color: #90cdf4;
+    opacity: 0.5;
+  }
+
+  .value-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+
+  .icon-box {
+    width: 60px;
+    height: 60px;
+    background: #ebf8ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .vision-title {
+      font-size: 2.2rem;
+    }
+    
+    .vision-section {
+      padding: 25px;
+    }
+  }
+</style>
+
+<!-- Banner Section -->
+<div class="vision-banner" style="background-image: url('{% static "images/ark.jpg" %}')">
+  <div class="banner-overlay">
+    <div class="text-center text-white px-4">
+      <h1 class="text-5xl font-bold mb-4">Our Vision</h1>
+      <p class="text-xl opacity-90">Empowering Youth to Transform the World Through Christ</p>
+    </div>
+  </div>
+</div>
+
+<!-- Vision Content -->
+<div class="vision-container">
+  <div class="vision-card">
+    <h2 class="vision-title">Our Divine Vision</h2>
+
+    <div class="vision-section">
+      <p class="vision-text">
+        Fruitful Youth Church envisions being a beacon of spiritual transformation, raising up a generation of young people who are passionate about Christ, purposeful in their calling, and powerful in their impact on society.
+      </p>
+      
+      <div class="scripture-quote">
+        "For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future." - Jeremiah 29:11
+      </div>
+    </div>
+
+    <div class="vision-grid">
+      <div class="vision-pillar">
+        <h3 class="text-xl font-bold mb-4 text-blue-700">Spiritual Excellence</h3>
+        <p>Cultivating a deep relationship with God through prayer, worship, and the study of His Word, creating an atmosphere where the Holy Spirit moves freely.</p>
+      </div>
+
+      <div class="vision-pillar">
+        <h3 class="text-xl font-bold mb-4 text-blue-700">Youth Empowerment</h3>
+        <p>Equipping young people with biblical principles, life skills, and leadership abilities to influence their generation for Christ.</p>
+      </div>
+
+      <div class="vision-pillar">
+        <h3 class="text-xl font-bold mb-4 text-blue-700">Community Impact</h3>
+        <p>Being a catalyst for positive change in our community through outreach, service, and demonstrating Christ's love in practical ways.</p>
+      </div>
+    </div>
+
+    <div class="vision-section mt-12">
+      <h3 class="text-2xl font-bold mb-6 text-center">Our Strategic Focus Areas</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="value-card">
+          <div class="icon-box">
+            <span class="text-2xl">🙏</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">Spiritual Formation</h4>
+          <p>Developing strong disciples through mentorship, Bible study, and prayer.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="icon-box">
+            <span class="text-2xl">👥</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">Leadership Development</h4>
+          <p>Training and equipping young leaders to serve in church and society.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="icon-box">
+            <span class="text-2xl">❤️</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">Community Service</h4>
+          <p>Engaging in meaningful outreach and service projects.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="icon-box">
+            <span class="text-2xl">🌍</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">Global Impact</h4>
+          <p>Extending our influence through missions and international partnerships.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="vision-section">
+      <h3 class="text-2xl font-bold mb-6 text-center">Our Commitment to Excellence</h3>
+      <p class="vision-text text-center">
+        We are committed to pursuing excellence in everything we do, creating an environment where young people can:
+      </p>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+          <span class="mr-3">✓</span>
+          Discover and develop their God-given talents
+        </li>
+        <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+          <span class="mr-3">✓</span>
+          Build lasting relationships with God and others
+        </li>
+        <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+          <span class="mr-3">✓</span>
+          Grow in leadership and character
+        </li>
+        <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+          <span class="mr-3">✓</span>
+          Make a positive impact in their spheres of influence
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

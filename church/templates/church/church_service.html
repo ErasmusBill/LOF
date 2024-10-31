@@ -1,0 +1,179 @@
+{% extends 'church/base.html' %}
+{% load static %}
+{% block title %}Fruitful Youth Church Services{% endblock %}
+{% block content %}
+
+<!-- Custom CSS -->
+<style>
+  .service-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .service-time {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin: 10px 0;
+  }
+
+  .banner-section {
+    position: relative;
+    height: 500px;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner-text {
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .content-section {
+    background: #f7fafc;
+    padding: 50px 0;
+  }
+
+  .service-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .service-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  .service-list li:last-child {
+    border-bottom: none;
+  }
+
+  .highlight-box {
+    background: #4299e1;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .section-title {
+    color: #2d3748;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #4299e1;
+  }
+</style>
+
+<!-- Banner Section -->
+<section class="banner-section" style="background-image: url('{% static "images/ark.jpg" %}')">
+  <div class="banner-overlay">
+    <div class="banner-text">
+      <h1 class="text-4xl font-bold mb-4">Welcome to Our Church</h1>
+      <p class="text-xl">Join us in worship and fellowship</p>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="content-section">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Sunday Services Card -->
+      <div class="service-card">
+        <h2 class="section-title">Sunday Services</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold">First Service</h3>
+            <p class="service-time">7:30 AM - 9:30 AM</p>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Second Service</h3>
+            <p class="service-time">10:30 AM - 12:30 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wednesday Service Card -->
+      <div class="service-card">
+        <h2 class="section-title">Wednesday Bible Study</h2>
+        <p class="service-time">6:00 PM - 8:00 PM</p>
+        <p>Experience our life-transforming Bible study service every Wednesday.</p>
+      </div>
+
+      <!-- Communion Service -->
+      <div class="service-card">
+        <h2 class="section-title">Monthly Communion Service</h2>
+        <div class="highlight-box">
+          <h3 class="text-xl font-semibold mb-2">First Sunday of Every Month</h3>
+          <p>7:30 AM - 12:30 PM</p>
+        </div>
+        <p>Join us as we remember Christ's death and fellowship with one another. All believers are welcome to participate.</p>
+      </div>
+
+      <!-- What to Expect -->
+      <div class="service-card">
+        <h2 class="section-title">What to Expect</h2>
+        <ul class="service-list">
+          <li>
+            <strong>🎵 Praise and Worship:</strong>
+            <p>Experience uplifting worship as we prepare our hearts for God's word.</p>
+          </li>
+          <li>
+            <strong>🙏 Prayer Time:</strong>
+            <p>Join us in powerful intercession for our nation, congregation, and personal needs.</p>
+          </li>
+          <li>
+            <strong>📖 Word Ministry:</strong>
+            <p>Receive inspiring Biblical teaching to help you grow in Christ.</p>
+          </li>
+          <li>
+            <strong>❤️ Altar Call:</strong>
+            <p>Opportunity to receive Christ or special prayer.</p>
+          </li>
+          <li>
+            <strong>👋 Visitors Welcome:</strong>
+            <p>First-time visitors are invited to a special reception after service.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- First Fruits -->
+      <div class="service-card">
+        <h2 class="section-title">First Fruits</h2>
+        <p>Join us on the first Sunday of every month as we bring our tithes and first fruits to the house of God, trusting in His promise of abundant blessings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'church/base.html' %}
+{% load static %}
+{% block title %}Fruitful Youth Mission{% endblock %}
+{% block content %}
+
+<!-- Custom CSS -->
+<style>
+  .mission-banner {
+    position: relative;
+    height: 500px;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    margin-bottom: 0;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner-text {
+    color: white;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 20px;
+  }
+
+  .mission-container {
+    background: white;
+    position: relative;
+    margin-top: -80px;
+    border-radius: 20px 20px 0 0;
+    padding: 60px 30px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .mission-card {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .mission-section {
+    margin-bottom: 40px;
+    padding: 30px;
+    border-radius: 15px;
+    background: #f8fafc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .mission-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mission-title {
+    color: #2d3748;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .mission-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #4299e1, #667eea);
+  }
+
+  .mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .mission-pillar {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #4299e1;
+  }
+
+  .mission-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-bottom: 20px;
+  }
+
+  .scripture {
+    font-style: italic;
+    color: #718096;
+    padding: 20px;
+    border-left: 3px solid #4299e1;
+    background: #edf2f7;
+    border-radius: 0 10px 10px 0;
+    margin: 20px 0;
+  }
+</style>
+
+<!-- Banner Section -->
+<div class="mission-banner" style="background-image: url('{% static "images/ark.jpg" %}')">
+  <div class="banner-overlay">
+    <div class="banner-text">
+      <h1 class="text-5xl font-bold mb-4">Our Divine Mission</h1>
+      <p class="text-xl">Transforming Lives Through Christ's Love</p>
+    </div>
+  </div>
+</div>
+
+<!-- Mission Content -->
+<div class="mission-container">
+  <div class="mission-card">
+    <h2 class="mission-title">Our Mission</h2>
+    
+    <div class="mission-section">
+      <p class="mission-text">
+        At Fruitful Youth Church, our mission is to empower young people to become dynamic disciples of Jesus Christ, cultivating a generation that is deeply rooted in faith and actively engaged in transforming their communities through God's love and power.
+      </p>
+      
+      <div class="scripture">
+        "Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you." - Matthew 28:19-20
+      </div>
+    </div>
+
+    <div class="mission-grid">
+      <div class="mission-pillar">
+        <h3 class="text-xl font-bold mb-3">Spiritual Growth</h3>
+        <p>Fostering deep spiritual development through Biblical teaching, prayer, and worship, enabling young people to build a strong foundation in Christ.</p>
+      </div>
+
+      <div class="mission-pillar">
+        <h3 class="text-xl font-bold mb-3">Community Impact</h3>
+        <p>Equipping youth to be agents of positive change in their communities, demonstrating Christ's love through service and outreach.</p>
+      </div>
+
+      <div class="mission-pillar">
+        <h3 class="text-xl font-bold mb-3">Leadership Development</h3>
+        <p>Nurturing young leaders who will influence their generation with godly principles and values.</p>
+      </div>
+    </div>
+
+    <div class="mission-section mt-8">
+      <h3 class="text-2xl font-bold mb-4">Our Commitment</h3>
+      <p class="mission-text">
+        We are committed to creating an environment where young people can:
+      </p>
+      <ul class="space-y-3 ml-6 list-disc text-gray-700">
+        <li>Discover their God-given purpose and potential</li>
+        <li>Build meaningful relationships with God and others</li>
+        <li>Develop their gifts and talents for God's glory</li>
+        <li>Learn to apply Biblical principles in daily life</li>
+        <li>Engage in meaningful service and ministry</li>
+      </ul>
+    </div>
+
+    <div class="mission-section">
+      <h3 class="text-2xl font-bold mb-4">Our Vision for Impact</h3>
+      <p class="mission-text">
+        We envision raising up a generation of young people who are:
+      </p>
+      <div class="mission-grid">
+        <div class="mission-pillar">
+          <p>Bold in their faith and unashamed of the gospel</p>
+        </div>
+        <div class="mission-pillar">
+          <p>Equipped with Biblical wisdom and understanding</p>
+        </div>
+        <div class="mission-pillar">
+          <p>Passionate about serving God and others</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
