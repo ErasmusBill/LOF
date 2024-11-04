@@ -13,7 +13,7 @@
     margin-bottom: 20px;
     transition: transform 0.3s ease;
   }
-  
+
   .service-card:hover {
     transform: translateY(-5px);
   }
@@ -26,7 +26,7 @@
 
   .banner-section {
     position: relative;
-    height: 500px;
+    height: 60vh; /* Responsive height */
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -93,10 +93,39 @@
     height: 3px;
     background: #4299e1;
   }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .banner-section {
+      height: 40vh; /* Reduced height for smaller screens */
+    }
+
+    .banner-text h1 {
+      font-size: 2rem; /* Smaller font size for headings */
+    }
+
+    .banner-text p {
+      font-size: 1.2rem; /* Smaller font size for paragraphs */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .banner-section {
+      height: 30vh; /* Further reduced height for very small screens */
+    }
+
+    .banner-text h1 {
+      font-size: 1.5rem; /* Further reduced heading size */
+    }
+
+    .banner-text p {
+      font-size: 1rem; /* Further reduced paragraph size */
+    }
+  }
 </style>
 
 <!-- Banner Section -->
-<section class="banner-section" style="background-image: url('{% static "images/ark.jpg" %}')">
+<section class="banner-section" style="background-image: url('{% static "images/img1.jpg" %}')">
   <div class="banner-overlay">
     <div class="banner-text">
       <h1 class="text-4xl font-bold mb-4">Welcome to Our Church</h1>

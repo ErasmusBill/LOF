@@ -53,7 +53,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <p class="mb-4">Join us in our journey of spiritual growth, community service, and meaningful connections.</p>
-                    <a href="#groups" class="btn btn-primary btn-lg">Explore Our Groups</a>
+                    <button onclick="scrollToSection('groups')" class="btn btn-primary btn-lg">Explore Our Groups</button>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                             <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
                             <h3 class="card-title">Upcoming Events</h3>
                             <p class="card-text">Stay updated with our latest events and activities</p>
-                            <a href="#events" class="btn btn-outline-primary">View Calendar</a>
+                            <button onclick="scrollToSection('events')" class="btn btn-outline-primary">View Calendar</button>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                             <i class="fas fa-users fa-3x mb-3 text-primary"></i>
                             <h3 class="card-title">Join a Group</h3>
                             <p class="card-text">Find your perfect fit in our community</p>
-                            <a href="#groups" class="btn btn-outline-primary">Browse Groups</a>
+                            <button onclick="scrollToSection('groups')" class="btn btn-outline-primary">Browse Groups</button>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             <i class="fas fa-hands-helping fa-3x mb-3 text-primary"></i>
                             <h3 class="card-title">Get Involved</h3>
                             <p class="card-text">Discover ways to serve and make a difference</p>
-                            <a href="#contact" class="btn btn-outline-primary">Contact Us</a>
+                            <button onclick="scrollToSection('contact')" class="btn btn-outline-primary">Contact Us</button>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,6 @@
                             {% if group.location %}
                                 <p class="mb-4"><i class="fas fa-map-marker-alt me-2"></i>{{ group.location }}</p>
                             {% endif %}
-                            
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -137,11 +136,22 @@
         <div class="container">
             <h2 class="display-5 mb-4">Ready to Join Our Community?</h2>
             <p class="lead mb-4">Take the first step towards growing in faith and friendship</p>
-            <a href="#contact" class="btn btn-light btn-lg">Contact Us Today</a>
+            <button onclick="scrollToSection('contact')" class="btn btn-light btn-lg">Contact Us Today</button>
         </div>
     </section>
     
 </main>
+<script>
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+</script>
 
 <style>
     /* Hero Section Styles */
@@ -151,14 +161,15 @@
     
     .carousel-image-container {
         position: relative;
-        height: 600px;
         overflow: hidden;
+        height: 60vh; /* Default height for larger screens */
     }
     
     .carousel-image-container img {
-        object-fit: cover;
+        object-fit: cover; /* Ensures the image covers the container without distorting */
         height: 100%;
         width: 100%;
+        display: block; /* Ensures no extra space below the image */
     }
     
     .carousel-caption {
@@ -212,7 +223,7 @@
     /* Responsive Adjustments */
     @media (max-width: 768px) {
         .carousel-image-container {
-            height: 400px;
+            height: 40vh; /* Reduced height for smaller screens */
         }
         
         .carousel-caption {
@@ -222,6 +233,30 @@
         .featurette {
             text-align: center;
         }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-image-container {
+            height: 30vh; /* Further reduced height for very small screens */
+        }
+        
+        .carousel-caption {
+            font-size: 0.9rem; /* Smaller font size for captions */
+        }
+    }
+
+    button.btn {
+        border: none;
+        cursor: pointer;
+    }
+    
+    button.btn-outline-primary {
+        background-color: transparent;
+    }
+    
+    button.btn-outline-primary:hover {
+        background-color: var(--bs-primary);
+        color: white;
     }
 </style>
 {% endblock %}
