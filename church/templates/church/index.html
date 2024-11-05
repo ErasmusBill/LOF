@@ -113,6 +113,7 @@
                             {% if group.location %}
                                 <p class="mb-4"><i class="fas fa-map-marker-alt me-2"></i>{{ group.location }}</p>
                             {% endif %}
+                            
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -161,15 +162,14 @@
     
     .carousel-image-container {
         position: relative;
+        height: 60vh;
         overflow: hidden;
-        height: 60vh; /* Default height for larger screens */
     }
     
     .carousel-image-container img {
-        object-fit: cover; /* Ensures the image covers the container without distorting */
+        object-fit: cover;
         height: 100%;
         width: 100%;
-        display: block; /* Ensures no extra space below the image */
     }
     
     .carousel-caption {
@@ -223,7 +223,7 @@
     /* Responsive Adjustments */
     @media (max-width: 768px) {
         .carousel-image-container {
-            height: 40vh; /* Reduced height for smaller screens */
+            height: 40vh;
         }
         
         .carousel-caption {
@@ -234,29 +234,11 @@
             text-align: center;
         }
     }
-
+    
     @media (max-width: 576px) {
         .carousel-image-container {
-            height: 30vh; /* Further reduced height for very small screens */
+            height: 30vh;
         }
-        
-        .carousel-caption {
-            font-size: 0.9rem; /* Smaller font size for captions */
-        }
-    }
-
-    button.btn {
-        border: none;
-        cursor: pointer;
-    }
-    
-    button.btn-outline-primary {
-        background-color: transparent;
-    }
-    
-    button.btn-outline-primary:hover {
-        background-color: var(--bs-primary);
-        color: white;
     }
 </style>
 {% endblock %}
