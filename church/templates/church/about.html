@@ -1,63 +1,113 @@
 {% extends 'church/base.html' %}
 {% block title %}Fruitful Youth - About{% endblock %}
 {% block content %}
-'
+
 <!-- Hero Banner -->
-<section class="hero-banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('static/images/banner.png');">
+<section class="hero-banner">
+    <div class="overlay"></div>
     <div class="container">
-        <div class="hero-content text-center text-white">
-            <h1 class="display-4 mb-4">About Fruitful Youth</h1>
+        <div class="hero-content text-center">
+            <h1>About Fruitful Youth</h1>
             <p class="lead">Following Jesus with dynamism and joy</p>
         </div>
     </div>
 </section>
 
-<!-- Main Content -->
-<section class="about-content py-5">
+<!-- History Timeline -->
+<section class="history-section">
     <div class="container">
-        <!-- Mission Statement -->
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-8">
-                <div class="mission-card text-center p-4">
-                    <div class="mission-icon mb-3">
-                        <i class="fas fa-heart fa-3x text-primary"></i>
-                    </div>
-                    <p class="lead fw-bold mb-0">
-                        We are a group of young people committed to following Jesus. We worship Him with dynamism and joy, 
-                        encourage prayer in church and throughout life, and love people outside the church through generosity, 
-                        invitation, and compassion.
-                    </p>
+        <div class="section-title text-center">
+            <h2>Our Journey</h2>
+            <div class="underline"></div>
+            <p class="lead">Walking in faith through the generations</p>
+        </div>
+        
+        <div class="timeline">
+            <!-- GLIC Foundation -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="date" style="color:rgb(18, 157, 238);">Foundation</div>
+                    <h3>Gospel Light International Church</h3>
+                    <p>Under the visionary leadership of Bishop Matthew Addae Mensah, GLIC was established with a divine mandate to raise disciples who would impact nations. Since its inception, the church has been dedicated to creating a Christ-centered community that nurtures spiritual growth and development. Guided by strong biblical principles and a passion for evangelism, Bishop Mensah has continually inspired the congregation to pursue lives of purpose and service. With a focus on discipling and empowering believers, GLIC has become a transformative force, raising leaders who are equipped to bring hope, healing, and positive change to communities around the world. From local outreach programs to international missions, the church has expanded its vision and influence, all in pursuit of spreading the light of the Gospel to all corners of the earth.</p>
+
+                </div>
+            </div>
+
+            <!-- Land of fruitfulness -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="date" style="color:rgb(18, 157, 238);">Transition</div>
+                    <h3>Land Of Fruitfulness</h3>
+                    <p>Through divine direction, Fruitful Youth emerged from the Land of Fruitfulness, marking a significant milestone in our journey. Led by Bishop and Lady Bishop Dodoo Amoo, this ministry was birthed with a mission to inspire, empower, and guide young people toward a path of purpose and spiritual maturity. Rooted in faith and led by strong values, Fruitful Youth is more than just a group; it is a movement that seeks to equip the next generation with the tools they need to navigate life's challenges and fulfill their God-given potential. From dynamic worship sessions to transformative teachings and impactful community outreach, Fruitful Youth is dedicated to nurturing young minds and hearts to become leaders and positive influencers in their communities and beyond. With every gathering, we witness lives being transformed, faith deepening, and a new generation rising to embrace their call to make a difference.</p>
+                    
+                </div>
+            </div>
+
+            <!-- Current -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="date" style="color:rgb(18, 157, 238);">Present</div>
+                    <h3>Fruitful Youth</h3>
+                    <p>Today, under the entire leadership of Gospel Light International Church, we stand as a beacon of hope for young people, guiding them toward a future rooted in faith, integrity, and purpose. Through mentorship, dynamic worship, and impactful teachings, we are committed to addressing the unique challenges facing today’s youth, offering them a safe space to grow spiritually and personally. Our programs encourage young individuals to embrace their potential, find their identity in Christ, and take bold steps to influence their communities positively. As we continue to expand our outreach and deepen our impact, we are seeing lives transformed, minds renewed, and a new generation prepared to carry forward a legacy of faith and excellence. With a vision to ignite passion and purpose in the hearts of every young person, we are building a foundation of hope that will resonate across generations.</p>
+
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- Vision and Purpose -->
-        <div class="row mb-5">
-            <div class="col-lg-8 mx-auto">
-                <p class="text-center mb-5">
-                    Being molded in Christ Jesus unto good works to impact nations, our hope is that all people will feel 
-                    loved and welcomed at Fruitful Youth. We pray that people will meet God and give their lives to Jesus Christ. 
-                    We want that for you. Come as you are. Check us out, but more importantly, seek the truth of God that can 
-                    only be known when one knows Jesus.
-                </p>
-            </div>
+<!-- Leadership Section -->
+ <!----------------------------------------------->
+<!-- Leadership Section -->
+<section class="leadership-section">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Leadership Of Fruithful Youth</h2>
+            <div class="underline"></div>
+            <p class="lead">Guided by vision, serving with purpose</p>
         </div>
 
-        <!-- Core Values Cards -->
+        <div class="row g-4 justify-content-center">
+            {% for leader in leaders %}
+            <div class="col-lg-4 col-md-6">
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <img src="{{ leader.image.url }}" alt="{{ leader.name }}" class="img-fluid">
+                    </div>
+                    <div class="leader-info">
+                        <h3>{{ leader.name }}</h3>
+                        <span class="position">{{ leader.role }}</span>
+                        <p class="bio">{{ leader.bio }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Core Values -->
+<section class="values-section">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2>Our Core Values</h2>
+            <div class="underline"></div>
+            <p class="lead">The principles that guide our ministry</p>
+        </div>
+
         <div class="row g-4">
             <!-- What We're About -->
             <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">What We're About</h3>
+                <div class="value-card">
+                    <div class="card-header">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>What We're About</h3>
                     </div>
                     <div class="card-body">
-                        <div class="scripture mb-3">
-                            <small class="text-muted">Matthew 16:13–18 • Matthew 28:18–20</small>
-                        </div>
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-check-circle text-primary me-2"></i>Make disciples committed to Christ</li>
-                            <li><i class="fas fa-check-circle text-primary me-2"></i>Build churches making Christ known</li>
+                        <div class="scripture">Matthew 16:13–18</div>
+                        <ul>
+                            <li>Make disciples committed to Christ</li>
+                            <li>Build churches making Christ known</li>
                         </ul>
                     </div>
                 </div>
@@ -65,16 +115,17 @@
 
             <!-- Marks of a Disciple -->
             <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Marks of a Disciple</h3>
+                <div class="value-card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Marks of a Disciple</h3>
                     </div>
                     <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-star text-primary me-2"></i>Learns from Christ</li>
-                            <li><i class="fas fa-star text-primary me-2"></i>Led by the Holy Spirit</li>
-                            <li><i class="fas fa-star text-primary me-2"></i>Lives to please God</li>
-                            <li><i class="fas fa-star text-primary me-2"></i>Leads people to Christ</li>
+                        <ul>
+                            <li>Learns from Christ</li>
+                            <li>Led by the Holy Spirit</li>
+                            <li>Lives to please God</li>
+                            <li>Leads people to Christ</li>
                         </ul>
                     </div>
                 </div>
@@ -82,110 +133,18 @@
 
             <!-- Marks of a Church -->
             <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Marks of a Church</h3>
+                <div class="value-card">
+                    <div class="card-header">
+                        <i class="fas fa-church"></i>
+                        <h3>Marks of a Church</h3>
                     </div>
                     <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-church text-primary me-2"></i>Teaching of doctrine</li>
-                            <li><i class="fas fa-church text-primary me-2"></i>Prayer and Worship</li>
-                            <li><i class="fas fa-church text-primary me-2"></i>Christian Fellowship</li>
-                            <li><i class="fas fa-church text-primary me-2"></i>Evangelizing the world</li>
+                        <ul>
+                            <li>Teaching of doctrine</li>
+                            <li>Prayer and Worship</li>
+                            <li>Christian Fellowship</li>
+                            <li>Evangelizing the world</li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Our Generation -->
-            <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Our Generation</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="scripture mb-3">
-                            <small class="text-muted">Matthew 5:13-16</small>
-                        </div>
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-lightbulb text-primary me-2"></i>Bring leadership to our Generation</li>
-                            <li><i class="fas fa-lightbulb text-primary me-2"></i>Shape the vision of our Generation</li>
-                            <li><i class="fas fa-lightbulb text-primary me-2"></i>Influence society with Kingdom Principles</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Primary Commitment -->
-            <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Our Primary Commitment</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="scripture mb-3">
-                            <small class="text-muted">Acts 1:8</small>
-                        </div>
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-hand-holding-heart text-primary me-2"></i>Prepare Africa to bless the world</li>
-                            <li><i class="fas fa-hand-holding-heart text-primary me-2"></i>Break the spirit of inferiority</li>
-                            <li><i class="fas fa-hand-holding-heart text-primary me-2"></i>Cultivate excellence</li>
-                            <li><i class="fas fa-hand-holding-heart text-primary me-2"></i>Fulfill God's end-time agenda</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Our Message -->
-            <div class="col-md-6 col-lg-4">
-                <div class="core-value-card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="h5 mb-0">Our Message</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="scripture mb-3">
-                            <small class="text-muted">Romans 1:16</small>
-                        </div>
-                        <ul class="message-list list-unstyled">
-                            <li><i class="fas fa-dove text-primary me-2"></i>Salvation from Sin</li>
-                            <li><i class="fas fa-dove text-primary me-2"></i>Acceptance for outcasts</li>
-                            <li><i class="fas fa-dove text-primary me-2"></i>Strength for the weak</li>
-                            <li><i class="fas fa-dove text-primary me-2"></i>Healing and Liberty</li>
-                            <li><i class="fas fa-dove text-primary me-2"></i>Hope and Prosperity</li>
-                            <li><i class="fas fa-dove text-primary me-2"></i>Abundance of Life in Christ</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Your Part -->
-        <div class="row mt-5">
-            <div class="col-lg-8 mx-auto">
-                <div class="join-card text-center p-5">
-                    <h3 class="mb-4">Your Part in the Vision</h3>
-                    <div class="scripture mb-3">
-                        <small class="text-muted">Psalm 68:11</small>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="join-item">
-                                <i class="fas fa-pray fa-2x text-primary mb-3"></i>
-                                <p>Commit your life to Christ & live Christ-centered</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="join-item">
-                                <i class="fas fa-hands-helping fa-2x text-primary mb-3"></i>
-                                <p>Serve with your gifts and pray for leadership</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="join-item">
-                                <i class="fas fa-heart fa-2x text-primary mb-3"></i>
-                                <p>Support the church through giving</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -194,85 +153,232 @@
 </section>
 
 <style>
-    /* Hero Banner */
+/* General Styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --transition: all 0.3s ease;
+}
+
+section {
+    padding: 5rem 0;
+}
+
+.section-title {
+    margin-bottom: 4rem;
+}
+
+.section-title h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.section-title .lead {
+    color: var(--secondary-color);
+}
+
+.underline {
+    height: 3px;
+    width: 60px;
+    background: var(--accent-color);
+    margin: 1rem auto;
+}
+
+/* Hero Banner */
+.hero-banner {
+    height: 60vh;
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                      url('static/images/banner.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+/* Leadership Cards */
+.leader-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: var(--transition);
+    margin-bottom: 2rem;
+}
+
+.leader-card:hover {
+    transform: translateY(-10px);
+}
+
+.leader-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.leader-image img {
+    width: 100%;
+    height: auto;
+    transition: var(--transition);
+}
+
+.leader-card:hover .leader-image img {
+    transform: scale(1.1);
+}
+
+.social-links {
+    position: static;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    padding: 15px 0;
+    transition: var(--transition);
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+.social-link {
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-link:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.leader-info {
+    padding: 2rem;
+    text-align: center;
+}
+
+.leader-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.leader-info .position {
+    color: var(--secondary-color);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.leader-info .bio {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background: var(--secondary-color);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+}
+
+.timeline-item.left {
+    left: 0;
+}
+
+.timeline-item.right {
+    left: 50%;
+}
+
+.timeline-content {
+    padding: 20px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Value Cards */
+.value-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+}
+
+.value-card .card-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.value-card .card-header i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.value-card .card-body {
+    padding: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
     .hero-banner {
-        height: 400px;
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        align-items: center;
-        margin-bottom: 4rem;
+        height: 40vh;
     }
 
-    .hero-content {
-        padding: 2rem;
+    .timeline::after {
+        left: 31px;
     }
 
-    /* Mission Card */
-    .mission-card {
-        background: #fff;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-top: -100px;
-        position: relative;
-        z-index: 2;
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
     }
 
-    /* Core Value Cards */
-    .core-value-card {
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease;
+    .timeline-item.right {
+        left: 0;
     }
 
-    .core-value-card:hover {
-        transform: translateY(-5px);
+    .leader-card {
+        max-width: 350px;
+        margin: 0 auto 2rem;
     }
-
-    .core-value-card .card-header {
-        border-radius: 10px 10px 0 0;
-        padding: 1rem;
-    }
-
-    .core-value-card .card-body {
-        padding: 1.5rem;
-    }
-
-    .core-value-card ul li {
-        margin-bottom: 0.75rem;
-    }
-
-    /* Join Card */
-    .join-card {
-        background: #f8f9fa;
-        border-radius: 15px;
-        margin-top: 2rem;
-    }
-
-    .join-item {
-        padding: 1rem;
-    }
-
-    /* Scripture References */
-    .scripture {
-        color: #6c757d;
-        font-style: italic;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .hero-banner {
-            height: 300px;
-        }
-
-        .mission-card {
-            margin-top: -50px;
-        }
-
-        .core-value-card {
-            margin-bottom: 1rem;
-        }
-    }
+}
 </style>
+
 {% endblock %}

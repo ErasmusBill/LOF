@@ -18,3 +18,10 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Leadership(models.Model):
+    name = models.CharField(max_length=250)
+    bio = models.TextField()
+    image = models.ImageField(upload_to='uploads/leadership/')
+    role = models.CharField(max_length=250)
+

@@ -55,7 +55,8 @@ def home(request):
 
 
 def about(request):
-    return render(request, 'church/about.html', {})  
+    leaders = Leadership.objects.all()
+    return render(request, 'church/about.html', {'leaders':leaders})  
 
 
 def history(request):
