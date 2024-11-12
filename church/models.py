@@ -24,4 +24,6 @@ class Leadership(models.Model):
     bio = models.TextField()
     image = models.ImageField(upload_to='uploads/leadership/')
     role = models.CharField(max_length=250)
-
+    
+    def __str__(self):
+        return self.name
