@@ -1,0 +1,25 @@
+{% extends 'tithe/base.html' %}
+
+{% block title %}Update Profile - Tithe Management System{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <div class="logo-section">
+            <h1>Update Profile</h1>
+            <p class="subtitle">Update your account information</p>
+        </div>
+
+        <form method="POST" action="{% url 'tithe:update_user' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+
+        <div class="text-link">
+            <a href="{% url 'tithe:user-dashboard' %}">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'tithe/base.html' %}
+
+{% block title %}Tithe Records - Tithe Management System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="header-title">All Tithe Records</div>
+                    <div class="header-subtitle">Complete tithe history</div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'tithe:logout_user' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">All Tithe Records</div>
+                <a href="{% url 'tithe:add_tithe' %}" class="btn-add">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add Tithe
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Email</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tithe in page_obj %}
+                    <tr>
+                        <td><strong>{{ tithe.user.get_full_name|default:tithe.user.username }}</strong></td>
+                        <td>{{ tithe.user.email }}</td>
+                        <td><span class="amount">₵{{ tithe.amount }}</span></td>
+                        <td>{{ tithe.date|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon edit" onclick="location.href='{% url 'tithe:edit_tithe' tithe.id %}'">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </button>
+                                <form method="POST" action="{% url 'tithe:delete_tithe' tithe.id %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this tithe record?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-icon delete">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #9ca3af;">No tithe records found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
+                </div>
+                <div class="pagination-buttons">
+                    {% if page_obj.has_previous %}
+                    <button onclick="location.href='?page={{ page_obj.previous_page_number }}'">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    {% endif %}
+                    
+                    {% if page_obj.has_next %}
+                    <button onclick="location.href='?page={{ page_obj.next_page_number }}'">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'tithe/base.html' %}
+
+{% block title %}My Tithe - Tithe Management System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="header-title">My Tithe Records</div>
+                    <div class="header-subtitle">Personal tithe history</div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'tithe:logout_user' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">My Tithe History</div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tithe in tithe %}
+                    <tr>
+                        <td><span class="amount" style="font-size: 18px;">₵{{ tithe.amount }}</span></td>
+                        <td>{{ tithe.date|date:"M d, Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" style="text-align: center; padding: 40px; color: #9ca3af;">No tithe records found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="quote-section">
+            <p class="quote-text">
+                "Bring the whole tithe into the storehouse, that there may be food in my house. 
+                Test me in this," says the Lord Almighty, "and see if I will not throw open the 
+                floodgates of heaven and pour out so much blessing that there will not be room 
+                enough to store it."
+            </p>
+            <p class="quote-author">- Malachi 3:10</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

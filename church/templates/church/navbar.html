@@ -80,6 +80,56 @@
                         </a>
                     </li>
 
+                    <!-- Authentication Links -->
+                    {% if user.is_authenticated %}
+                    <!-- User is logged in - show user dropdown -->
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-2"></i>
+                            {{ user.get_full_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="userDropdown">
+                            {% if user.role == "admin" %}
+                            <li><a class="dropdown-item" href="{% url 'tithe:admin-dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-2"></i> Admin Dashboard
+                            </a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'tithe:user-dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-2"></i> My Dashboard
+                            </a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'tithe:update_user' %}">
+                                <i class="fas fa-user-edit me-2"></i> Update Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'tithe:change_password' %}">
+                                <i class="fas fa-key me-2"></i> Change Password
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{% url 'tithe:logout_user' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item border-0 bg-transparent">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <!-- User is not logged in - show login/register buttons -->
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link" href="{% url 'tithe:login_user' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-primary nav-btn" href="{% url 'tithe:register_user' %}">
+                            Register <i class="fas fa-user-plus ms-1"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
                     <!-- Call to Action Button -->
                      <!----------
                     <li class="nav-item ms-lg-3">
@@ -192,6 +242,22 @@
         box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);
     }
 
+    /* User Dropdown Specific Styles */
+    .nav-link.dropdown-toggle.d-flex {
+        color: var(--bs-primary);
+        font-weight: 600;
+    }
+
+    .dropdown-item.border-0 {
+        width: 100%;
+        text-align: left;
+    }
+
+    .dropdown-item.border-0:hover {
+        background-color: rgba(var(--bs-danger-rgb), 0.1);
+        color: var(--bs-danger);
+    }
+
     /* Mobile Navigation */
     @media (max-width: 991.98px) {
         .navbar-collapse {
@@ -216,6 +282,11 @@
             width: 100%;
             text-align: center;
             margin-top: 1rem;
+        }
+
+        /* Mobile specific for auth buttons */
+        .nav-item.ms-lg-2 {
+            margin-left: 0 !important;
         }
     }
 
@@ -257,4 +328,15 @@
             }
         });
     });
+
+    // Function to scroll to contact section
+    function scrollToContact() {
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // If contact section doesn't exist, go to home and then scroll to contact
+            window.location.href = "{% url 'church:home' %}#contact";
+        }
+    }
 </script>

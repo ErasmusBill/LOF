@@ -1,0 +1,51 @@
+{% extends 'tithe/base.html' %}
+
+{% block title %}Add Tithe - Tithe Management System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="header-title">Add Tithe</div>
+                    <div class="header-subtitle">Record new tithe payment</div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'tithe:logout_user' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="login-box" style="max-width: 600px; margin: 0 auto;">
+            <div class="logo-section">
+                <h1>Add Tithe Record</h1>
+                <p class="subtitle">Record a new tithe payment for a member</p>
+            </div>
+
+            <form method="POST" action="{% url 'tithe:add_tithe' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add Tithe</button>
+                    <a href="{% url 'tithe:list-tithe' %}" class="btn btn-cancel" style="display: inline-block; width: auto; padding: 12px 24px; margin-left: 10px;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
