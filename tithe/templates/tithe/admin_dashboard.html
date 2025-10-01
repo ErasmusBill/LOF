@@ -61,14 +61,6 @@
     </header>
 
     <div class="main-content">
-        <!-- Debug info (remove after testing) -->
-        <div style="display: none;">
-            Users available: {{ users|length }}
-            {% for u in users %}
-            User: {{ u.username }} - {{ u.get_full_name }}
-            {% endfor %}
-        </div>
-
         <!-- Quick Actions Card -->
         <div class="stats-grid">
             <div class="stat-card blue">
@@ -168,7 +160,7 @@
                         <td>{{ tithe.date|date:"M d, Y" }}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-icon edit" onclick="location.href='{% url 'tithe:edit_tithe' tithe.id %}'">
+                                <button class="btn-icon edit" onclick="openEditModal({{ tithe.id }}, {{ tithe.user.id }}, '{{ tithe.amount }}', '{{ tithe.date|date:'Y-m-d' }}')">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
@@ -276,6 +268,72 @@
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="btn-submit">Add Tithe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Tithe Modal -->
+<div class="modal" id="editTitheModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">Edit Tithe Record</div>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="editTitheForm">
+                {% csrf_token %}
+                <input type="hidden" id="edit_tithe_id" name="tithe_id">
+                
+                <div class="form-group">
+                    <label for="editUserSearch">Member</label>
+                    <div class="searchable-select">
+                        <div class="select-search-wrapper">
+                            <div class="input-wrapper">
+                                <div class="input-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" id="editUserSearch" placeholder="Type to search members..." class="select-search">
+                            </div>
+                        </div>
+                        <select id="edit_user" name="user" required class="searchable-select-hidden">
+                            <option value="">Select a member</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}" data-search="{{ user.get_full_name|default:user.username|lower }} {{ user.email|default:''|lower }}">
+                                {{ user.get_full_name|default:user.username }} {% if user.email %}({{ user.email }}){% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="select-dropdown" id="editUserDropdown">
+                            <div class="dropdown-list"></div>
+                        </div>
+                    </div>
+                    <div class="selected-user" id="editSelectedUser" style="display: none;">
+                        <span class="selected-label">Selected: </span>
+                        <span id="editSelectedUserName"></span>
+                        <button type="button" class="clear-selection" onclick="clearEditUserSelection()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_amount">Amount (₵)</label>
+                    <input type="number" id="edit_amount" name="amount" step="0.01" placeholder="250.00" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_date">Date</label>
+                    <input type="date" id="edit_date" name="date" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-submit">Update Tithe</button>
                 </div>
             </form>
         </div>
@@ -507,6 +565,10 @@
         background-color: #f9fafb;
     }
 
+    .dropdown-item.active {
+        background-color: #f0fdf4;
+    }
+
     .dropdown-item:last-child {
         border-bottom: none;
     }
@@ -540,7 +602,7 @@
         font-weight: 500;
     }
 
-    #selectedUserName {
+    #selectedUserName, #editSelectedUserName {
         font-weight: 600;
         color: #166534;
     }
@@ -647,13 +709,11 @@
 </style>
 
 <script>
-    // Modal functions
+    // Add Modal Functions
     function openModal() {
         document.getElementById('addTitheModal').classList.add('active');
-        // Set today's date as default
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').value = today;
-        // Focus on search input
         setTimeout(() => {
             document.getElementById('userSearch').focus();
         }, 300);
@@ -661,7 +721,6 @@
 
     function closeModal() {
         document.getElementById('addTitheModal').classList.remove('active');
-        // Reset form
         document.getElementById('addTitheForm').reset();
         clearUserSelection();
     }
@@ -672,50 +731,123 @@
         document.getElementById('selectedUser').style.display = 'none';
     }
 
+    // Edit Modal Functions
+    function openEditModal(titheId, userId, amount, date) {
+        const modal = document.getElementById('editTitheModal');
+        const form = document.getElementById('editTitheForm');
+        
+        // Set form action - adjust this URL pattern to match your Django URLs
+        form.action = `/tithe/edit/${titheId}/`;
+        
+        // Set form values
+        document.getElementById('edit_tithe_id').value = titheId;
+        document.getElementById('edit_amount').value = amount;
+        document.getElementById('edit_date').value = date;
+        
+        // Set selected user
+        const userSelect = document.getElementById('edit_user');
+        userSelect.value = userId;
+        
+        // Update selected user display
+        const selectedOption = userSelect.options[userSelect.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            document.getElementById('editUserSearch').value = selectedOption.textContent.split(' (')[0];
+            document.getElementById('editSelectedUserName').textContent = selectedOption.textContent;
+            document.getElementById('editSelectedUser').style.display = 'flex';
+        }
+        
+        // Show modal
+        modal.classList.add('active');
+        
+        // Focus on amount input
+        setTimeout(() => {
+            document.getElementById('edit_amount').focus();
+        }, 300);
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editTitheModal');
+        modal.classList.remove('active');
+        document.getElementById('editTitheForm').reset();
+        clearEditUserSelection();
+    }
+
+    function clearEditUserSelection() {
+        document.getElementById('edit_user').value = '';
+        document.getElementById('editUserSearch').value = '';
+        document.getElementById('editSelectedUser').style.display = 'none';
+    }
+
     // Close modal when clicking outside
     window.onclick = function(event) {
-        const modal = document.getElementById('addTitheModal');
-        if (event.target == modal) {
+        const addModal = document.getElementById('addTitheModal');
+        const editModal = document.getElementById('editTitheModal');
+        
+        if (event.target == addModal) {
             closeModal();
+        }
+        if (event.target == editModal) {
+            closeEditModal();
         }
     }
 
     // Searchable select functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const userSearch = document.getElementById('userSearch');
-        const userSelect = document.getElementById('user');
-        const userDropdown = document.getElementById('userDropdown');
-        const dropdownList = userDropdown.querySelector('.dropdown-list');
-        const selectedUser = document.getElementById('selectedUser');
-        const selectedUserName = document.getElementById('selectedUserName');
+        // Add Tithe Modal Searchable Select
+        initSearchableSelect(
+            'userSearch',
+            'user',
+            'userDropdown',
+            'selectedUser',
+            'selectedUserName'
+        );
+
+        // Edit Tithe Modal Searchable Select
+        initSearchableSelect(
+            'editUserSearch',
+            'edit_user',
+            'editUserDropdown',
+            'editSelectedUser',
+            'editSelectedUserName'
+        );
+    });
+
+    function initSearchableSelect(searchInputId, selectId, dropdownId, selectedUserId, selectedUserNameId) {
+        const searchInput = document.getElementById(searchInputId);
+        const selectElement = document.getElementById(selectId);
+        const dropdown = document.getElementById(dropdownId);
+        const dropdownList = dropdown.querySelector('.dropdown-list');
+        const selectedUser = document.getElementById(selectedUserId);
+        const selectedUserName = document.getElementById(selectedUserNameId);
 
         // Initialize dropdown
         populateDropdown('');
 
-        userSearch.addEventListener('input', function() {
+        searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             populateDropdown(searchTerm);
-            userDropdown.classList.add('active');
+            dropdown.classList.add('active');
         });
 
-        userSearch.addEventListener('focus', function() {
-            userDropdown.classList.add('active');
+        searchInput.addEventListener('focus', function() {
+            populateDropdown(this.value.toLowerCase());
+            dropdown.classList.add('active');
         });
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
-            if (!event.target.closest('.searchable-select')) {
-                userDropdown.classList.remove('active');
+            if (!event.target.closest(`#${searchInputId}`) && !event.target.closest(`#${dropdownId}`)) {
+                dropdown.classList.remove('active');
             }
         });
 
         function populateDropdown(searchTerm) {
             dropdownList.innerHTML = '';
-            const options = userSelect.querySelectorAll('option');
+            const options = selectElement.querySelectorAll('option');
             let hasResults = false;
 
             options.forEach(option => {
-                if (option.value) { // Skip the first empty option
+                if (option.value) {
                     const searchText = option.dataset.search || option.textContent.toLowerCase();
                     if (searchText.includes(searchTerm)) {
                         const dropdownItem = document.createElement('div');
@@ -725,11 +857,11 @@
                             ${option.textContent.includes('(') ? `<span class="user-email">${option.textContent.split('(')[1].replace(')', '')}</span>` : ''}
                         `;
                         dropdownItem.addEventListener('click', function() {
-                            userSelect.value = option.value;
-                            userSearch.value = option.textContent.split(' (')[0];
+                            selectElement.value = option.value;
+                            searchInput.value = option.textContent.split(' (')[0];
                             selectedUserName.textContent = option.textContent;
                             selectedUser.style.display = 'flex';
-                            userDropdown.classList.remove('active');
+                            dropdown.classList.remove('active');
                         });
                         dropdownList.appendChild(dropdownItem);
                         hasResults = true;
@@ -746,36 +878,51 @@
         }
 
         // Keyboard navigation
-        userSearch.addEventListener('keydown', function(e) {
+        searchInput.addEventListener('keydown', function(e) {
             const items = dropdownList.querySelectorAll('.dropdown-item');
-            const activeItem = dropdownList.querySelector('.dropdown-item.active');
+            let activeItem = dropdownList.querySelector('.dropdown-item.active');
             
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 if (!activeItem && items.length > 0) {
                     items[0].classList.add('active');
                 } else if (activeItem) {
+                    activeItem.classList.remove('active');
                     const next = activeItem.nextElementSibling;
                     if (next) {
-                        activeItem.classList.remove('active');
                         next.classList.add('active');
+                        next.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        items[0].classList.add('active');
+                        items[0].scrollIntoView({ block: 'nearest' });
                     }
                 }
             } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
                 if (activeItem) {
+                    activeItem.classList.remove('active');
                     const prev = activeItem.previousElementSibling;
                     if (prev) {
-                        activeItem.classList.remove('active');
                         prev.classList.add('active');
+                        prev.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        items[items.length - 1].classList.add('active');
+                        items[items.length - 1].scrollIntoView({ block: 'nearest' });
                     }
                 }
-            } else if (e.key === 'Enter' && activeItem) {
+            } else if (e.key === 'Enter') {
                 e.preventDefault();
-                activeItem.click();
+                if (activeItem) {
+                    activeItem.click();
+                } else if (items.length > 0) {
+                    items[0].click();
+                }
+            } else if (e.key === 'Escape') {
+                dropdown.classList.remove('active');
+                searchInput.blur();
             }
         });
-    });
+    }
 
     // Auto-hide messages after 5 seconds
     setTimeout(function() {
