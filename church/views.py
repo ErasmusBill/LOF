@@ -19,17 +19,16 @@ def home(request):
         message = request.POST.get('message')
         subject = request.POST.get('subject')
 
-        # Validate user input 
         if not email or not name or not message or not subject:
             messages.error(request, "All fields are required.")
             return redirect('church:home')
 
-        # Check if user's email ends with @(link unavailable) (optional validation)
+
         if not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
             messages.error(request, "Invalid email address. Please enter a valid email.")
             return redirect('church:home')
 
-        # Construct and send the email using EmailMessage (recommended)
+      
         try:
             email_message = EmailMessage(
                 subject=f"Message from {name}",

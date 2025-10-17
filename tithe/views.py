@@ -73,9 +73,9 @@ def login_user(request):
             login(request, user)
             messages.success(request, "You have successfully logged in")
         
-            if user.role == "ADMIN":
+            if user.role == "ADMIN": # type: ignore
                 return redirect("tithe:admin-dashboard")
-            elif user.role == "REGULAR_USER":  
+            elif user.role == "REGULAR_USER":    # type: ignore
                 return redirect("tithe:user-dashboard")
             else:
                 messages.warning(request, "Your account role is not recognized.")
