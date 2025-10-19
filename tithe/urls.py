@@ -25,7 +25,7 @@ urlpatterns = [
     # Tithe Management URLs
     path('tithe/add/', views.add_tithe, name='add_tithe'),
     path('tithe/list/', views.list_tithe, name='list-tithe'),
-    path('tithe/edit/<int:tithe_id>/', views.edit_tithe, name='edit_tithe'),
+    path('edit/<int:tithe_id>/', views.edit_tithe, name='edit_tithe'),
     path('tithe/delete/<int:tithe_id>/', views.delete_tithe, name='delete_tithe'),
     path('tithe/user/', views.list_related_user, name='user-tithe'),
     

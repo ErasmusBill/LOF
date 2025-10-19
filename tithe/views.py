@@ -178,7 +178,7 @@ def add_tithe(request):
             except Exception as e:
                 messages.warning(request, f"Tithe added but email failed to send: {str(e)}")
             
-            return redirect("tithe:list-tithe") 
+            return redirect("tithe:admin-dashboard") 
     else:
         form = TitheForm()
     
@@ -199,7 +199,7 @@ def edit_tithe(request,tithe_id):
         if form.is_valid():
             form.save()
             messages.success(request,"You have successfully update the tithe")
-            return redirect("tithe:list-tithe")
+            return redirect("tithe:admin-dashboard")
     else:
         return render(request,"tithe/edit-tithe.html")
     
@@ -215,7 +215,7 @@ def delete_tithe(request,tithe_id):
     tithe = get_object_or_404(Tithe,id=tithe_id)
     tithe.delete()
     messages.success(request,"You have successfully deleted a tithe")
-    return redirect("tithe:list-tithe")
+    return redirect("tithe:admin-dashboard")
     
 
 def request_password_reset(request):
@@ -297,7 +297,7 @@ def change_password(request):
             if request.user.role == "ADMIN":
                 return redirect("tithe:admin-dashboard")
             else:
-                return redirect("tithe:user-dashboard")  
+                return redirect("tithe:admin-dashboard")  
     else:
         form = ChangePasswordForm()
 
