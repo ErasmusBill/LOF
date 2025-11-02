@@ -1,7 +1,5 @@
 {% extends 'tithe/base.html' %}
-
 {% block title %}Admin Dashboard - Tithe Management System{% endblock %}
-
 {% block content %}
 <div class="dashboard">
     <header class="header">
@@ -34,7 +32,6 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                
                 <div class="action-buttons">
                     <a href="{% url 'tithe:update_user' %}" class="btn-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +58,6 @@
             </div>
         </div>
     </header>
-
     <div class="main-content">
         <!-- Quick Actions Card -->
         <div class="stats-grid">
@@ -76,7 +72,6 @@
                     </svg>
                 </div>
             </div>
-
             <div class="stat-card green">
                 <div class="stat-info">
                     <h3>Today's Tithe</h3>
@@ -88,7 +83,6 @@
                     </svg>
                 </div>
             </div>
-
             <div class="stat-card purple">
                 <div class="stat-info">
                     <h3>Quick Actions</h3>
@@ -115,7 +109,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Tithe Records Table -->
         <div class="table-section">
             <div class="table-header">
@@ -127,7 +120,6 @@
                     <span class="btn-text">Add Tithe</span>
                 </button>
             </div>
-
             <div class="table-container">
                 <table>
                     <thead>
@@ -153,7 +145,11 @@
                                         </svg>
                                     </div>
                                     {% endif %}
-                                    <strong>{{ tithe.user.get_full_name|default:tithe.user.username }}</strong>
+                                    <strong>
+                                        <a href="{% url 'tithe:list-user-tithe' tithe.user.id %}" class="member-link">
+                                            {{ tithe.user.get_full_name|default:tithe.user.username }}
+                                        </a>
+                                    </strong>
                                 </div>
                             </td>
                             <td>{{ tithe.user.email }}</td>
@@ -185,7 +181,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="pagination">
                 <div class="pagination-info">
                     Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
@@ -198,7 +193,6 @@
                         </svg>
                     </button>
                     {% endif %}
-                    
                     {% if page_obj.has_next %}
                     <button onclick="location.href='?page={{ page_obj.next_page_number }}'" class="pagination-btn">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,17 +255,14 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="amount">Amount (₵)</label>
                     <input type="number" id="amount" name="amount" step="0.01" placeholder="250.00" required>
                 </div>
-
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" required>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="btn-submit">Add Tithe</button>
@@ -296,7 +287,6 @@
             <form method="POST" id="editTitheForm">
                 {% csrf_token %}
                 <input type="hidden" id="edit_tithe_id" name="tithe_id">
-                
                 <div class="form-group">
                     <label for="editUserSearch">Member</label>
                     <div class="searchable-select">
@@ -332,17 +322,14 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="edit_amount">Amount (₵)</label>
                     <input type="number" id="edit_amount" name="amount" step="0.01" placeholder="250.00" required>
                 </div>
-
                 <div class="form-group">
                     <label for="edit_date">Date</label>
                     <input type="date" id="edit_date" name="date" required>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
                     <button type="submit" class="btn-submit">Update Tithe</button>
@@ -353,7 +340,19 @@
 </div>
 
 <style>
-    /* Base styles */
+    /* ... ALL EXISTING STYLES FROM YOUR ORIGINAL FILE ... */
+
+    /* ADD THIS NEW RULE FOR THE MEMBER LINK */
+    .member-link {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .member-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Keep all your original CSS below unchanged */
     :root {
         --primary-blue: #3b82f6;
         --primary-green: #10b981;
@@ -370,11 +369,9 @@
         --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         --transition: all 0.2s ease-in-out;
     }
-
     * {
         box-sizing: border-box;
     }
-
     body {
         margin: 0;
         padding: 0;
@@ -382,12 +379,10 @@
         background-color: #f3f4f6;
         color: var(--text-color);
     }
-
     .dashboard {
         min-height: 100vh;
         padding: 1rem;
     }
-
     /* Header Styles */
     .header {
         background: white;
@@ -396,7 +391,6 @@
         margin-bottom: 1.5rem;
         box-shadow: var(--shadow);
     }
-
     .header-content {
         display: flex;
         justify-content: space-between;
@@ -404,13 +398,11 @@
         flex-wrap: wrap;
         gap: 1rem;
     }
-
     .header-left {
         display: flex;
         align-items: center;
         gap: 1rem;
     }
-
     .header-icon {
         width: 48px;
         height: 48px;
@@ -420,24 +412,20 @@
         align-items: center;
         justify-content: center;
     }
-
     .header-icon svg {
         width: 24px;
         height: 24px;
         color: white;
     }
-
     .header-title {
         font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 0.25rem;
     }
-
     .header-subtitle {
         color: var(--text-secondary);
         font-size: 0.875rem;
     }
-
     /* User Profile */
     .user-profile {
         display: flex;
@@ -448,7 +436,6 @@
         border-radius: 12px;
         border: 1px solid var(--border-color);
     }
-
     .user-avatar {
         width: 40px;
         height: 40px;
@@ -456,7 +443,6 @@
         object-fit: cover;
         border: 2px solid var(--border-color);
     }
-
     .default-avatar {
         display: flex;
         align-items: center;
@@ -464,47 +450,39 @@
         background: var(--success-bg);
         border: 2px solid var(--primary-green);
     }
-
     .default-avatar svg {
         width: 20px;
         height: 20px;
         stroke: var(--primary-green);
     }
-
     .default-avatar.small {
         width: 32px;
         height: 32px;
     }
-
     .default-avatar.small svg {
         width: 16px;
         height: 16px;
     }
-
     .user-info {
         display: flex;
         flex-direction: column;
     }
-
     .user-name {
         font-weight: 600;
         font-size: 0.875rem;
         line-height: 1.2;
     }
-
     .user-role {
         font-size: 0.75rem;
         color: var(--text-secondary);
         line-height: 1.2;
     }
-
     /* Action Buttons */
     .action-buttons {
         display: flex;
         gap: 0.5rem;
         align-items: center;
     }
-
     .btn-icon {
         display: flex;
         align-items: center;
@@ -520,28 +498,23 @@
         transition: var(--transition);
         cursor: pointer;
     }
-
     .btn-icon:hover {
         background: var(--light-bg);
         border-color: #d1d5db;
         transform: translateY(-1px);
     }
-
     .btn-icon svg {
         width: 16px;
         height: 16px;
         stroke: var(--text-secondary);
     }
-
     .btn-text {
         display: inline;
     }
-
     .logout-form {
         margin: 0;
         display: inline;
     }
-
     /* Stats Grid */
     .stats-grid {
         display: grid;
@@ -549,7 +522,6 @@
         gap: 1.5rem;
         margin-bottom: 1.5rem;
     }
-
     .stat-card {
         background: white;
         border-radius: 16px;
@@ -560,23 +532,19 @@
         align-items: center;
         transition: var(--transition);
     }
-
     .stat-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
-
     .stat-info h3 {
         font-size: 1rem;
         color: var(--text-secondary);
         margin-bottom: 0.5rem;
     }
-
     .stat-value {
         font-size: 1.875rem;
         font-weight: 700;
     }
-
     .stat-icon {
         width: 60px;
         height: 60px;
@@ -585,20 +553,16 @@
         align-items: center;
         justify-content: center;
     }
-
     .blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
     .green { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
     .purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
-
     .stat-icon.blue svg { color: var(--primary-blue); }
     .stat-icon.green svg { color: var(--primary-green); }
     .stat-icon.purple svg { color: var(--primary-purple); }
-
     .stat-icon svg {
         width: 28px;
         height: 28px;
     }
-
     /* Action Links */
     .action-links {
         display: flex;
@@ -606,7 +570,6 @@
         gap: 0.75rem;
         margin-top: 1rem;
     }
-
     .action-link {
         display: flex;
         align-items: center;
@@ -620,19 +583,16 @@
         font-weight: 500;
         transition: var(--transition);
     }
-
     .action-link:hover {
         background: white;
         transform: translateX(5px);
         box-shadow: var(--shadow);
     }
-
     .action-link svg {
         width: 16px;
         height: 16px;
         stroke: var(--text-secondary);
     }
-
     /* Table Styles */
     .table-section {
         background: white;
@@ -640,7 +600,6 @@
         overflow: hidden;
         box-shadow: var(--shadow);
     }
-
     .table-header {
         display: flex;
         justify-content: space-between;
@@ -648,12 +607,10 @@
         padding: 1.5rem;
         border-bottom: 1px solid var(--border-color);
     }
-
     .table-title {
         font-size: 1.25rem;
         font-weight: 600;
     }
-
     .btn-add {
         display: flex;
         align-items: center;
@@ -667,31 +624,25 @@
         cursor: pointer;
         transition: var(--transition);
     }
-
     .btn-add:hover {
         background: #2563eb;
         transform: translateY(-1px);
     }
-
     .btn-add svg {
         width: 20px;
         height: 20px;
     }
-
     .table-container {
         overflow-x: auto;
         width: 100%;
     }
-
     table {
         width: 100%;
         border-collapse: collapse;
     }
-
     thead {
         background: var(--light-bg);
     }
-
     th {
         padding: 1rem 1.5rem;
         text-align: left;
@@ -699,19 +650,16 @@
         color: var(--text-secondary);
         font-size: 0.875rem;
     }
-
     td {
         padding: 1rem 1.5rem;
         border-top: 1px solid var(--border-color);
         font-size: 0.875rem;
     }
-
     .member-info {
         display: flex;
         align-items: center;
         gap: 0.75rem;
     }
-
     .member-avatar {
         width: 32px;
         height: 32px;
@@ -719,17 +667,14 @@
         object-fit: cover;
         border: 1px solid var(--border-color);
     }
-
     .amount {
         font-weight: 600;
         color: var(--primary-green);
     }
-
     .action-buttons {
         display: flex;
         gap: 0.5rem;
     }
-
     .btn-icon.edit, .btn-icon.delete {
         padding: 0.5rem;
         border-radius: 8px;
@@ -741,36 +686,30 @@
         width: 36px;
         height: 36px;
     }
-
     .btn-icon.edit:hover {
         background: #eff6ff;
         border-color: #bfdbfe;
     }
-
     .btn-icon.delete:hover {
         background: #fef2f2;
         border-color: #fecaca;
     }
-
     .btn-icon.edit svg {
         stroke: var(--primary-blue);
         width: 18px;
         height: 18px;
     }
-
     .btn-icon.delete svg {
         stroke: var(--danger);
         width: 18px;
         height: 18px;
     }
-
     .empty-state {
         text-align: center;
         padding: 3rem;
         color: var(--text-secondary);
         font-size: 1rem;
     }
-
     /* Pagination */
     .pagination {
         display: flex;
@@ -779,17 +718,14 @@
         padding: 1.5rem;
         border-top: 1px solid var(--border-color);
     }
-
     .pagination-info {
         color: var(--text-secondary);
         font-size: 0.875rem;
     }
-
     .pagination-buttons {
         display: flex;
         gap: 0.5rem;
     }
-
     .pagination-btn {
         width: 36px;
         height: 36px;
@@ -802,18 +738,15 @@
         cursor: pointer;
         transition: var(--transition);
     }
-
     .pagination-btn:hover {
         background: var(--light-bg);
         border-color: #d1d5db;
     }
-
     .pagination-btn svg {
         width: 18px;
         height: 18px;
         stroke: var(--text-secondary);
     }
-
     /* Modal Styles */
     .modal {
         position: fixed;
@@ -830,12 +763,10 @@
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
     }
-
     .modal.active {
         opacity: 1;
         visibility: visible;
     }
-
     .modal-content {
         background: var(--modal-bg);
         border-radius: 16px;
@@ -847,11 +778,9 @@
         transform: translateY(20px);
         transition: transform 0.3s;
     }
-
     .modal.active .modal-content {
         transform: translateY(0);
     }
-
     .modal-header {
         display: flex;
         justify-content: space-between;
@@ -859,12 +788,10 @@
         padding: 1.5rem;
         border-bottom: 1px solid var(--border-color);
     }
-
     .modal-title {
         font-size: 1.25rem;
         font-weight: 600;
     }
-
     .close-modal {
         background: none;
         border: none;
@@ -877,32 +804,26 @@
         cursor: pointer;
         transition: var(--transition);
     }
-
     .close-modal:hover {
         background: var(--light-bg);
     }
-
     .close-modal svg {
         width: 20px;
         height: 20px;
         stroke: var(--text-secondary);
     }
-
     .modal-body {
         padding: 1.5rem;
     }
-
     .form-group {
         margin-bottom: 1.5rem;
     }
-
     .form-group label {
         display: block;
         margin-bottom: 0.5rem;
         font-weight: 500;
         color: var(--text-color);
     }
-
     input[type="text"],
     input[type="number"],
     input[type="date"] {
@@ -913,13 +834,11 @@
         font-size: 1rem;
         transition: var(--transition);
     }
-
     input:focus {
         outline: none;
         border-color: var(--primary-blue);
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
-
     .modal-footer {
         display: flex;
         gap: 1rem;
@@ -927,7 +846,6 @@
         padding: 1.5rem;
         border-top: 1px solid var(--border-color);
     }
-
     .btn-cancel {
         padding: 0.75rem 1.5rem;
         border: 1px solid var(--border-color);
@@ -938,11 +856,9 @@
         cursor: pointer;
         transition: var(--transition);
     }
-
     .btn-cancel:hover {
         background: var(--light-bg);
     }
-
     .btn-submit {
         padding: 0.75rem 1.5rem;
         background: var(--primary-blue);
@@ -953,20 +869,16 @@
         cursor: pointer;
         transition: var(--transition);
     }
-
     .btn-submit:hover {
         background: #2563eb;
     }
-
     /* Searchable Select */
     .searchable-select {
         position: relative;
     }
-
     .select-search-wrapper {
         margin-bottom: 0.5rem;
     }
-
     .select-search {
         width: 100%;
         padding: 0.75rem 0.75rem 0.75rem 2.5rem;
@@ -975,13 +887,11 @@
         font-size: 1rem;
         transition: var(--transition);
     }
-
     .select-search:focus {
         outline: none;
         border-color: var(--primary-blue);
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
-
     .input-icon {
         position: absolute;
         left: 0.75rem;
@@ -989,16 +899,13 @@
         transform: translateY(-50%);
         color: var(--text-secondary);
     }
-
     .input-icon svg {
         width: 18px;
         height: 18px;
     }
-
     .searchable-select-hidden {
         display: none;
     }
-
     .select-dropdown {
         position: absolute;
         top: 100%;
@@ -1014,46 +921,37 @@
         display: none;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-
     .select-dropdown.active {
         display: block;
     }
-
     .dropdown-list {
         padding: 0;
         margin: 0;
     }
-
     .dropdown-item {
         padding: 0.75rem 1rem;
         cursor: pointer;
         border-bottom: 1px solid var(--border-color);
         transition: var(--transition);
     }
-
     .dropdown-item:last-child {
         border-bottom: none;
     }
-
     .dropdown-item:hover {
         background: var(--light-bg);
     }
-
     .dropdown-item.active {
         background: var(--success-bg);
     }
-
     .user-name {
         font-weight: 500;
         color: var(--text-color);
     }
-
     .user-email {
         font-size: 0.875rem;
         color: var(--text-secondary);
         margin-top: 0.25rem;
     }
-
     .selected-user {
         display: flex;
         align-items: center;
@@ -1064,18 +962,15 @@
         border-radius: 8px;
         margin-top: 0.5rem;
     }
-
     .selected-label {
         font-size: 0.875rem;
         color: var(--success-text);
         font-weight: 500;
     }
-
     #selectedUserName, #editSelectedUserName {
         font-weight: 600;
         color: var(--success-text);
     }
-
     .clear-selection {
         background: none;
         border: none;
@@ -1086,146 +981,116 @@
         color: var(--text-secondary);
         transition: var(--transition);
     }
-
     .clear-selection:hover {
         background: #fee2e2;
         color: var(--danger);
     }
-
     .clear-selection svg {
         width: 16px;
         height: 16px;
     }
-
     /* Responsive Design */
     @media (max-width: 768px) {
         .dashboard {
             padding: 0.75rem;
         }
-        
         .header {
             padding: 1.25rem;
         }
-        
         .header-content {
             flex-direction: column;
             align-items: stretch;
         }
-        
         .header-left {
             justify-content: center;
         }
-        
         .header-actions {
             flex-direction: column;
             align-items: stretch;
         }
-        
         .user-profile {
             justify-content: center;
             padding: 0.75rem;
         }
-        
         .action-buttons {
             flex-direction: column;
             gap: 0.75rem;
         }
-        
         .btn-icon {
             justify-content: center;
             padding: 0.75rem;
         }
-        
         .stats-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
         }
-        
         .stat-card {
             padding: 1.25rem;
         }
-        
         .stat-value {
             font-size: 1.5rem;
         }
-        
         .table-header {
             flex-direction: column;
             align-items: stretch;
             gap: 1rem;
         }
-        
         .btn-add {
             width: 100%;
             justify-content: center;
         }
-        
         th, td {
             padding: 0.75rem 1rem;
         }
-        
         .pagination {
             flex-direction: column;
             gap: 1rem;
             align-items: stretch;
         }
-        
         .modal-content {
             width: 95%;
             max-width: 500px;
         }
     }
-
     @media (max-width: 480px) {
         .header-title {
             font-size: 1.25rem;
         }
-        
         .user-info {
             display: none;
         }
-        
         .btn-text {
             display: none;
         }
-        
         .btn-icon {
             padding: 0.5rem;
             justify-content: center;
         }
-        
         .btn-icon svg {
             width: 20px;
             height: 20px;
         }
-        
         .stat-value {
             font-size: 1.25rem;
         }
-        
         .action-link {
             padding: 0.5rem;
             font-size: 0.875rem;
         }
-        
         .modal-header {
             padding: 1.25rem;
         }
-        
         .modal-body {
             padding: 1.25rem;
         }
-        
         .modal-footer {
             padding: 1.25rem;
         }
-        
         .selected-user {
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5rem;
         }
-        
         .clear-selection {
             margin-left: 0;
             align-self: flex-end;
@@ -1243,36 +1108,29 @@
             document.getElementById('userSearch').focus();
         }, 300);
     }
-
     function closeModal() {
         document.getElementById('addTitheModal').classList.remove('active');
         document.getElementById('addTitheForm').reset();
         clearUserSelection();
     }
-
     function clearUserSelection() {
         document.getElementById('user').value = '';
         document.getElementById('userSearch').value = '';
         document.getElementById('selectedUser').style.display = 'none';
     }
-
     // Edit Modal Functions
     function openEditModal(titheId, userId, amount, date) {
         const modal = document.getElementById('editTitheModal');
         const form = document.getElementById('editTitheForm');
-        
         // Set form action - adjust this URL pattern to match your Django URLs
         form.action = `/tithe/edit/${titheId}/`;
-        
         // Set form values
         document.getElementById('edit_tithe_id').value = titheId;
         document.getElementById('edit_amount').value = amount;
         document.getElementById('edit_date').value = date;
-        
         // Set selected user
         const userSelect = document.getElementById('edit_user');
         userSelect.value = userId;
-        
         // Update selected user display
         const selectedOption = userSelect.options[userSelect.selectedIndex];
         if (selectedOption && selectedOption.value) {
@@ -1280,34 +1138,28 @@
             document.getElementById('editSelectedUserName').textContent = selectedOption.textContent;
             document.getElementById('editSelectedUser').style.display = 'flex';
         }
-        
         // Show modal
         modal.classList.add('active');
-        
         // Focus on amount input
         setTimeout(() => {
             document.getElementById('edit_amount').focus();
         }, 300);
     }
-
     function closeEditModal() {
         const modal = document.getElementById('editTitheModal');
         modal.classList.remove('active');
         document.getElementById('editTitheForm').reset();
         clearEditUserSelection();
     }
-
     function clearEditUserSelection() {
         document.getElementById('edit_user').value = '';
         document.getElementById('editUserSearch').value = '';
         document.getElementById('editSelectedUser').style.display = 'none';
     }
-
     // Close modal when clicking outside
     window.onclick = function(event) {
         const addModal = document.getElementById('addTitheModal');
         const editModal = document.getElementById('editTitheModal');
-        
         if (event.target == addModal) {
             closeModal();
         }
@@ -1315,7 +1167,6 @@
             closeEditModal();
         }
     }
-
     // Searchable select functionality
     document.addEventListener('DOMContentLoaded', function() {
         // Add Tithe Modal Searchable Select
@@ -1326,7 +1177,6 @@
             'selectedUser',
             'selectedUserName'
         );
-
         // Edit Tithe Modal Searchable Select
         initSearchableSelect(
             'editUserSearch',
@@ -1336,7 +1186,6 @@
             'editSelectedUserName'
         );
     });
-
     function initSearchableSelect(searchInputId, selectId, dropdownId, selectedUserId, selectedUserNameId) {
         const searchInput = document.getElementById(searchInputId);
         const selectElement = document.getElementById(selectId);
@@ -1344,33 +1193,27 @@
         const dropdownList = dropdown.querySelector('.dropdown-list');
         const selectedUser = document.getElementById(selectedUserId);
         const selectedUserName = document.getElementById(selectedUserNameId);
-
         // Initialize dropdown
         populateDropdown('');
-
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             populateDropdown(searchTerm);
             dropdown.classList.add('active');
         });
-
         searchInput.addEventListener('focus', function() {
             populateDropdown(this.value.toLowerCase());
             dropdown.classList.add('active');
         });
-
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             if (!event.target.closest(`#${searchInputId}`) && !event.target.closest(`#${dropdownId}`)) {
                 dropdown.classList.remove('active');
             }
         });
-
         function populateDropdown(searchTerm) {
             dropdownList.innerHTML = '';
             const options = selectElement.querySelectorAll('option');
             let hasResults = false;
-
             options.forEach(option => {
                 if (option.value) {
                     const searchText = option.dataset.search || option.textContent.toLowerCase();
@@ -1393,7 +1236,6 @@
                     }
                 }
             });
-
             if (!hasResults && searchTerm) {
                 const noResults = document.createElement('div');
                 noResults.className = 'dropdown-item';
@@ -1401,12 +1243,10 @@
                 dropdownList.appendChild(noResults);
             }
         }
-
         // Keyboard navigation
         searchInput.addEventListener('keydown', function(e) {
             const items = dropdownList.querySelectorAll('.dropdown-item');
             let activeItem = dropdownList.querySelector('.dropdown-item.active');
-            
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 if (!activeItem && items.length > 0) {
@@ -1448,7 +1288,6 @@
             }
         });
     }
-
     // Auto-hide messages after 5 seconds
     setTimeout(function() {
         const alerts = document.querySelectorAll('.alert');

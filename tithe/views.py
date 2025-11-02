@@ -14,6 +14,7 @@ from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.utils import timezone
 from django.db.models import Sum
+from django import template
 
 # Create your views here.
 
@@ -327,23 +328,23 @@ def admin_dashboard(request):
     if not request.user.is_authenticated or request.user.role != "ADMIN":
         messages.error(request, "You don't have permission to access this page")
         return redirect("tithe:login_user")  
-    
+
     members = CustomUser.objects.count()
     today = timezone.now().date()
     total_tithe_today = Tithe.objects.filter(date=today).aggregate(total=Sum('amount'))['total'] or 0
-    
-    
-    tithes = Tithe.objects.all().order_by("-date")
+    total_tithe_all_time = Tithe.objects.aggregate(total=Sum('amount'))['total'] or 0  # ← ADD THIS
+
+    tithes = Tithe.objects.select_related('user').order_by("-date")  # ← select_related for efficiency
     paginator = Paginator(tithes, 50)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    
-    
+
     users = CustomUser.objects.all()
-    
+
     return render(request, "tithe/admin_dashboard.html", {
         "members": members,
         "total_tithe_today": total_tithe_today,
+        "total_tithe_all_time": total_tithe_all_time, 
         "page_obj": page_obj,
         "users": users
     })
@@ -364,3 +365,26 @@ def user_dashboard(request):
         "page_obj": page_obj,
         "total_amount": total_amount
     })
+    
+
+def list_tithe_related_user_by_admin(request, user_id):
+    if not request.user.is_authenticated or request.user.role != "ADMIN":
+        messages.error(request, "You don't have permission to access this page")
+        return redirect("tithe:login_user")  
+    
+    user = get_object_or_404(CustomUser, id=user_id)
+    amount = Tithe.objects.filter(user=user).aggregate(total=Sum('amount'))['total'] or 0
+    tithe = Tithe.objects.filter(user=user).order_by("-date")
+    
+    paginator = Paginator(tithe, 50)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, "tithe/user_tithe_admin_view.html", {
+        "page_obj": page_obj,
+        "viewed_user": user,
+        "total_amount": amount
+    })
+    
+
+

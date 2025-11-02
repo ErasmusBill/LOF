@@ -28,6 +28,7 @@ urlpatterns = [
     path('edit/<int:tithe_id>/', views.edit_tithe, name='edit_tithe'),
     path('tithe/delete/<int:tithe_id>/', views.delete_tithe, name='delete_tithe'),
     path('tithe/user/', views.list_related_user, name='user-tithe'),
+    path('tithe/list-user-tithe/<int:user_id>/', views.list_tithe_related_user_by_admin, name='list-user-tithe'),
     
     # Home/Redirect URLs
     path('', views.login_user, name='home'),  
