@@ -14,8 +14,9 @@ from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.utils import timezone
 from django.db.models import Sum
-from django import template
+from django.contrib.auth.decorators import login_required
 
+# from .models import send_register_email_token
 # Create your views here.
 
 
@@ -23,11 +24,11 @@ def register_user(request):
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
         if form.is_valid():
-            
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            messages.success(request,"User registered successfully")
+            user.send_register_email_token()
+            messages.success(request,"User registered successfully,Please check your email to activate your account")
             return redirect("tithe:login_user")
         else:
             # print("Form errors:", form.errors)
@@ -35,7 +36,27 @@ def register_user(request):
     else:
         form = RegisterUserForm()
         return render(request,"tithe/signup.html",{"form":form})
+    
+    
+# def activate_user_account(request,token):
+#     try:
+#         token = CustomUser.objects.get(tokne=token)
+#     except CustomUser.DoesNotExist:
+#         messages.error(request, "Invalid or expired token.")
+#         return redirect("tithe:register_user")
+    
+#     if not token.is_valid():
+#         messages.error(request, "Invalid or expired token.")
+#         return redirect("tithe:register_user")
+    
+#     token.is_active == True
+#     return redirect("tithe:login_user")
+    
+    
+        
+        
 
+@login_required
 def update_user(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must login before you can perform action")
@@ -87,12 +108,13 @@ def login_user(request):
     else:
         return render(request, "tithe/login.html")
     
-    
+@login_required   
 def logout_user(request):
     logout(request)
     messages.success(request,"User logged out successfully")
     return redirect("church:home")
 
+@login_required
 def add_tithe(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to access this page")
@@ -185,6 +207,7 @@ def add_tithe(request):
     
     return render(request, "tithe/add_tithe.html", {"form": form})
 
+@login_required
 def edit_tithe(request,tithe_id):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to access this page")
@@ -204,6 +227,7 @@ def edit_tithe(request,tithe_id):
     else:
         return render(request,"tithe/edit-tithe.html")
     
+@login_required    
 def delete_tithe(request,tithe_id):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to access this page")
@@ -271,7 +295,8 @@ def reset_password(request, token):
         return redirect("tithe:login_user")
     else:
         return render(request, "tithe/reset_password.html", {"token": token})
-    
+ 
+@login_required      
 def change_password(request):
     if not request.user.is_authenticated:
         raise PermissionDenied("You are not authorized to perform this action")
@@ -304,6 +329,7 @@ def change_password(request):
 
     return render(request, "tithe/change_password.html", {"form": form})
 
+@login_required  
 def list_tithe(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to access this page")
@@ -319,11 +345,14 @@ def list_tithe(request):
     page_obj = paginator.get_page(page_number)
     return render(request,"tithe/list-tithe.html",{"page_obj":page_obj})
 
+@login_required  
 def list_related_user(request):
     user = request.user
     tithe = Tithe.objects.filter(user=user).all()
     return render(request,"tithe/user-tithe.html",{"tithe":tithe})
 
+
+@login_required  
 def admin_dashboard(request):
     if not request.user.is_authenticated or request.user.role != "ADMIN":
         messages.error(request, "You don't have permission to access this page")
@@ -334,7 +363,7 @@ def admin_dashboard(request):
     total_tithe_today = Tithe.objects.filter(date=today).aggregate(total=Sum('amount'))['total'] or 0
     total_tithe_all_time = Tithe.objects.aggregate(total=Sum('amount'))['total'] or 0  # ← ADD THIS
 
-    tithes = Tithe.objects.select_related('user').order_by("-date")  # ← select_related for efficiency
+    tithes = Tithe.objects.select_related('user').order_by("-date") 
     paginator = Paginator(tithes, 50)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -348,7 +377,9 @@ def admin_dashboard(request):
         "page_obj": page_obj,
         "users": users
     })
- 
+
+
+@login_required   
 def user_dashboard(request):  
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to access this page")
@@ -366,7 +397,7 @@ def user_dashboard(request):
         "total_amount": total_amount
     })
     
-
+@login_required  
 def list_tithe_related_user_by_admin(request, user_id):
     if not request.user.is_authenticated or request.user.role != "ADMIN":
         messages.error(request, "You don't have permission to access this page")
