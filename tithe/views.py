@@ -195,7 +195,7 @@ def add_tithe(request):
                     [tithe.user.email]
                 )
                 email.attach_alternative(html_message, "text/html")
-                email.send()
+                email.send(fail_silently=True)
                 
                 messages.success(request, f"Tithe of ₵{tithe.amount} for {tithe.user.get_full_name() or tithe.user.username} added successfully. Email sent.")
             except Exception as e:
