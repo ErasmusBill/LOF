@@ -27,7 +27,7 @@ def register_user(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            user.send_register_email_token()
+            # user.send_register_email_token()
             messages.success(request,"User registered successfully,Please check your email to activate your account")
             return redirect("tithe:login_user")
         else:
