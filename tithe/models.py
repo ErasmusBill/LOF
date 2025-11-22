@@ -62,7 +62,7 @@ class PasswordResetRequest(models.Model):
         return timezone.now() < expiration_time and not self.is_used
 
     def send_reset_email(self):
-        reset_link = f"{settings.BAE_URL}/{self.token}/"
+        reset_link = f"{settings.BASE_URL}/{self.token}/"
         subject = "Password Reset Request"
         message = f"Click the link below to reset your password:\n{reset_link}\nThis link will expire in 1 hour."
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.user.email])
