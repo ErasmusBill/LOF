@@ -33,7 +33,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'church',
     'tithe',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ================================
 # MIDDLEWARE
