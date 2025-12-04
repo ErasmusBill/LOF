@@ -78,3 +78,14 @@ class Tithe(models.Model):
    
     def __str__(self):
         return f"{self.user.username} - ₵{self.amount} on {self.date}"
+    
+
+# class Welfare(models.Model):
+#     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+#     amount = models.DecimalField(decimal_places=2,max_digits=10)
+#     date = models.DateField()
+    
+    
+#     def __str__(self):
+#           return f"{self.user.username} - ₵{self.amount} on {self.date}"
+        

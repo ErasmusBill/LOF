@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 
+# from tithe.models import Welfare
 # from .models import send_register_email_token
 # Create your views here.
 
