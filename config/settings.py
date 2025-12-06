@@ -127,7 +127,7 @@ MEDIA_ROOT = ''
 
 AUTH_USER_MODEL = "tithe.CustomUser"
 
-BASE_URL = os.getenv("BASE_URL", "https://web-production-03573.up.railway.app")
+BASE_URL = os.getenv("BASE_URL", "https://fruitfulyouth.org/")
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
