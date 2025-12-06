@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-import dj_database_url
+import dj_database_url # type: ignore
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -117,7 +117,7 @@ USE_TZ = True
 # STATIC & MEDIA FILES
 # ================================
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # MUST be staticfiles
+STATIC_ROOT = BASE_DIR / 'staticfiles'  
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -127,7 +127,7 @@ MEDIA_ROOT = ''
 
 AUTH_USER_MODEL = "tithe.CustomUser"
 
-BASE_URL = os.getenv("BASE_URL", "")
+BASE_URL = os.getenv("BASE_URL", "https://web-production-03573.up.railway.app")
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
