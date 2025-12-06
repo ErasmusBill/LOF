@@ -15,6 +15,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 # from tithe.models import Welfare
 # from .models import send_register_email_token
@@ -251,7 +252,7 @@ def request_password_reset(request):
             password_reset_request = form.save()
             password_reset_request.send_reset_email()
             messages.success(request,"Password reset email sent successfully")
-            # return redirect("tithe:login_user")
+            return HttpResponse("Please rset email sent successfully to your mail, Kinldy click on the link in your mail to reset password")
         else:
             return render(request,"tithe/request_password_reset.html",{"form":form})
     else:
