@@ -25,6 +25,7 @@ SENDGRID_ECHO_TO_STDOUT = True
 # INSTALLED APPS
 # ================================
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,7 +36,7 @@ INSTALLED_APPS = [
     'tithe',
     'cloudinary',
     'cloudinary_storage',
-    'jazzmin',
+    
 ]
 
 CLOUDINARY_STORAGE = {
@@ -144,10 +145,10 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 JAZZMIN_SETTINGS = {
-    "site_title": "My Project Admin",
-    "site_header": "My Project Admin",
-    "site_brand": "My Project",
-    "welcome_sign": "Welcome to the Admin",
+    "site_title": "My Cool Admin",
+    "site_header": "LOF Admin",
+    "welcome_sign": "Welcome to LOF Admin",
+    "show_ui_builder": True,
     "show_sidebar": True,
     "navigation_expanded": True,
     "icons": {
