@@ -143,3 +143,15 @@ JAZZMIN_UI_TWEAKS = {
     "navbar_fixed": True,
 }
 
+JAZZMIN_SETTINGS = {
+    "site_title": "My Project Admin",
+    "site_header": "My Project Admin",
+    "site_brand": "My Project",
+    "welcome_sign": "Welcome to the Admin",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+    },
+}
