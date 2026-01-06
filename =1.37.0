@@ -1,0 +1,4 @@
+Requirement already satisfied: cloudinary in ./my_env/lib/python3.9/site-packages (1.44.1)
+Requirement already satisfied: six in ./my_env/lib/python3.9/site-packages (from cloudinary) (1.17.0)
+Requirement already satisfied: urllib3>=1.26.5 in ./my_env/lib/python3.9/site-packages (from cloudinary) (2.6.2)
+Requirement already satisfied: certifi in ./my_env/lib/python3.9/site-packages (from cloudinary) (2026.1.4)
