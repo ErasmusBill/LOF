@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'tithe',
     'cloudinary',
     'cloudinary_storage',
+    'jazzmin',
 ]
 
 CLOUDINARY_STORAGE = {
@@ -134,3 +135,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "sidebar_fixed": True,
+    "navbar_fixed": True,
+}
+
