@@ -1,4 +1,5 @@
 {% extends 'tithe/base.html' %}
+{% load image_cache %}
 
 {% block title %}My Tithe Records - Tithe Management System{% endblock %}
 
@@ -21,7 +22,7 @@
                 <!-- User Profile Section -->
                 <div class="user-profile">
                     {% if user.avatar %}
-                    <img src="{{ user.avatar.url }}" alt="{{ user.get_full_name|default:user.username }}" class="user-avatar">
+                    <img src="{% cached_image_url user 'avatar' %}" alt="{{ user.get_full_name|default:user.username }}" class="user-avatar">
                     {% else %}
                     <div class="user-avatar default-avatar">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

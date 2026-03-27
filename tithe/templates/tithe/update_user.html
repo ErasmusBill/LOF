@@ -1,4 +1,5 @@
 {% extends 'tithe/base.html' %}
+{% load image_cache %}
 
 {% block title %}Update Profile - Tithe Management System{% endblock %}
 
@@ -23,7 +24,7 @@
                 <div class="avatar-preview-container">
                     <div class="avatar-preview" id="avatarPreview">
                         {% if form.instance.avatar %}
-                        <img src="{{ form.instance.avatar.url }}" alt="Profile Picture" id="previewImage">
+                        <img src="{% cached_image_url form.instance 'avatar' %}" alt="Profile Picture" id="previewImage">
                         {% else %}
                         <div class="avatar-placeholder">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,6 +74,7 @@
                                 name="first_name" 
                                 value="{{ form.instance.first_name }}"
                                 placeholder="Enter your first name"
+                                autocomplete="given-name"
                                 required
                             >
                         </div>
@@ -98,6 +100,7 @@
                                 name="last_name" 
                                 value="{{ form.instance.last_name }}"
                                 placeholder="Enter your last name"
+                                autocomplete="family-name"
                                 required
                             >
                         </div>
@@ -129,6 +132,7 @@
                             name="username" 
                             value="{{ form.instance.username }}"
                             placeholder="Choose a username"
+                            autocomplete="username"
                             required
                         >
                     </div>
@@ -154,6 +158,7 @@
                             name="email" 
                             value="{{ form.instance.email }}"
                             placeholder="your.email@example.com"
+                            autocomplete="email"
                             required
                         >
                     </div>
@@ -178,8 +183,11 @@
                             name="phone_number" 
                             value="{{ form.instance.phone_number|default:'' }}"
                             placeholder="+233 XX XXX XXXX"
+                            autocomplete="tel"
+                            inputmode="tel"
                         >
                     </div>
+                    <div class="help-text">Include country code for accurate contact details.</div>
                     {% if form.phone_number.errors %}
                     <span class="error-message">{{ form.phone_number.errors.0 }}</span>
                     {% endif %}
@@ -212,16 +220,17 @@
         align-items: center;
         justify-content: center;
         padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #ffffff;
     }
 
     .profile-box {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: none;
+        border: 1px solid #e5e7eb;
         width: 100%;
         max-width: 700px;
-        padding: 40px;
+        padding: 32px;
         animation: slideUp 0.5s ease;
     }
 
@@ -244,7 +253,7 @@
     .header-icon {
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #247ff7 0%, #1d4ed8 100%);
         border-radius: 15px;
         display: flex;
         align-items: center;
@@ -273,10 +282,10 @@
     /* Avatar Section */
     .avatar-section {
         margin-bottom: 35px;
-        padding: 30px;
-        background: #f9fafb;
-        border-radius: 15px;
-        border: 2px dashed #e5e7eb;
+        padding: 24px;
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px dashed #e5e7eb;
     }
 
     .avatar-preview-container {
@@ -306,7 +315,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #247ff7 0%, #1d4ed8 100%);
     }
 
     .avatar-placeholder svg {
@@ -327,7 +336,7 @@
         align-items: center;
         gap: 8px;
         padding: 10px 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #247ff7 0%, #1d4ed8 100%);
         color: white;
         border-radius: 10px;
         font-size: 14px;
@@ -339,7 +348,7 @@
 
     .btn-upload:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(36, 127, 247, 0.35);
     }
 
     .btn-upload svg {
@@ -389,7 +398,7 @@
         font-weight: 600;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
     }
 
     .form-row {
@@ -445,8 +454,8 @@
 
     .form-group input:focus {
         outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: #247ff7;
+        box-shadow: 0 0 0 3px rgba(36, 127, 247, 0.15);
     }
 
     .form-group input::placeholder {
@@ -467,7 +476,7 @@
         gap: 15px;
         margin-top: 35px;
         padding-top: 25px;
-        border-top: 2px solid #e5e7eb;
+        border-top: 1px solid #e5e7eb;
     }
 
     .btn-primary, .btn-secondary {
@@ -487,13 +496,13 @@
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #247ff7 0%, #1d4ed8 100%);
         color: white;
     }
 
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 20px rgba(36, 127, 247, 0.35);
     }
 
     .btn-secondary {

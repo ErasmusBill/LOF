@@ -35,26 +35,28 @@
                 <div class="table-title">My Tithe History</div>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Amount</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for tithe in tithe %}
-                    <tr>
-                        <td><span class="amount" style="font-size: 18px;">₵{{ tithe.amount }}</span></td>
-                        <td>{{ tithe.date|date:"M d, Y" }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="2" style="text-align: center; padding: 40px; color: #9ca3af;">No tithe records found</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tithe in tithe %}
+                        <tr>
+                            <td><span class="amount" style="font-size: 18px;">₵{{ tithe.amount }}</span></td>
+                            <td>{{ tithe.date|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="empty-state">No tithe records found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="quote-section">

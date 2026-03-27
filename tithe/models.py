@@ -4,7 +4,6 @@ from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
-from cloudinary.models import CloudinaryField # type: ignore
 from django.urls import reverse
 
 # Create your models here.
@@ -17,7 +16,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField()
     phone_number = models.CharField(max_length=50)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="REGULAR_USER")
-    avatar = CloudinaryField("image", null=True, blank=True)  # ✅ FIXED
+    avatar = models.ImageField(upload_to="avatar/", null=True, blank=True)
     # token = models.CharField(max_length=64, unique=True)
     # is_active = models.BooleanField(default=False)
     # created_at = models.DateTimeField(auto_now_add=True)

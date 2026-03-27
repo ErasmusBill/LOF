@@ -51,7 +51,7 @@ def register_user(request):
 #         messages.error(request, "Invalid or expired token.")
 #         return redirect("tithe:register_user")
     
-#     token.is_active == True
+#     token.is_active = True
 #     return redirect("tithe:login_user")
     
     

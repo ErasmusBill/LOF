@@ -9,8 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "False"
-ALLOWED_HOSTS = ["*"]  # Railway injects domain
+DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes", "on")
+ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "*").split(",") if host.strip()]
 
 # ================================
 # EMAIL (SENDGRID)
@@ -32,24 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'church',
-    'tithe',
-    'cloudinary',
-    'cloudinary_storage',
+    'church.apps.ChurchConfig',
+    'tithe.apps.TitheConfig',
     
 ]
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ================================
 # MIDDLEWARE
@@ -92,7 +78,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ================================
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
+        default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600
     )
 }
@@ -124,12 +110,24 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = ''
-# BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = "tithe.CustomUser"
 
 BASE_URL = os.getenv("BASE_URL", "https://fruitfulyouth.org/")
+
+# ================================
+# CACHING
+# ================================
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "image-url-cache",
+    }
+}
+
+# Cache TTL (seconds) for image URL lookups.
+IMAGE_URL_CACHE_TTL = int(os.getenv("IMAGE_URL_CACHE_TTL", "3600"))
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -138,16 +136,27 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "darkly",
+    "theme": "flatly",
     "dark_mode_theme": "darkly",
     "sidebar_fixed": True,
     "navbar_fixed": True,
+    "navbar": "navbar-white navbar-light",
+    "sidebar": "sidebar-light-primary",
+    "accent": "accent-primary",
 }
 
 JAZZMIN_SETTINGS = {
-    "site_title": "My Cool Admin",
-    "site_header": "LOF Admin",
-    "welcome_sign": "Welcome to LOF Admin",
+    "site_title": "Fruitful Youth Admin",
+    "site_header": "Fruitful Youth",
+    "site_brand": "Fruitful Youth",
+    "welcome_sign": "Welcome to Fruitful Youth Admin",
+    "site_logo": "images/logo.png",
+    "site_logo_small": "images/logo.png",
+    "site_icon": "images/favicon.ico",
+    "site_logo_classes": "brand-image img-circle elevation-2",
+    "login_logo": "images/logo.png",
+    "login_logo_dark": "images/logo.png",
+    "custom_css": "jazzmin/custom_admin.css",
     "show_ui_builder": True,
     "show_sidebar": True,
     "navigation_expanded": True,

@@ -30,19 +30,22 @@
     </header>
 
     <div class="main-content">
-        <div class="login-box" style="max-width: 600px; margin: 0 auto;">
-            <div class="logo-section">
-                <h1>Add Tithe Record</h1>
-                <p class="subtitle">Record a new tithe payment for a member</p>
+        <div class="page-card" style="max-width: 640px; margin: 0 auto;">
+            <div class="page-header">
+                <div class="page-title">Add Tithe Record</div>
+                <div class="page-subtitle">Record a new tithe payment for a member</div>
             </div>
 
             <form method="POST" action="{% url 'tithe:add_tithe' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <div class="form-stack">
+                    {{ form.as_p }}
+                </div>
+                <div class="help-text">Please verify the member and date before submitting.</div>
                 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Add Tithe</button>
-                    <a href="{% url 'tithe:list-tithe' %}" class="btn btn-cancel" style="display: inline-block; width: auto; padding: 12px 24px; margin-left: 10px;">Cancel</a>
+                    <a href="{% url 'tithe:list-tithe' %}" class="btn btn-secondary" style="display: inline-flex; width: auto; padding: 12px 24px; margin-left: 10px;">Cancel</a>
                 </div>
             </form>
         </div>

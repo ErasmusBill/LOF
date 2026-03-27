@@ -1,4 +1,5 @@
 {% extends 'tithe/base.html' %}
+{% load image_cache %}
 {% load tithe_extras %}
 
 {% block title %}{{ viewed_user.get_full_name|default:viewed_user.username }}'s Tithe Records{% endblock %}
@@ -39,7 +40,7 @@
         <div class="profile-card">
             <div class="profile-header">
                 {% if viewed_user.avatar %}
-                <img src="{{ viewed_user.avatar.url }}" alt="{{ viewed_user.get_full_name|default:viewed_user.username }}" class="profile-avatar">
+                <img src="{% cached_image_url viewed_user 'avatar' %}" alt="{{ viewed_user.get_full_name|default:viewed_user.username }}" class="profile-avatar">
                 {% else %}
                 <div class="profile-avatar default-avatar">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,24 +52,11 @@
                     <div class="profile-name">{{ viewed_user.get_full_name|default:viewed_user.username }}</div>
                     <div class="profile-email">{{ viewed_user.email|default:"No email provided" }}</div>
                     <div class="profile-role">
-                        <span class="role-badge">{{ viewed_user.role }}</span>
+                        <span class="role-badge">{{ viewed_user.role|title }}</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        {% comment %} <div class="stat-card green">
-    <div class="stat-info">
-        <h3>Total Amount</h3>
-        <div class="stat-value">₵{{ total_amount }}</div>
-    </div> {% endcomment %}
-    <div class="stat-icon green">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-    </div>
-</div>
 
         
         <!-- Statistics Grid -->
@@ -76,7 +64,7 @@
             <div class="stat-card blue">
                 <div class="stat-info">
                     <h3>Total Records</h3>
-                   <div class="stat-value">₵{{ total_amount }}</div>
+                   <div class="stat-value">{{ page_obj.paginator.count }}</div>
 
                 </div>
                 <div class="stat-icon blue">
