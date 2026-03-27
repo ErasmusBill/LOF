@@ -1,5 +1,4 @@
 {% extends 'church/base.html' %}
-{% load image_cache %}
 {% block title %}Fruitful Youth - About{% endblock %}
 {% block content %}
 
@@ -72,8 +71,12 @@
             {% for leader in leaders %}
             <div class="col-lg-4 col-md-6">
                 <div class="leader-card">
-                    <div class="leader-image">
-                        <img src="{% cached_image_url leader 'image' %}" alt="{{ leader.name }}" class="img-fluid">
+                    <div class="leader-image media-frame">
+                        {% if leader.image %}
+                        <img src="{{ leader.image.url }}" alt="{{ leader.name }}" class="img-fluid media-image">
+                        {% else %}
+                        <div class="media-placeholder">No image uploaded</div>
+                        {% endif %}
                     </div>
                     <div class="leader-info">
                         <h3>{{ leader.name }}</h3>
@@ -219,12 +222,16 @@ section {
 .leader-image {
     position: relative;
     overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f1f5f9;
 }
 
 .leader-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     transition: var(--transition);
+    display: block;
 }
 
 .leader-card:hover .leader-image img {

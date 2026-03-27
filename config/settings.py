@@ -9,15 +9,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes", "on")
+DEBUG = os.getenv("DEBUG", "False").lower() in ("1", "true", "yes", "on")
+SERVE_MEDIA = os.getenv("SERVE_MEDIA", "False").lower() in ("1", "true", "yes", "on")
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "*").split(",") if host.strip()]
 
 # ================================
-# EMAIL (SENDGRID)
+# EMAIL
 # ================================
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "sendgrid_backend.SendgridBackend")
+
+try:
+    __import__(EMAIL_BACKEND.split(".")[0])
+except Exception:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 SENDGRID_ECHO_TO_STDOUT = True
 

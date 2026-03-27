@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.crypto import get_random_string
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
@@ -10,8 +11,8 @@ from django.urls import reverse
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
-        ("ADMIN","admin"),
-        ("REGULAR_USER","regular_user")
+        ("ADMIN", _("admin")),
+        ("REGULAR_USER", _("regular_user")),
     )
     email = models.EmailField()
     phone_number = models.CharField(max_length=50)
