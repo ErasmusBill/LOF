@@ -7,7 +7,7 @@ build:
 	docker compose build
 
 up:
-	docker compose up
+	docker compose up -d
 
 down:
 	docker compose down
@@ -15,37 +15,36 @@ down:
 logs:
 	docker compose logs -f
 
-runserver:
-	python manage.py runserver
+# --- Commands that now run INSIDE Docker ---
 
 shell:
-	python manage.py shell
+	docker compose exec web python manage.py shell
 
 migrate:
-	python manage.py migrate
+	docker compose exec web python manage.py migrate
 
 makemigrations:
-	python manage.py makemigrations
+	docker compose exec web python manage.py makemigrations
 
 showmigrations:
-	python manage.py showmigrations
+	docker compose exec web python manage.py showmigrations
 
 createsuperuser:
-	python manage.py createsuperuser
+	docker compose exec web python manage.py createsuperuser
 
 superuser: createsuperuser
 
 collectstatic:
-	python manage.py collectstatic --noinput
+	docker compose exec web python manage.py collectstatic --noinput
 
 test:
-	python manage.py test
+	docker compose exec web python manage.py test
 
 check:
-	python manage.py check
+	docker compose exec web python manage.py check
 
 dbshell:
-	python manage.py dbshell
+	docker compose exec web python manage.py dbshell
 
 flush:
-	python manage.py flush --noinput
+	docker compose exec web python manage.py flush --noinput
