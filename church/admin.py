@@ -4,3 +4,5 @@ from .models import *
 admin.site.register(Event)
 admin.site.register(Group)
 admin.site.register(Leadership)
+admin.site.register(EventAttendance)
+admin.site.register(Attendee)

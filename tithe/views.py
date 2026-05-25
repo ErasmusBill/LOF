@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
+
+from church.models import Event
 from .models import CustomUser,PasswordResetRequest,Tithe
 from .forms import RegisterUserForm,TitheForm,PasswordResetRequestForm,ChangePasswordForm,UpdateUserform
 from django.core.exceptions import PermissionDenied
@@ -365,6 +367,8 @@ def admin_dashboard(request):
     total_tithe_today = Tithe.objects.filter(date=today).aggregate(total=Sum('amount'))['total'] or 0
     total_tithe_all_time = Tithe.objects.aggregate(total=Sum('amount'))['total'] or 0  # ← ADD THIS
 
+    event = Event.objects.order_by('-id').first()
+
     tithes = Tithe.objects.select_related('user').order_by("-date") 
     paginator = Paginator(tithes, 50)
     page_number = request.GET.get("page")
@@ -377,7 +381,8 @@ def admin_dashboard(request):
         "total_tithe_today": total_tithe_today,
         "total_tithe_all_time": total_tithe_all_time, 
         "page_obj": page_obj,
-        "users": users
+        "users": users,
+        "event":event
     })
 
 

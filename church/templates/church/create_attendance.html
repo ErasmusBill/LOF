@@ -1,0 +1,712 @@
+{% extends 'church/base.html' %}
+{% block title %}Take Attendance – Fruitful Youth{% endblock %}
+
+{% block content %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="att-page">
+
+  <!-- ── Left panel (branding) ── -->
+  <aside class="att-panel" aria-hidden="true">
+    <div class="att-panel__inner">
+      <div class="att-panel__logo">
+        <i class="fas fa-leaf"></i>
+        <span>Fruitful Youth</span>
+      </div>
+      <div class="att-panel__text">
+        <h2 class="att-panel__headline">Record<br><em>who showed up.</em></h2>
+        <p class="att-panel__sub">
+          Attendance tracking helps us grow a stronger, more connected community.
+          Every entry counts.
+        </p>
+      </div>
+      <ul class="att-panel__steps" aria-label="Steps">
+        <li class="step active" data-step="1">
+          <span class="step__dot"><i class="fas fa-calendar-alt"></i></span>
+          <span class="step__label">Select Event</span>
+        </li>
+        <li class="step" data-step="2">
+          <span class="step__dot"><i class="fas fa-user"></i></span>
+          <span class="step__label">Attendee Info</span>
+        </li>
+        <li class="step" data-step="3">
+          <span class="step__dot"><i class="fas fa-check"></i></span>
+          <span class="step__label">Confirm</span>
+        </li>
+      </ul>
+      <div class="att-panel__decor" aria-hidden="true">
+        <div class="decor-ring r1"></div>
+        <div class="decor-ring r2"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Right panel (form) ── -->
+  <main class="att-form-wrap">
+
+    <!-- Top bar (mobile only) -->
+    <div class="att-topbar">
+      <div class="att-topbar__logo">
+        <i class="fas fa-leaf"></i>
+        <span>Fruitful Youth</span>
+      </div>
+      <a href="{% url 'church:home' %}" class="att-back-link" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Home
+      </a>
+    </div>
+
+    <div class="att-form-body">
+
+      <!-- Header -->
+      <div class="att-form-header">
+        <a href="{% url 'church:home' %}" class="att-back-btn" aria-label="Back to home">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+          <p class="att-form-header__eyebrow">
+            <i class="fas fa-clipboard-check me-1"></i>Attendance Register
+          </p>
+          <h1 class="att-form-header__title">Take Attendance</h1>
+        </div>
+      </div>
+
+      <!-- Django messages -->
+      {% if messages %}
+      <div class="att-messages" role="alert">
+        {% for msg in messages %}
+        <div class="att-alert att-alert--{{ msg.tags }}">
+          {% if 'success' in msg.tags %}
+            <i class="fas fa-check-circle att-alert__icon"></i>
+          {% elif 'error' in msg.tags %}
+            <i class="fas fa-exclamation-circle att-alert__icon"></i>
+          {% else %}
+            <i class="fas fa-info-circle att-alert__icon"></i>
+          {% endif %}
+          <span>{{ msg }}</span>
+          <button class="att-alert__close" onclick="this.parentElement.remove()" aria-label="Dismiss">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Form-level errors -->
+      {% if form.non_field_errors %}
+      <div class="att-alert att-alert--error" role="alert">
+        <i class="fas fa-exclamation-circle att-alert__icon"></i>
+        <span>{{ form.non_field_errors }}</span>
+      </div>
+      {% endif %}
+
+      <!-- ── THE FORM ── -->
+      <form method="POST" id="attendanceForm" novalidate>
+        {% csrf_token %}
+
+        <!-- ────────────── STEP 1: Event ────────────── -->
+        <fieldset class="att-section" id="step-1">
+          <legend class="att-section__legend">
+            <span class="att-section__num">01</span>
+            <span>Event Details</span>
+          </legend>
+
+          <!-- Event select -->
+          <div class="att-field {% if form.event.errors %}att-field--error{% endif %}">
+            <label class="att-label" for="{{ form.event.id_for_label }}">
+              Event
+              <span class="att-required" aria-hidden="true">*</span>
+            </label>
+            <div class="att-select-wrap">
+              {{ form.event }}
+              <i class="fas fa-chevron-down att-select-icon" aria-hidden="true"></i>
+            </div>
+            {% if form.event.errors %}
+              <p class="att-error-msg"><i class="fas fa-exclamation-circle me-1"></i>{{ form.event.errors|join:", " }}</p>
+            {% else %}
+              <p class="att-hint">Choose the event you are recording attendance for</p>
+            {% endif %}
+          </div>
+        </fieldset>
+
+        <!-- ────────────── STEP 2: Attendee ────────────── -->
+        <fieldset class="att-section" id="step-2">
+          <legend class="att-section__legend">
+            <span class="att-section__num">02</span>
+            <span>Attendee Information</span>
+          </legend>
+
+          <div class="att-grid">
+
+            <!-- Full Name -->
+            <div class="att-field att-field--full {% if form.name.errors %}att-field--error{% endif %}">
+              <label class="att-label" for="{{ form.name.id_for_label }}">
+                Full Name
+                <span class="att-required" aria-hidden="true">*</span>
+              </label>
+              <div class="att-input-wrap">
+                <i class="fas fa-user att-input-icon" aria-hidden="true"></i>
+                {{ form.name }}
+              </div>
+              {% if form.name.errors %}
+                <p class="att-error-msg"><i class="fas fa-exclamation-circle me-1"></i>{{ form.name.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Phone -->
+            <div class="att-field {% if form.phone_number.errors %}att-field--error{% endif %}">
+              <label class="att-label" for="{{ form.phone_number.id_for_label }}">
+                Phone Number
+                <span class="att-required" aria-hidden="true">*</span>
+              </label>
+              <div class="att-input-wrap">
+                <i class="fas fa-phone att-input-icon" aria-hidden="true"></i>
+                {{ form.phone_number }}
+              </div>
+              {% if form.phone_number.errors %}
+                <p class="att-error-msg"><i class="fas fa-exclamation-circle me-1"></i>{{ form.phone_number.errors|join:", " }}</p>
+              {% else %}
+                <p class="att-hint">Used to identify returning attendees</p>
+              {% endif %}
+            </div>
+
+            <!-- Occupation -->
+            <div class="att-field {% if form.occupation.errors %}att-field--error{% endif %}">
+              <label class="att-label" for="{{ form.occupation.id_for_label }}">
+                Occupation
+                <span class="att-optional">(optional)</span>
+              </label>
+              <div class="att-input-wrap">
+                <i class="fas fa-briefcase att-input-icon" aria-hidden="true"></i>
+                {{ form.occupation }}
+              </div>
+              {% if form.occupation.errors %}
+                <p class="att-error-msg"><i class="fas fa-exclamation-circle me-1"></i>{{ form.occupation.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Fellowship -->
+            <div class="att-field {% if form.fellowship.errors %}att-field--error{% endif %}">
+              <label class="att-label" for="{{ form.fellowship.id_for_label }}">
+                Fellowship / Group
+                <span class="att-optional">(optional)</span>
+              </label>
+              <div class="att-input-wrap">
+                <i class="fas fa-church att-input-icon" aria-hidden="true"></i>
+                {{ form.fellowship }}
+              </div>
+              {% if form.fellowship.errors %}
+                <p class="att-error-msg"><i class="fas fa-exclamation-circle me-1"></i>{{ form.fellowship.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+
+          </div><!-- /att-grid -->
+        </fieldset>
+
+        <!-- ────────────── Info note ────────────── -->
+        <div class="att-notice">
+          <i class="fas fa-info-circle att-notice__icon" aria-hidden="true"></i>
+          <p>
+            If this phone number has been used before, the attendee's profile will be
+            updated and linked to this event automatically.
+          </p>
+        </div>
+
+        <!-- ────────────── Actions ────────────── -->
+        <div class="att-actions">
+          <a href="{% url 'church:home' %}" class="att-btn att-btn--ghost">
+            <i class="fas fa-times me-1"></i> Cancel
+          </a>
+          <button type="submit" class="att-btn att-btn--primary" id="submitBtn">
+            <span class="att-btn__label">
+              <i class="fas fa-clipboard-check me-2"></i>Record Attendance
+            </span>
+            <span class="att-btn__loading" hidden>
+              <span class="att-spinner" role="status" aria-label="Submitting…"></span>
+              Saving…
+            </span>
+          </button>
+        </div>
+
+      </form><!-- /attendanceForm -->
+
+    </div><!-- /att-form-body -->
+  </main>
+</div><!-- /att-page -->
+
+
+<!-- ══════════════════════════════
+     SCRIPTS
+══════════════════════════════ -->
+<script>
+(function () {
+
+  /* ── Pre-select event from URL query param ── */
+  const params = new URLSearchParams(window.location.search);
+  const eventId = params.get('event');
+  if (eventId) {
+    const sel = document.querySelector('select[name="event"]');
+    if (sel) sel.value = eventId;
+  }
+
+  /* ── Sidebar step highlighting ── */
+  const nameInput  = document.querySelector('input[name="name"]');
+  const eventSel   = document.querySelector('select[name="event"]');
+  const steps      = document.querySelectorAll('.step');
+
+  function setStep(n) {
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i < n);
+      s.classList.toggle('done',   i < n - 1);
+    });
+  }
+
+  if (eventSel)  eventSel.addEventListener('change', () => setStep(eventSel.value ? 2 : 1));
+  if (nameInput) nameInput.addEventListener('input',  () => setStep(nameInput.value.trim() ? 3 : 2));
+
+  /* ── Submit loading state ── */
+  const form      = document.getElementById('attendanceForm');
+  const submitBtn = document.getElementById('submitBtn');
+  if (form && submitBtn) {
+    form.addEventListener('submit', () => {
+      submitBtn.querySelector('.att-btn__label').hidden  = true;
+      submitBtn.querySelector('.att-btn__loading').hidden = false;
+      submitBtn.disabled = true;
+    });
+  }
+
+  /* ── Float-label effect on input focus ── */
+  document.querySelectorAll('.att-input-wrap input, .att-select-wrap select').forEach(el => {
+    el.addEventListener('focus',  () => el.closest('.att-field').classList.add('att-field--focused'));
+    el.addEventListener('blur',   () => el.closest('.att-field').classList.remove('att-field--focused'));
+  });
+
+})();
+</script>
+
+
+<!-- ══════════════════════════════
+     STYLES
+══════════════════════════════ -->
+<style>
+/* ── Tokens ──────────────────────────────── */
+:root {
+  --att-gold:          #C9920A;
+  --att-gold-bg:       #FEF6E4;
+  --att-green:         #186A4B;
+  --att-dark:          #0F1623;
+  --att-dark2:         #1C2535;
+  --att-mid:           #3D4A5C;
+  --att-muted:         #6B7891;
+  --att-border:        #DDE3EC;
+  --att-border-focus:  #A8B5CA;
+  --att-bg:            #F4F6FA;
+  --att-white:         #FFFFFF;
+  --att-error:         #C53030;
+  --att-error-bg:      #FFF5F5;
+  --att-success:       #186A4B;
+  --att-success-bg:    #F0FAF5;
+  --att-radius:        12px;
+  --att-radius-sm:     8px;
+  --att-shadow:        0 2px 12px rgba(15,22,35,.08);
+  --att-shadow-lg:     0 8px 40px rgba(15,22,35,.14);
+  --ff-display:        'Playfair Display', Georgia, serif;
+  --ff-body:           'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Reset ───────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Page shell: two-column split ───────── */
+.att-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--ff-body);
+  background: var(--att-bg);
+}
+
+
+/* ══════════════════════════════════════════
+   LEFT PANEL
+══════════════════════════════════════════ */
+.att-panel {
+  width: 360px;
+  flex-shrink: 0;
+  background: var(--att-dark);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.att-panel__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2.5rem 2rem;
+}
+
+/* Logo */
+.att-panel__logo {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  color: var(--att-gold);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: .04em;
+  margin-bottom: 3rem;
+}
+.att-panel__logo i { font-size: 1.2rem; }
+
+/* Headline */
+.att-panel__headline {
+  font-family: var(--ff-display);
+  font-size: 2.4rem;
+  color: var(--att-white);
+  line-height: 1.15;
+  margin-bottom: .9rem;
+}
+.att-panel__headline em { color: var(--att-gold); font-style: italic; }
+.att-panel__sub { color: rgba(255,255,255,.5); font-size: .9rem; line-height: 1.65; margin-bottom: 2.5rem; }
+
+/* Steps sidebar */
+.att-panel__steps { list-style: none; display: flex; flex-direction: column; gap: .3rem; margin-top: auto; }
+.step {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: .7rem .9rem;
+  border-radius: var(--att-radius-sm);
+  transition: background .25s;
+}
+.step.active  { background: rgba(255,255,255,.07); }
+.step.done    { background: transparent; }
+.step__dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8rem;
+  color: rgba(255,255,255,.3);
+  border: 1.5px solid rgba(255,255,255,.1);
+  transition: all .3s;
+  flex-shrink: 0;
+}
+.step.active .step__dot {
+  background: var(--att-gold);
+  border-color: var(--att-gold);
+  color: var(--att-dark);
+}
+.step.done .step__dot {
+  background: var(--att-green);
+  border-color: var(--att-green);
+  color: var(--att-white);
+}
+.step__label { font-size: .88rem; color: rgba(255,255,255,.4); transition: color .25s; }
+.step.active .step__label { color: var(--att-white); font-weight: 500; }
+.step.done  .step__label  { color: rgba(255,255,255,.6); }
+
+/* Decorative rings */
+.att-panel__decor { position: absolute; bottom: -80px; right: -80px; width: 300px; height: 300px; z-index: 1; }
+.decor-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,146,10,.15);
+}
+.decor-ring.r1 { inset: 0; }
+.decor-ring.r2 { inset: 20%; border-color: rgba(201,146,10,.25); }
+
+
+/* ══════════════════════════════════════════
+   TOP BAR (mobile)
+══════════════════════════════════════════ */
+.att-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--att-dark);
+  color: var(--att-gold);
+  font-size: .9rem;
+  font-weight: 600;
+}
+.att-topbar__logo { display: flex; align-items: center; gap: .5rem; }
+.att-topbar__logo i { font-size: 1rem; }
+.att-back-link { color: rgba(255,255,255,.6); font-size: .82rem; font-weight: 400; text-decoration: none; }
+.att-back-link:hover { color: white; }
+
+
+/* ══════════════════════════════════════════
+   FORM AREA
+══════════════════════════════════════════ */
+.att-form-wrap {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.att-form-body {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 4rem;
+  flex: 1;
+}
+
+/* Form header */
+.att-form-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.att-back-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--att-white);
+  border: 1.5px solid var(--att-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--att-mid);
+  text-decoration: none;
+  font-size: .9rem;
+  transition: all .2s;
+  margin-top: .25rem;
+}
+.att-back-btn:hover { background: var(--att-dark); color: white; border-color: var(--att-dark); }
+.att-form-header__eyebrow {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--att-gold);
+  margin-bottom: .3rem;
+}
+.att-form-header__title {
+  font-family: var(--ff-display);
+  font-size: 2rem;
+  color: var(--att-dark);
+  line-height: 1.1;
+}
+
+/* ── Alerts ──────────────────────────────── */
+.att-messages { display: flex; flex-direction: column; gap: .6rem; margin-bottom: 1.5rem; }
+.att-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .9rem 1rem;
+  border-radius: var(--att-radius-sm);
+  font-size: .88rem;
+  border: 1px solid transparent;
+}
+.att-alert--success { background: var(--att-success-bg); color: var(--att-success);  border-color: #9FE1CB; }
+.att-alert--error   { background: var(--att-error-bg);   color: var(--att-error);    border-color: #FEB2B2; }
+.att-alert--info    { background: var(--att-gold-bg);     color: var(--att-gold);     border-color: #FAC775; }
+.att-alert__icon    { font-size: 1rem; margin-top: .05rem; flex-shrink: 0; }
+.att-alert > span   { flex: 1; line-height: 1.5; }
+.att-alert__close   {
+  background: none; border: none; cursor: pointer;
+  color: inherit; opacity: .5; font-size: .85rem; padding: 0; margin-left: auto;
+  flex-shrink: 0;
+}
+.att-alert__close:hover { opacity: 1; }
+
+/* ── Sections ────────────────────────────── */
+.att-section {
+  border: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+.att-section__legend {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--att-mid);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 1.25rem;
+  padding-bottom: .75rem;
+  border-bottom: 1.5px solid var(--att-border);
+  width: 100%;
+}
+.att-section__num {
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--att-gold);
+  line-height: 1;
+}
+
+/* ── Grid ────────────────────────────────── */
+.att-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.att-field--full { grid-column: 1 / -1; }
+
+/* ── Field ───────────────────────────────── */
+.att-field { display: flex; flex-direction: column; gap: .35rem; }
+.att-label {
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--att-mid);
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.att-required { color: var(--att-error); font-size: .8rem; }
+.att-optional { color: var(--att-muted); font-size: .75rem; font-weight: 400; }
+.att-hint      { font-size: .77rem; color: var(--att-muted); line-height: 1.4; }
+.att-error-msg { font-size: .77rem; color: var(--att-error); display: flex; align-items: center; }
+
+/* Input wrapper */
+.att-input-wrap, .att-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.att-input-icon, .att-select-icon {
+  position: absolute;
+  pointer-events: none;
+  color: var(--att-muted);
+  font-size: .85rem;
+}
+.att-input-icon  { left: .85rem; }
+.att-select-icon { right: .85rem; }
+
+/* Django form-control overrides */
+.att-input-wrap  .form-control,
+.att-select-wrap .form-control {
+  width: 100%;
+  height: 46px;
+  padding: 0 1rem 0 2.5rem;
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  color: var(--att-dark);
+  background: var(--att-white);
+  border: 1.5px solid var(--att-border);
+  border-radius: var(--att-radius-sm);
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.att-select-wrap .form-control { padding-right: 2.5rem; }
+.att-input-wrap  .form-control:focus,
+.att-select-wrap .form-control:focus {
+  border-color: var(--att-dark);
+  box-shadow: 0 0 0 3px rgba(15,22,35,.08);
+}
+.att-input-wrap  .form-control::placeholder { color: #BBC3D0; }
+.att-field--error .form-control {
+  border-color: var(--att-error);
+  background: var(--att-error-bg);
+}
+.att-field--focused .att-label { color: var(--att-dark); }
+.att-field--focused .att-input-icon,
+.att-field--focused .att-select-icon { color: var(--att-dark); }
+
+/* ── Notice ──────────────────────────────── */
+.att-notice {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  padding: 1rem 1.1rem;
+  background: var(--att-gold-bg);
+  border: 1px solid #FAC775;
+  border-radius: var(--att-radius-sm);
+  margin-bottom: 2rem;
+}
+.att-notice__icon { color: var(--att-gold); font-size: .95rem; margin-top: .1rem; flex-shrink: 0; }
+.att-notice p { font-size: .83rem; color: #8A6200; line-height: 1.55; }
+
+/* ── Actions ─────────────────────────────── */
+.att-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--att-border);
+}
+.att-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .75rem 1.6rem;
+  border-radius: var(--att-radius-sm);
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  font-weight: 500;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all .22s;
+  text-decoration: none;
+}
+.att-btn--primary {
+  background: var(--att-dark);
+  color: var(--att-white);
+  border-color: var(--att-dark);
+  min-width: 200px;
+}
+.att-btn--primary:hover   { background: var(--att-dark2); }
+.att-btn--primary:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+.att-btn--ghost {
+  background: transparent;
+  color: var(--att-muted);
+  border-color: var(--att-border);
+}
+.att-btn--ghost:hover { background: var(--att-bg); color: var(--att-mid); }
+
+/* Spinner */
+.att-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: fy-spin .65s linear infinite;
+}
+@keyframes fy-spin { to { transform: rotate(360deg); } }
+
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .att-panel     { display: none; }
+  .att-topbar    { display: flex; }
+  .att-form-body { padding: 1.5rem 1.25rem 3rem; }
+  .att-form-header .att-back-btn { display: none; }
+}
+
+@media (max-width: 560px) {
+  .att-grid { grid-template-columns: 1fr; }
+  .att-field--full { grid-column: 1; }
+  .att-actions { flex-direction: column-reverse; align-items: stretch; }
+  .att-btn { justify-content: center; }
+}
+</style>
+
+{% endblock %}

@@ -17,7 +17,6 @@
                 </div>
             </div>
             <div class="header-actions">
-                <!-- User Profile Section -->
                 <div class="user-profile">
                     {% if user.avatar %}
                     <img src="{% cached_image_url user 'avatar' %}" alt="{{ user.get_full_name|default:user.username }}" class="user-avatar">
@@ -33,7 +32,17 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
+
                 <div class="action-buttons">
+                    {% if event %}
+                    <a href="{% url 'church:attendance' event_id=event.id %}" class="btn-icon" title="View attendance list for: {{ event.name }}">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        <span class="btn-text">Attendance List</span>
+                    </a>
+                    {% endif %}
+
                     <a href="{% url 'tithe:update_user' %}" class="btn-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -59,8 +68,8 @@
             </div>
         </div>
     </header>
+
     <div class="main-content">
-        <!-- Quick Actions Card -->
         <div class="stats-grid">
             <div class="stat-card blue">
                 <div class="stat-info">
@@ -110,7 +119,7 @@
                 </div>
             </div>
         </div>
-        <!-- Tithe Records Table -->
+
         <div class="table-section">
             <div class="table-header">
                 <div class="table-title">Tithe Records</div>
@@ -207,7 +216,6 @@
     </div>
 </div>
 
-<!-- Add Tithe Modal -->
 <div class="modal" id="addTitheModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -273,7 +281,6 @@
     </div>
 </div>
 
-<!-- Edit Tithe Modal -->
 <div class="modal" id="editTitheModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -341,9 +348,6 @@
 </div>
 
 <style>
-    /* ... ALL EXISTING STYLES FROM YOUR ORIGINAL FILE ... */
-
-    /* ADD THIS NEW RULE FOR THE MEMBER LINK */
     .member-link {
         color: var(--primary-blue);
         text-decoration: none;
@@ -353,7 +357,6 @@
         text-decoration: underline;
     }
 
-    /* Keep all your original CSS below unchanged */
     :root {
         --primary-blue: #3b82f6;
         --primary-green: #10b981;
@@ -654,650 +657,6 @@
     td {
         padding: 1rem 1.5rem;
         border-top: 1px solid var(--border-color);
-        font-size: 0.875rem;
-    }
-    .member-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    .member-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 1px solid var(--border-color);
-    }
-    .amount {
-        font-weight: 600;
-        color: var(--primary-green);
-    }
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-    }
-    .btn-icon.edit, .btn-icon.delete {
-        padding: 0.5rem;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-    }
-    .btn-icon.edit:hover {
-        background: #eff6ff;
-        border-color: #bfdbfe;
-    }
-    .btn-icon.delete:hover {
-        background: #fef2f2;
-        border-color: #fecaca;
-    }
-    .btn-icon.edit svg {
-        stroke: var(--primary-blue);
-        width: 18px;
-        height: 18px;
-    }
-    .btn-icon.delete svg {
-        stroke: var(--danger);
-        width: 18px;
-        height: 18px;
-    }
-    .empty-state {
-        text-align: center;
-        padding: 3rem;
-        color: var(--text-secondary);
-        font-size: 1rem;
-    }
-    /* Pagination */
-    .pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem;
-        border-top: 1px solid var(--border-color);
-    }
-    .pagination-info {
-        color: var(--text-secondary);
-        font-size: 0.875rem;
-    }
-    .pagination-buttons {
-        display: flex;
-        gap: 0.5rem;
-    }
-    .pagination-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-    .pagination-btn:hover {
-        background: var(--light-bg);
-        border-color: #d1d5db;
-    }
-    .pagination-btn svg {
-        width: 18px;
-        height: 18px;
-        stroke: var(--text-secondary);
-    }
-    /* Modal Styles */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-    }
-    .modal.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    .modal-content {
-        background: var(--modal-bg);
-        border-radius: 16px;
-        width: 90%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        transform: translateY(20px);
-        transition: transform 0.3s;
-    }
-    .modal.active .modal-content {
-        transform: translateY(0);
-    }
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .modal-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-    }
-    .close-modal {
-        background: none;
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-    .close-modal:hover {
-        background: var(--light-bg);
-    }
-    .close-modal svg {
-        width: 20px;
-        height: 20px;
-        stroke: var(--text-secondary);
-    }
-    .modal-body {
-        padding: 1.5rem;
-    }
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: var(--text-color);
-    }
-    input[type="text"],
-    input[type="number"],
-    input[type="date"] {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: var(--transition);
-    }
-    input:focus {
-        outline: none;
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-    .modal-footer {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        padding: 1.5rem;
-        border-top: 1px solid var(--border-color);
-    }
-    .btn-cancel {
-        padding: 0.75rem 1.5rem;
-        border: 1px solid var(--border-color);
-        background: white;
-        color: var(--text-color);
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-    .btn-cancel:hover {
-        background: var(--light-bg);
-    }
-    .btn-submit {
-        padding: 0.75rem 1.5rem;
-        background: var(--primary-blue);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-    .btn-submit:hover {
-        background: #2563eb;
-    }
-    /* Searchable Select */
-    .searchable-select {
-        position: relative;
-    }
-    .select-search-wrapper {
-        margin-bottom: 0.5rem;
-    }
-    .select-search {
-        width: 100%;
-        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: var(--transition);
-    }
-    .select-search:focus {
-        outline: none;
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-    .input-icon {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-secondary);
-    }
-    .input-icon svg {
-        width: 18px;
-        height: 18px;
-    }
-    .searchable-select-hidden {
-        display: none;
-    }
-    .select-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid var(--border-color);
-        border-top: none;
-        border-radius: 0 0 8px 8px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        display: none;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-    .select-dropdown.active {
-        display: block;
-    }
-    .dropdown-list {
-        padding: 0;
-        margin: 0;
-    }
-    .dropdown-item {
-        padding: 0.75rem 1rem;
-        cursor: pointer;
-        border-bottom: 1px solid var(--border-color);
-        transition: var(--transition);
-    }
-    .dropdown-item:last-child {
-        border-bottom: none;
-    }
-    .dropdown-item:hover {
-        background: var(--light-bg);
-    }
-    .dropdown-item.active {
-        background: var(--success-bg);
-    }
-    .user-name {
-        font-weight: 500;
-        color: var(--text-color);
-    }
-    .user-email {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        margin-top: 0.25rem;
-    }
-    .selected-user {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem;
-        background: var(--success-bg);
-        border: 1px solid var(--success-border);
-        border-radius: 8px;
-        margin-top: 0.5rem;
-    }
-    .selected-label {
-        font-size: 0.875rem;
-        color: var(--success-text);
-        font-weight: 500;
-    }
-    #selectedUserName, #editSelectedUserName {
-        font-weight: 600;
-        color: var(--success-text);
-    }
-    .clear-selection {
-        background: none;
-        border: none;
-        padding: 0.25rem;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-left: auto;
-        color: var(--text-secondary);
-        transition: var(--transition);
-    }
-    .clear-selection:hover {
-        background: #fee2e2;
-        color: var(--danger);
-    }
-    .clear-selection svg {
-        width: 16px;
-        height: 16px;
-    }
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .dashboard {
-            padding: 0.75rem;
-        }
-        .header {
-            padding: 1.25rem;
-        }
-        .header-content {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .header-left {
-            justify-content: center;
-        }
-        .header-actions {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .user-profile {
-            justify-content: center;
-            padding: 0.75rem;
-        }
-        .action-buttons {
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .btn-icon {
-            justify-content: center;
-            padding: 0.75rem;
-        }
-        .stats-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        .stat-card {
-            padding: 1.25rem;
-        }
-        .stat-value {
-            font-size: 1.5rem;
-        }
-        .table-header {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
-        }
-        .btn-add {
-            width: 100%;
-            justify-content: center;
-        }
-        th, td {
-            padding: 0.75rem 1rem;
-        }
-        .pagination {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: stretch;
-        }
-        .modal-content {
-            width: 95%;
-            max-width: 500px;
-        }
-    }
-    @media (max-width: 480px) {
-        .header-title {
-            font-size: 1.25rem;
-        }
-        .user-info {
-            display: none;
-        }
-        .btn-text {
-            display: none;
-        }
-        .btn-icon {
-            padding: 0.5rem;
-            justify-content: center;
-        }
-        .btn-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-        .stat-value {
-            font-size: 1.25rem;
-        }
-        .action-link {
-            padding: 0.5rem;
-            font-size: 0.875rem;
-        }
-        .modal-header {
-            padding: 1.25rem;
-        }
-        .modal-body {
-            padding: 1.25rem;
-        }
-        .modal-footer {
-            padding: 1.25rem;
-        }
-        .selected-user {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-        .clear-selection {
-            margin-left: 0;
-            align-self: flex-end;
-        }
     }
 </style>
-
-<script>
-    // Add Modal Functions
-    function openModal() {
-        document.getElementById('addTitheModal').classList.add('active');
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
-        setTimeout(() => {
-            document.getElementById('userSearch').focus();
-        }, 300);
-    }
-    function closeModal() {
-        document.getElementById('addTitheModal').classList.remove('active');
-        document.getElementById('addTitheForm').reset();
-        clearUserSelection();
-    }
-    function clearUserSelection() {
-        document.getElementById('user').value = '';
-        document.getElementById('userSearch').value = '';
-        document.getElementById('selectedUser').style.display = 'none';
-    }
-    // Edit Modal Functions
-    function openEditModal(titheId, userId, amount, date) {
-        const modal = document.getElementById('editTitheModal');
-        const form = document.getElementById('editTitheForm');
-        // Set form action - adjust this URL pattern to match your Django URLs
-        form.action = `/tithe/edit/${titheId}/`;
-        // Set form values
-        document.getElementById('edit_tithe_id').value = titheId;
-        document.getElementById('edit_amount').value = amount;
-        document.getElementById('edit_date').value = date;
-        // Set selected user
-        const userSelect = document.getElementById('edit_user');
-        userSelect.value = userId;
-        // Update selected user display
-        const selectedOption = userSelect.options[userSelect.selectedIndex];
-        if (selectedOption && selectedOption.value) {
-            document.getElementById('editUserSearch').value = selectedOption.textContent.split(' (')[0];
-            document.getElementById('editSelectedUserName').textContent = selectedOption.textContent;
-            document.getElementById('editSelectedUser').style.display = 'flex';
-        }
-        // Show modal
-        modal.classList.add('active');
-        // Focus on amount input
-        setTimeout(() => {
-            document.getElementById('edit_amount').focus();
-        }, 300);
-    }
-    function closeEditModal() {
-        const modal = document.getElementById('editTitheModal');
-        modal.classList.remove('active');
-        document.getElementById('editTitheForm').reset();
-        clearEditUserSelection();
-    }
-    function clearEditUserSelection() {
-        document.getElementById('edit_user').value = '';
-        document.getElementById('editUserSearch').value = '';
-        document.getElementById('editSelectedUser').style.display = 'none';
-    }
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const addModal = document.getElementById('addTitheModal');
-        const editModal = document.getElementById('editTitheModal');
-        if (event.target == addModal) {
-            closeModal();
-        }
-        if (event.target == editModal) {
-            closeEditModal();
-        }
-    }
-    // Searchable select functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add Tithe Modal Searchable Select
-        initSearchableSelect(
-            'userSearch',
-            'user',
-            'userDropdown',
-            'selectedUser',
-            'selectedUserName'
-        );
-        // Edit Tithe Modal Searchable Select
-        initSearchableSelect(
-            'editUserSearch',
-            'edit_user',
-            'editUserDropdown',
-            'editSelectedUser',
-            'editSelectedUserName'
-        );
-    });
-    function initSearchableSelect(searchInputId, selectId, dropdownId, selectedUserId, selectedUserNameId) {
-        const searchInput = document.getElementById(searchInputId);
-        const selectElement = document.getElementById(selectId);
-        const dropdown = document.getElementById(dropdownId);
-        const dropdownList = dropdown.querySelector('.dropdown-list');
-        const selectedUser = document.getElementById(selectedUserId);
-        const selectedUserName = document.getElementById(selectedUserNameId);
-        // Initialize dropdown
-        populateDropdown('');
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            populateDropdown(searchTerm);
-            dropdown.classList.add('active');
-        });
-        searchInput.addEventListener('focus', function() {
-            populateDropdown(this.value.toLowerCase());
-            dropdown.classList.add('active');
-        });
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest(`#${searchInputId}`) && !event.target.closest(`#${dropdownId}`)) {
-                dropdown.classList.remove('active');
-            }
-        });
-        function populateDropdown(searchTerm) {
-            dropdownList.innerHTML = '';
-            const options = selectElement.querySelectorAll('option');
-            let hasResults = false;
-            options.forEach(option => {
-                if (option.value) {
-                    const searchText = option.dataset.search || option.textContent.toLowerCase();
-                    if (searchText.includes(searchTerm)) {
-                        const dropdownItem = document.createElement('div');
-                        dropdownItem.className = 'dropdown-item';
-                        dropdownItem.innerHTML = `
-                            <span class="user-name">${option.textContent.split(' (')[0]}</span>
-                            ${option.textContent.includes('(') ? `<span class="user-email">${option.textContent.split('(')[1].replace(')', '')}</span>` : ''}
-                        `;
-                        dropdownItem.addEventListener('click', function() {
-                            selectElement.value = option.value;
-                            searchInput.value = option.textContent.split(' (')[0];
-                            selectedUserName.textContent = option.textContent;
-                            selectedUser.style.display = 'flex';
-                            dropdown.classList.remove('active');
-                        });
-                        dropdownList.appendChild(dropdownItem);
-                        hasResults = true;
-                    }
-                }
-            });
-            if (!hasResults && searchTerm) {
-                const noResults = document.createElement('div');
-                noResults.className = 'dropdown-item';
-                noResults.innerHTML = '<span class="user-name" style="color: var(--text-secondary);">No members found</span>';
-                dropdownList.appendChild(noResults);
-            }
-        }
-        // Keyboard navigation
-        searchInput.addEventListener('keydown', function(e) {
-            const items = dropdownList.querySelectorAll('.dropdown-item');
-            let activeItem = dropdownList.querySelector('.dropdown-item.active');
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (!activeItem && items.length > 0) {
-                    items[0].classList.add('active');
-                } else if (activeItem) {
-                    activeItem.classList.remove('active');
-                    const next = activeItem.nextElementSibling;
-                    if (next) {
-                        next.classList.add('active');
-                        next.scrollIntoView({ block: 'nearest' });
-                    } else {
-                        items[0].classList.add('active');
-                        items[0].scrollIntoView({ block: 'nearest' });
-                    }
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (activeItem) {
-                    activeItem.classList.remove('active');
-                    const prev = activeItem.previousElementSibling;
-                    if (prev) {
-                        prev.classList.add('active');
-                        prev.scrollIntoView({ block: 'nearest' });
-                    } else {
-                        items[items.length - 1].classList.add('active');
-                        items[items.length - 1].scrollIntoView({ block: 'nearest' });
-                    }
-                }
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                if (activeItem) {
-                    activeItem.click();
-                } else if (items.length > 0) {
-                    items[0].click();
-                }
-            } else if (e.key === 'Escape') {
-                dropdown.classList.remove('active');
-                searchInput.blur();
-            }
-        });
-    }
-    // Auto-hide messages after 5 seconds
-    setTimeout(function() {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert) {
-            alert.style.animation = 'slideOut 0.3s ease';
-            setTimeout(function() {
-                alert.remove();
-            }, 300);
-        });
-    }, 5000);
-</script>
 {% endblock %}

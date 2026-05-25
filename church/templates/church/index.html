@@ -1,281 +1,953 @@
 {% extends 'church/base.html' %}
-{% block title %}Fruitful Youth - Home{% endblock %}
+{% block title %}Fruitful Youth – Home{% endblock %}
 
 {% block content %}
-<main>
-    <!-- Hero Section with Carousel -->
-    <section class="hero-section">
-        <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                {% for event in events %}
-                    <button type="button" 
-                            data-bs-target="#mainCarousel" 
-                            data-bs-slide-to="{{ forloop.counter0 }}" 
-                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                            aria-label="Slide {{ forloop.counter }}">
-                    </button>
-                {% endfor %}
-            </div>
-            
-            <div class="carousel-inner">
-                {% for event in events %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="5000">
-                        <div class="carousel-image-container media-frame">
-                            {% if event.image %}
-                            <img src="{{ event.image.url }}" class="d-block w-100 media-image" alt="{{ event.name }}" decoding="async">
-                            {% else %}
-                            <div class="media-placeholder">No image uploaded</div>
-                            {% endif %}
-                            <div class="carousel-caption">
-                                <h2>{{ event.title }}</h2>
-                                <p>{{ event.description }}</p>
-                                {% if event.link %}
-                                    <a href="{{ event.link }}" class="btn btn-primary">Learn More</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            
-            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </section>
 
-    <!-- Welcome Section -->
-    <section class="welcome-section py-5">
-        <div class="container text-center">
-            <h1 class="display-4 mb-4">Welcome to Fruitful Youth</h1>
-            <p class="lead mb-4">Empowering young people through faith, fellowship, and service</p>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <p class="mb-4">Join us in our journey of spiritual growth, community service, and meaningful connections.</p>
-                    <button onclick="scrollToSection('groups')" class="btn btn-primary btn-lg">Explore Our Groups</button>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ───── Google Fonts ───── -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Quick Links Section -->
-    <section class="quick-links py-5 bg-light">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
-                            <h3 class="card-title">Upcoming Events</h3>
-                            <p class="card-text">Stay updated with our latest events and activities</p>
-                            <button onclick="scrollToSection('events')" class="btn btn-outline-primary">View Calendar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="fas fa-users fa-3x mb-3 text-primary"></i>
-                            <h3 class="card-title">Join a Group</h3>
-                            <p class="card-text">Find your perfect fit in our community</p>
-                            <button onclick="scrollToSection('groups')" class="btn btn-outline-primary">Browse Groups</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="fas fa-hands-helping fa-3x mb-3 text-primary"></i>
-                            <h3 class="card-title">Get Involved</h3>
-                            <p class="card-text">Discover ways to serve and make a difference</p>
-                            <button onclick="scrollToSection('contact')" class="btn btn-outline-primary">Contact Us</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<main id="top">
 
-    <!-- Groups Section -->
-    <section id="groups" class="groups-section py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Our Ministry Groups</h2>
-            {% for group in groups %}
-                <div class="row featurette align-items-center {% if forloop.counter|divisibleby:2 %}flex-row-reverse{% endif %} mb-5">
-                    <div class="col-md-7">
-                        <div class="p-4">
-                            <h2 class="display-5 mb-3">{{ group.name }}</h2>
-                            <p class="lead mb-4">{{ group.description }}</p>
-                            {% if group.meeting_time %}
-                                <p class="mb-3"><i class="fas fa-clock me-2"></i>{{ group.meeting_time }}</p>
-                            {% endif %}
-                            {% if group.location %}
-                                <p class="mb-4"><i class="fas fa-map-marker-alt me-2"></i>{{ group.location }}</p>
-                            {% endif %}
-                            
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="image-container overflow-hidden rounded shadow media-frame">
-                            {% if group.image %}
-                            <img src="{{ group.image.url }}" 
-                                 class="img-fluid hover-zoom media-image" 
-                                 alt="{{ group.name }}"
-                                 loading="lazy"
-                                 decoding="async">
-                            {% else %}
-                            <div class="media-placeholder">No image uploaded</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% if not forloop.last %}
-                    <hr class="featurette-divider">
+  <!-- ═══════════════════════════════════════════
+       HERO / CAROUSEL
+  ═══════════════════════════════════════════ -->
+  <section class="fy-hero" aria-label="Featured events slideshow">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="hover">
+
+      <!-- Slides -->
+      <div class="carousel-inner">
+        {% for event in events %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="6000">
+          <div class="fy-slide">
+            {% if event.image %}
+              <img src="{{ event.image.url }}" class="fy-slide__bg" alt="{{ event.name }}" decoding="async">
+            {% else %}
+              <div class="fy-slide__bg fy-slide__bg--placeholder"></div>
+            {% endif %}
+            <div class="fy-slide__overlay"></div>
+            <div class="fy-slide__content container">
+              <span class="fy-badge mb-3">{{ event.event_date|date:"M d, Y" }}</span>
+              <h2 class="fy-slide__title">{{ event.title }}</h2>
+              <p class="fy-slide__desc">{{ event.description|truncatewords:22 }}</p>
+              <div class="fy-slide__actions">
+                {% if event.link %}
+                  <a href="{{ event.link }}" class="fy-btn fy-btn--light">
+                    <i class="fas fa-info-circle"></i> Learn More
+                  </a>
                 {% endif %}
-            {% endfor %}
+                <a href="{% url 'church:create-attendance' %}?event={{ event.id }}" class="fy-btn fy-btn--accent">
+                  <i class="fas fa-clipboard-check"></i> Take Attendance
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+        {% empty %}
+        <div class="carousel-item active">
+          <div class="fy-slide fy-slide--empty">
+            <div class="fy-slide__overlay"></div>
+            <div class="fy-slide__content container text-center">
+              <i class="fas fa-calendar-plus fy-empty-icon mb-4"></i>
+              <h2 class="fy-slide__title">No Events Yet</h2>
+              <p class="fy-slide__desc">Check back soon for upcoming events and activities.</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
 
-    <!-- Call to Action Section -->
-    <section class="cta-section py-5 bg-primary text-white text-center">
-        <div class="container">
-            <h2 class="display-5 mb-4">Ready to Join Our Community?</h2>
-            <p class="lead mb-4">Take the first step towards growing in faith and friendship</p>
-            <button onclick="scrollToSection('contact')" class="btn btn-light btn-lg">Contact Us Today</button>
+      {% if events|length > 1 %}
+      <!-- Indicators -->
+      <div class="fy-indicators">
+        {% for event in events %}
+        <button type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                aria-label="Go to slide {{ forloop.counter }}">
+        </button>
+        {% endfor %}
+      </div>
+
+      <!-- Prev / Next -->
+      <button class="fy-carousel-ctrl fy-carousel-ctrl--prev" type="button"
+              data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Previous slide">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="fy-carousel-ctrl fy-carousel-ctrl--next" type="button"
+              data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Next slide">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      {% endif %}
+    </div><!-- /heroCarousel -->
+
+    <!-- Scroll cue -->
+    <a href="#welcome" class="fy-scroll-cue" aria-label="Scroll down">
+      <i class="fas fa-chevron-down"></i>
+    </a>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       WELCOME
+  ═══════════════════════════════════════════ -->
+  <section id="welcome" class="fy-welcome">
+    <div class="container">
+      <div class="fy-welcome__inner">
+        <div class="fy-welcome__text">
+          <span class="fy-eyebrow">Welcome</span>
+          <h1 class="fy-display">Fruitful<br><em>Youth</em></h1>
+          <p class="fy-welcome__lead">
+            A community where young people grow in faith, build lasting friendships,
+            and discover their purpose through service and fellowship.
+          </p>
+          <a href="#groups" class="fy-btn fy-btn--primary" onclick="smoothScroll(event,'groups')">
+            Explore Our Groups <i class="fas fa-arrow-right ms-1"></i>
+          </a>
         </div>
-    </section>
-    
-</main>
+        <div class="fy-welcome__stats">
+          <div class="fy-stat">
+            <span class="fy-stat__num">{{ groups|length }}</span>
+            <span class="fy-stat__label">Ministry Groups</span>
+          </div>
+          <div class="fy-stat">
+            <span class="fy-stat__num">{{ events|length }}</span>
+            <span class="fy-stat__label">Active Events</span>
+          </div>
+          <div class="fy-stat">
+            <span class="fy-stat__num">∞</span>
+            <span class="fy-stat__label">Possibilities</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       QUICK LINKS
+  ═══════════════════════════════════════════ -->
+  <section class="fy-quicklinks" aria-label="Quick navigation">
+    <div class="container">
+      <div class="fy-quicklinks__grid">
+
+        <button class="fy-qlink" onclick="smoothScroll(event,'events')">
+          <div class="fy-qlink__icon fy-qlink__icon--gold">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+          </div>
+          <div class="fy-qlink__body">
+            <h3>Upcoming Events</h3>
+            <p>Stay updated on our latest gatherings and activities</p>
+          </div>
+          <i class="fas fa-chevron-right fy-qlink__arrow" aria-hidden="true"></i>
+        </button>
+
+        <button class="fy-qlink" onclick="smoothScroll(event,'groups')">
+          <div class="fy-qlink__icon fy-qlink__icon--green">
+            <i class="fas fa-users" aria-hidden="true"></i>
+          </div>
+          <div class="fy-qlink__body">
+            <h3>Join a Group</h3>
+            <p>Find your perfect fit in our thriving community</p>
+          </div>
+          <i class="fas fa-chevron-right fy-qlink__arrow" aria-hidden="true"></i>
+        </button>
+
+        <a href="{% url 'church:create-attendance' %}" class="fy-qlink">
+          <div class="fy-qlink__icon fy-qlink__icon--blue">
+            <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+          </div>
+          <div class="fy-qlink__body">
+            <h3>Take Attendance</h3>
+            <p>Record and track attendance for any event quickly</p>
+          </div>
+          <i class="fas fa-chevron-right fy-qlink__arrow" aria-hidden="true"></i>
+        </a>
+
+        <button class="fy-qlink" onclick="smoothScroll(event,'contact')">
+          <div class="fy-qlink__icon fy-qlink__icon--purple">
+            <i class="fas fa-hands-helping" aria-hidden="true"></i>
+          </div>
+          <div class="fy-qlink__body">
+            <h3>Get Involved</h3>
+            <p>Discover ways to serve and make a real difference</p>
+          </div>
+          <i class="fas fa-chevron-right fy-qlink__arrow" aria-hidden="true"></i>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       UPCOMING EVENTS STRIP
+  ═══════════════════════════════════════════ -->
+  <section id="events" class="fy-events">
+    <div class="container">
+      <div class="fy-section-header">
+        <span class="fy-eyebrow">What's On</span>
+        <h2 class="fy-section-title">Upcoming Events</h2>
+      </div>
+
+      <div class="fy-events__grid">
+        {% for event in events %}
+        <article class="fy-event-card">
+          <div class="fy-event-card__img-wrap">
+            {% if event.image %}
+              <img src="{{ event.image.url }}" alt="{{ event.name }}" loading="lazy" decoding="async">
+            {% else %}
+              <div class="fy-event-card__img-placeholder">
+                <i class="fas fa-calendar-day" aria-hidden="true"></i>
+              </div>
+            {% endif %}
+            <span class="fy-event-card__date-badge">
+              {{ event.event_date|date:"d M" }}
+            </span>
+          </div>
+          <div class="fy-event-card__body">
+            <h3 class="fy-event-card__title">{{ event.title }}</h3>
+            <p class="fy-event-card__desc">{{ event.description|truncatewords:16 }}</p>
+            <div class="fy-event-card__footer">
+              {% if event.link %}
+                <a href="{{ event.link }}" class="fy-link">
+                  <i class="fas fa-info-circle me-1"></i>Details
+                </a>
+              {% endif %}
+              <a href="{% url 'church:create-attendance' %}?event={{ event.id }}" class="fy-btn fy-btn--sm fy-btn--accent">
+                <i class="fas fa-clipboard-check me-1"></i>Attendance
+              </a>
+            </div>
+          </div>
+        </article>
+        {% empty %}
+        <div class="fy-empty-state">
+          <i class="fas fa-calendar-times fy-empty-state__icon" aria-hidden="true"></i>
+          <h3>No upcoming events</h3>
+          <p>Check back soon — exciting things are coming!</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       MINISTRY GROUPS
+  ═══════════════════════════════════════════ -->
+  <section id="groups" class="fy-groups">
+    <div class="container">
+      <div class="fy-section-header">
+        <span class="fy-eyebrow">Community</span>
+        <h2 class="fy-section-title">Our Ministry Groups</h2>
+        <p class="fy-section-sub">Every group is a family. Find where you belong.</p>
+      </div>
+
+      {% for group in groups %}
+      <div class="fy-feature {% if forloop.counter|divisibleby:2 %}fy-feature--reverse{% endif %}">
+        <div class="fy-feature__text">
+          <span class="fy-feature__num">{{ forloop.counter|stringformat:"02d" }}</span>
+          <h3 class="fy-feature__title">{{ group.name }}</h3>
+          <p class="fy-feature__desc">{{ group.description }}</p>
+          <ul class="fy-feature__meta">
+            {% if group.meeting_time %}
+            <li>
+              <i class="fas fa-clock" aria-hidden="true"></i>
+              <span>{{ group.meeting_time }}</span>
+            </li>
+            {% endif %}
+            {% if group.location %}
+            <li>
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              <span>{{ group.location }}</span>
+            </li>
+            {% endif %}
+          </ul>
+          <button onclick="smoothScroll(event,'contact')" class="fy-btn fy-btn--outline mt-3">
+            Join This Group <i class="fas fa-arrow-right ms-1"></i>
+          </button>
+        </div>
+        <div class="fy-feature__media">
+          {% if group.image %}
+            <img src="{{ group.image.url }}" alt="{{ group.name }}" loading="lazy" decoding="async">
+          {% else %}
+            <div class="fy-feature__media-placeholder">
+              <i class="fas fa-users" aria-hidden="true"></i>
+              <span>{{ group.name }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       CTA BANNER
+  ═══════════════════════════════════════════ -->
+  <section id="contact" class="fy-cta" aria-label="Call to action">
+    <div class="container">
+      <div class="fy-cta__inner">
+        <div class="fy-cta__text">
+          <h2 class="fy-cta__title">Ready to be<br><em>part of something?</em></h2>
+          <p class="fy-cta__sub">Take the first step — reach out and we'll welcome you with open arms.</p>
+          <div class="fy-cta__actions">
+            <a href="mailto:info@fruitfulyouth.org" class="fy-btn fy-btn--white">
+              <i class="fas fa-envelope me-2"></i>Email Us
+            </a>
+            <a href="{% url 'church:create-attendance' %}" class="fy-btn fy-btn--outline-white">
+              <i class="fas fa-clipboard-check me-2"></i>Take Attendance
+            </a>
+          </div>
+        </div>
+        <div class="fy-cta__decor" aria-hidden="true">
+          <div class="fy-decor-ring fy-decor-ring--1"></div>
+          <div class="fy-decor-ring fy-decor-ring--2"></div>
+          <div class="fy-decor-ring fy-decor-ring--3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- /#top -->
+
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
 <script>
-    function scrollToSection(sectionId) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }
+function smoothScroll(e, id) {
+  if (e && e.preventDefault) e.preventDefault();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* Fade-in on scroll */
+document.addEventListener('DOMContentLoaded', () => {
+  const targets = document.querySelectorAll(
+    '.fy-qlink, .fy-event-card, .fy-feature, .fy-stat, .fy-welcome__text'
+  );
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('fy-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  targets.forEach(t => io.observe(t));
+});
 </script>
 
+
+<!-- ═══════════════════════════════════════════
+     STYLES
+═══════════════════════════════════════════ -->
 <style>
-    /* Hero Section Styles */
-    .hero-section {
-        margin-bottom: 3rem;
-    }
-    
-    .carousel-image-container {
-        position: relative;
-        height: 60vh;
-        overflow: hidden;
-    }
-    
-    .carousel-image-container img {
-        object-fit: cover;
-        height: 100%;
-        width: 100%;
-    }
-    
-    .carousel-caption {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 2rem;
-        border-radius: 10px;
-        max-width: 80%;
-        margin: 0 auto;
-    }
-    
-    /* Quick Links Section Styles */
-    .quick-links .card {
-        transition: transform 0.3s ease;
-    }
-    
-    .quick-links .card:hover {
-        transform: translateY(-5px);
-    }
-    
-    /* Groups Section Styles */
-    .image-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px;
-    }
+/* ── Tokens ─────────────────────────────── */
+:root {
+  --fy-gold:        #D4A017;
+  --fy-gold-light:  #FEF6E4;
+  --fy-green:       #1A7F5A;
+  --fy-green-light: #E4F5EE;
+  --fy-blue:        #1A5FA0;
+  --fy-blue-light:  #E4EEF8;
+  --fy-purple:      #6B3FA0;
+  --fy-purple-light:#F0E8FB;
+  --fy-dark:        #111827;
+  --fy-dark2:       #1F2937;
+  --fy-mid:         #4B5563;
+  --fy-muted:       #6B7280;
+  --fy-border:      #E5E7EB;
+  --fy-bg:          #F9FAFB;
+  --fy-white:       #FFFFFF;
+  --fy-radius:      14px;
+  --fy-radius-sm:   8px;
+  --fy-shadow:      0 2px 16px rgba(0,0,0,.08);
+  --fy-shadow-lg:   0 8px 40px rgba(0,0,0,.14);
+  --ff-display:     'Playfair Display', Georgia, serif;
+  --ff-body:        'DM Sans', system-ui, sans-serif;
+}
 
-    .media-frame {
-        background: #f1f5f9;
-    }
+/* ── Base ────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--ff-body); color: var(--fy-dark); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+section { outline: none; }
 
-    .media-image {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+/* ── Scroll animation ────────────────────── */
+.fy-qlink,
+.fy-event-card,
+.fy-feature,
+.fy-stat,
+.fy-welcome__text {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.fy-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
 
-    .media-placeholder {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        color: #64748b;
-        font-weight: 600;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
+/* ── Utilities ───────────────────────────── */
+.fy-eyebrow {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fy-gold);
+  margin-bottom: .5rem;
+}
+.fy-display {
+  font-family: var(--ff-display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  color: var(--fy-dark);
+}
+.fy-display em {
+  font-style: italic;
+  color: var(--fy-gold);
+}
 
-    .image-container.media-frame {
-        aspect-ratio: 4 / 3;
-    }
-    
-    .hover-zoom {
-        transition: transform 0.3s ease;
-    }
-    
-    .image-container:hover .hover-zoom {
-        transform: scale(1.05);
-    }
-    
-    /* Featurette Styles */
-    .featurette {
-        padding: 2rem 0;
-    }
-    
-    .featurette-divider {
-        margin: 4rem 0;
-    }
-    
-    /* Call to Action Section Styles */
-    .cta-section {
-        background: linear-gradient(rgba(0, 123, 255, 0.9), rgba(0, 123, 255, 0.9));
-        position: relative;
-        overflow: hidden;
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .carousel-image-container {
-            height: 40vh;
-        }
-        
-        .carousel-caption {
-            padding: 1rem;
-        }
-        
-        .featurette {
-            text-align: center;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .carousel-image-container {
-            height: 30vh;
-        }
-    }
+/* ── Buttons ─────────────────────────────── */
+.fy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .7rem 1.4rem;
+  border-radius: var(--fy-radius-sm);
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all .22s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.fy-btn--primary {
+  background: var(--fy-dark);
+  color: var(--fy-white);
+  border-color: var(--fy-dark);
+}
+.fy-btn--primary:hover { background: var(--fy-dark2); color: var(--fy-white); }
+.fy-btn--accent {
+  background: var(--fy-green);
+  color: var(--fy-white);
+  border-color: var(--fy-green);
+}
+.fy-btn--accent:hover { filter: brightness(1.12); color: var(--fy-white); }
+.fy-btn--light {
+  background: rgba(255,255,255,.18);
+  color: var(--fy-white);
+  border-color: rgba(255,255,255,.5);
+  backdrop-filter: blur(4px);
+}
+.fy-btn--light:hover { background: rgba(255,255,255,.3); color: var(--fy-white); }
+.fy-btn--outline {
+  background: transparent;
+  color: var(--fy-dark);
+  border-color: var(--fy-dark);
+}
+.fy-btn--outline:hover { background: var(--fy-dark); color: var(--fy-white); }
+.fy-btn--white {
+  background: var(--fy-white);
+  color: var(--fy-dark);
+  border-color: var(--fy-white);
+}
+.fy-btn--white:hover { background: #f0f0f0; color: var(--fy-dark); }
+.fy-btn--outline-white {
+  background: transparent;
+  color: var(--fy-white);
+  border-color: rgba(255,255,255,.6);
+}
+.fy-btn--outline-white:hover { background: rgba(255,255,255,.15); color: var(--fy-white); }
+.fy-btn--sm { padding: .45rem .9rem; font-size: .82rem; }
+
+.fy-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: .85rem;
+  color: var(--fy-muted);
+  transition: color .2s;
+}
+.fy-link:hover { color: var(--fy-blue); }
+
+/* ── Badge ───────────────────────────────── */
+.fy-badge {
+  display: inline-block;
+  background: var(--fy-gold);
+  color: var(--fy-white);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .3rem .7rem;
+  border-radius: 4px;
+}
+
+/* ── Section headers ─────────────────────── */
+.fy-section-header { text-align: center; margin-bottom: 3.5rem; }
+.fy-section-title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--fy-dark);
+  margin-bottom: .6rem;
+}
+.fy-section-sub { color: var(--fy-muted); font-size: 1.05rem; }
+
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.fy-hero {
+  position: relative;
+  height: 92vh;
+  min-height: 520px;
+  max-height: 860px;
+}
+.fy-hero .carousel,
+.fy-hero .carousel-inner,
+.fy-hero .carousel-item { height: 100%; }
+
+.fy-slide {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 6rem;
+}
+.fy-slide__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fy-slide__bg--placeholder,
+.fy-slide--empty .fy-slide__bg {
+  background: linear-gradient(135deg, #1a2a4a 0%, #0d3d2f 100%);
+}
+.fy-slide__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.82) 0%,
+    rgba(0,0,0,.38) 50%,
+    rgba(0,0,0,.1) 100%
+  );
+}
+.fy-slide__content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+.fy-slide__title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  color: var(--fy-white);
+  line-height: 1.15;
+  margin-bottom: .75rem;
+}
+.fy-slide__desc {
+  color: rgba(255,255,255,.8);
+  font-size: 1rem;
+  max-width: 520px;
+  margin-bottom: 1.4rem;
+  line-height: 1.6;
+}
+.fy-slide__actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+.fy-empty-icon { font-size: 3rem; color: rgba(255,255,255,.5); }
+
+/* Carousel controls */
+.fy-carousel-ctrl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+  background: rgba(0,0,0,.25);
+  color: white;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+  backdrop-filter: blur(4px);
+}
+.fy-carousel-ctrl:hover { background: rgba(0,0,0,.5); border-color: white; }
+.fy-carousel-ctrl--prev { left: 1.5rem; }
+.fy-carousel-ctrl--next { right: 1.5rem; }
+
+/* Indicators */
+.fy-indicators {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  gap: .5rem;
+}
+.fy-indicators button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.4);
+  cursor: pointer;
+  transition: all .25s;
+  padding: 0;
+}
+.fy-indicators button.active {
+  background: var(--fy-white);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Scroll cue */
+.fy-scroll-cue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  color: rgba(255,255,255,.6);
+  font-size: 1.1rem;
+  animation: fy-bounce 2s infinite;
+  display: flex;
+}
+@keyframes fy-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+
+/* ══════════════════════════════════════════
+   WELCOME
+══════════════════════════════════════════ */
+.fy-welcome {
+  padding: 6rem 0 5rem;
+  background: var(--fy-white);
+}
+.fy-welcome__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.fy-welcome__lead {
+  font-size: 1.1rem;
+  color: var(--fy-mid);
+  line-height: 1.7;
+  margin: 1.2rem 0 2rem;
+  max-width: 480px;
+}
+.fy-welcome__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: 3rem;
+  border-left: 3px solid var(--fy-gold);
+}
+.fy-stat { display: flex; flex-direction: column; gap: .2rem; }
+.fy-stat__num {
+  font-family: var(--ff-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--fy-dark);
+  line-height: 1;
+}
+.fy-stat__label { font-size: .85rem; color: var(--fy-muted); text-transform: uppercase; letter-spacing: .08em; }
+
+
+/* ══════════════════════════════════════════
+   QUICK LINKS
+══════════════════════════════════════════ */
+.fy-quicklinks {
+  padding: 4rem 0;
+  background: var(--fy-bg);
+}
+.fy-quicklinks__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.fy-qlink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--fy-white);
+  border: 1.5px solid var(--fy-border);
+  border-radius: var(--fy-radius);
+  padding: 1.25rem 1.4rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all .22s ease;
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--ff-body);
+}
+.fy-qlink:hover {
+  border-color: var(--fy-dark);
+  box-shadow: var(--fy-shadow);
+  transform: translateY(-3px);
+}
+.fy-qlink__icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--fy-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.fy-qlink__icon--gold   { background: var(--fy-gold-light);   color: var(--fy-gold);   }
+.fy-qlink__icon--green  { background: var(--fy-green-light);  color: var(--fy-green);  }
+.fy-qlink__icon--blue   { background: var(--fy-blue-light);   color: var(--fy-blue);   }
+.fy-qlink__icon--purple { background: var(--fy-purple-light); color: var(--fy-purple); }
+.fy-qlink__body h3 { font-size: .97rem; font-weight: 600; color: var(--fy-dark); margin-bottom: .15rem; }
+.fy-qlink__body p  { font-size: .82rem; color: var(--fy-muted); line-height: 1.4; }
+.fy-qlink__arrow { margin-left: auto; flex-shrink: 0; color: var(--fy-muted); font-size: .85rem; }
+
+
+/* ══════════════════════════════════════════
+   EVENTS
+══════════════════════════════════════════ */
+.fy-events {
+  padding: 6rem 0;
+  background: var(--fy-white);
+}
+.fy-events__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.fy-event-card {
+  background: var(--fy-white);
+  border: 1.5px solid var(--fy-border);
+  border-radius: var(--fy-radius);
+  overflow: hidden;
+  transition: all .25s ease;
+}
+.fy-event-card:hover {
+  box-shadow: var(--fy-shadow-lg);
+  transform: translateY(-5px);
+  border-color: transparent;
+}
+.fy-event-card__img-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--fy-bg);
+}
+.fy-event-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.fy-event-card:hover .fy-event-card__img-wrap img { transform: scale(1.05); }
+.fy-event-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--fy-border);
+}
+.fy-event-card__date-badge {
+  position: absolute;
+  top: .75rem;
+  left: .75rem;
+  background: var(--fy-dark);
+  color: var(--fy-white);
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: .3rem .7rem;
+  border-radius: 5px;
+}
+.fy-event-card__body { padding: 1.25rem; }
+.fy-event-card__title {
+  font-family: var(--ff-display);
+  font-size: 1.15rem;
+  color: var(--fy-dark);
+  margin-bottom: .4rem;
+}
+.fy-event-card__desc { font-size: .87rem; color: var(--fy-muted); line-height: 1.6; margin-bottom: 1rem; }
+.fy-event-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--fy-border);
+}
+
+/* Empty state */
+.fy-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--fy-muted);
+}
+.fy-empty-state__icon { font-size: 3rem; margin-bottom: 1rem; opacity: .3; }
+.fy-empty-state h3 { font-size: 1.2rem; color: var(--fy-mid); margin-bottom: .4rem; }
+.fy-empty-state p   { font-size: .9rem; }
+
+
+/* ══════════════════════════════════════════
+   GROUPS / FEATURE ROWS
+══════════════════════════════════════════ */
+.fy-groups {
+  padding: 6rem 0;
+  background: var(--fy-bg);
+}
+.fy-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--fy-border);
+}
+.fy-feature:last-child { border-bottom: none; }
+.fy-feature--reverse .fy-feature__text { order: 2; }
+.fy-feature--reverse .fy-feature__media { order: 1; }
+
+.fy-feature__num {
+  display: inline-block;
+  font-family: var(--ff-display);
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--fy-gold-light);
+  line-height: 1;
+  margin-bottom: .5rem;
+}
+.fy-feature__title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  color: var(--fy-dark);
+  margin-bottom: .75rem;
+}
+.fy-feature__desc { color: var(--fy-mid); line-height: 1.7; margin-bottom: 1.2rem; }
+.fy-feature__meta { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.fy-feature__meta li {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  color: var(--fy-muted);
+}
+.fy-feature__meta li i { color: var(--fy-gold); font-size: .9rem; }
+
+.fy-feature__media {
+  border-radius: var(--fy-radius);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--fy-border);
+  box-shadow: var(--fy-shadow-lg);
+}
+.fy-feature__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+.fy-feature:hover .fy-feature__media img { transform: scale(1.03); }
+.fy-feature__media-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  background: linear-gradient(135deg, #e9ebf0 0%, #d0d4dd 100%);
+  color: var(--fy-muted);
+}
+.fy-feature__media-placeholder i { font-size: 3rem; opacity: .4; }
+.fy-feature__media-placeholder span { font-size: .85rem; font-weight: 500; }
+
+
+/* ══════════════════════════════════════════
+   CTA
+══════════════════════════════════════════ */
+.fy-cta {
+  padding: 6rem 0;
+  background: var(--fy-dark);
+  overflow: hidden;
+}
+.fy-cta__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+}
+.fy-cta__title {
+  font-family: var(--ff-display);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  color: var(--fy-white);
+  line-height: 1.15;
+  margin-bottom: .75rem;
+}
+.fy-cta__title em { color: var(--fy-gold); font-style: italic; }
+.fy-cta__sub { color: rgba(255,255,255,.6); margin-bottom: 2rem; font-size: 1rem; }
+.fy-cta__actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* Decorative rings */
+.fy-cta__decor { position: relative; width: 260px; height: 260px; flex-shrink: 0; }
+.fy-decor-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(212,160,23,.2);
+}
+.fy-decor-ring--1 { width: 100%; height: 100%; top: 0; left: 0; }
+.fy-decor-ring--2 { width: 72%;  height: 72%;  top: 14%; left: 14%; border-color: rgba(212,160,23,.35); }
+.fy-decor-ring--3 { width: 44%;  height: 44%;  top: 28%; left: 28%; border-color: rgba(212,160,23,.55); background: rgba(212,160,23,.08); }
+
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .fy-welcome__inner { grid-template-columns: 1fr; }
+  .fy-welcome__stats { border-left: none; border-top: 3px solid var(--fy-gold); padding-left: 0; padding-top: 1.5rem; flex-direction: row; flex-wrap: wrap; gap: 2rem; }
+  .fy-feature { grid-template-columns: 1fr; gap: 2rem; }
+  .fy-feature--reverse .fy-feature__text,
+  .fy-feature--reverse .fy-feature__media { order: unset; }
+  .fy-cta__inner { grid-template-columns: 1fr; }
+  .fy-cta__decor { display: none; }
+}
+
+@media (max-width: 600px) {
+  .fy-hero { height: 75vh; }
+  .fy-slide { padding-bottom: 4rem; }
+  .fy-quicklinks__grid { grid-template-columns: 1fr; }
+  .fy-events__grid { grid-template-columns: 1fr; }
+  .fy-carousel-ctrl { width: 38px; height: 38px; font-size: .85rem; }
+  .fy-carousel-ctrl--prev { left: .75rem; }
+  .fy-carousel-ctrl--next { right: .75rem; }
+  .fy-welcome { padding: 3.5rem 0 3rem; }
+  .fy-groups, .fy-events, .fy-cta { padding: 4rem 0; }
+}
 </style>
+
 {% endblock %}

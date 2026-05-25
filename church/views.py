@@ -1,4 +1,5 @@
-from django.shortcuts import render,redirect
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from django.contrib import messages
@@ -6,6 +7,10 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 import re
 from django.conf import settings
+from .forms import EventAttendanceForm
+from django.shortcuts import render, redirect
+from .forms import EventAttendanceForm
+
 
 # Create your views here.
 
@@ -71,3 +76,53 @@ def vision(request):
 def mission(request):
     return render(request, 'church/mission.html', {})
 
+
+def create_event_attendance(request):
+    event_id = request.GET.get("event")
+    form = EventAttendanceForm(request.POST or None, initial={"event": event_id})
+
+    if request.method == "POST" and form.is_valid():
+        attendance = form.save()
+        messages.success(
+            request,
+            f"Attendance recorded for {attendance.attendee.name}!"
+        )
+        return redirect("church:create-attendance")
+
+    return render(request, "church/create_attendance.html", {"form": form})
+
+
+def event_attendance_list(request, event_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to access this page")
+        return redirect("tithe:login_user")
+
+    if request.user.role != "ADMIN":
+        messages.error(
+            request,
+            "You don't have permission to view attendance records. Contact your administrator."
+        )
+        return redirect("tithe:home")
+
+    event = get_object_or_404(Event, id=event_id)
+
+    attendances_qs = EventAttendance.objects.filter(
+        event=event
+    ).select_related("attendee").order_by("-checked_in_at")
+
+    paginator = Paginator(attendances_qs, 30)
+    page = request.GET.get("page")
+
+    try:
+        attendances = paginator.page(page)
+    except PageNotAnInteger:
+        attendances = paginator.page(1)
+    except EmptyPage:
+        attendances = paginator.page(paginator.num_pages)
+
+    context = {
+        "event": event,
+        "attendances": attendances
+    }
+
+    return render(request, "tithe/event_attendance_list.html", context)

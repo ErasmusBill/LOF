@@ -1,0 +1,681 @@
+{% extends 'tithe/base.html' %}
+{% load image_cache %}
+{% block title %}{{ event.title|default:"Career Development Summit" }} – Attendance | Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="header-title">Attendance Records</div>
+          <div class="header-subtitle">Church Tithe Management</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="user-profile">
+          {% if user.avatar %}
+            <img src="{% cached_image_url user 'avatar' %}" alt="{{ user.get_full_name|default:user.username }}" class="user-avatar">
+          {% else %}
+            <div class="user-avatar default-avatar">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+          {% endif %}
+          <div class="user-info">
+            <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="{% url 'tithe:update_user' %}" class="btn-icon" title="Profile">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span class="btn-text">Profile</span>
+          </a>
+          <a href="{% url 'tithe:change_password' %}" class="btn-icon" title="Change Password">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span class="btn-text">Password</span>
+          </a>
+          <form method="POST" action="{% url 'tithe:logout_user' %}" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-icon" title="Logout">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+              <span class="btn-text">Logout</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <a href="{% url 'tithe:admin-dashboard' %}" class="breadcrumb-link">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Dashboard
+    </a>
+    <span class="breadcrumb-sep">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </span>
+    <span class="breadcrumb-current">{{ event.title|default:"Career Development Summit" }}</span>
+  </nav>
+
+  <div class="main-content">
+
+    <div class="event-hero">
+      <div class="event-hero__left">
+        <div class="event-hero__icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div class="event-hero__info">
+          <p class="event-hero__eyebrow">Active Event Tracking</p>
+          <h1 class="event-hero__title">
+            {{ event.title|default:"Career Development Summit" }}
+          </h1>
+          <div class="event-hero__meta">
+            {% if event.event_date %}
+            <span class="meta-chip">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              {{ event.event_date|date:"F d, Y" }}
+            </span>
+            {% endif %}
+            {% if event.location %}
+            <span class="meta-chip">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              {{ event.location }}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="event-hero__stats">
+        <div class="event-hero__stat">
+          <span class="event-hero__stat-num">{{ attendances.paginator.count|default:"0" }}</span>
+          <span class="event-hero__stat-label">Total Attendees</span>
+        </div>
+        <div class="event-hero__stat-divider"></div>
+        <div class="event-hero__stat">
+          <span class="event-hero__stat-num">{{ attendances.paginator.num_pages|default:"1" }}</span>
+          <span class="event-hero__stat-label">Pages</span>
+        </div>
+      </div>
+    </div>
+
+    {% if messages %}
+    <div class="messages-container">
+      {% for msg in messages %}
+      <div class="alert alert--{{ msg.tags }}">
+        {% if 'success' in msg.tags %}
+          <svg class="alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        {% elif 'error' in msg.tags %}
+          <svg class="alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        {% else %}
+          <svg class="alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        {% endif %}
+        <span>{{ msg }}</span>
+        <button class="alert__close" onclick="this.parentElement.remove()" aria-label="Dismiss">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="toolbar">
+      <div class="toolbar__search">
+        <svg class="toolbar__search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" id="tableSearch" placeholder="Search by name, phone, occupation…" class="toolbar__input" autocomplete="off">
+        <button id="clearSearch" class="toolbar__clear" style="display:none" aria-label="Clear search">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="toolbar__actions">
+        <button class="btn-export" onclick="exportCSV()" title="Export to CSV">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span class="btn-text">Export CSV</span>
+        </button>
+        <button class="btn-print" onclick="window.print()" title="Print">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+          </svg>
+          <span class="btn-text">Print</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="table-section">
+      <div class="table-header">
+        <div class="table-title">
+          Attendees
+          <span class="table-count" id="visibleCount">{{ attendances.paginator.count|default:"0" }}</span>
+        </div>
+        <div class="table-header__right">
+          <span class="page-label">
+            Page {{ attendances.number|default:"1" }} of {{ attendances.paginator.num_pages|default:"1" }}
+          </span>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table id="attendanceTable">
+          <thead>
+            <tr>
+              <th class="th-num">#</th>
+              <th>
+                <button class="sort-btn" data-col="1" onclick="sortTable(1)">
+                  Full Name
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                </button>
+              </th>
+              <th>
+                <button class="sort-btn" data-col="2" onclick="sortTable(2)">
+                  Phone
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                </button>
+              </th>
+              <th class="th-hide-sm">
+                <button class="sort-btn" data-col="3" onclick="sortTable(3)">
+                  Occupation
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                </button>
+              </th>
+              <th class="th-hide-sm">
+                <button class="sort-btn" data-col="4" onclick="sortTable(4)">
+                  Fellowship
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                </button>
+              </th>
+              <th>
+                <button class="sort-btn" data-col="5" onclick="sortTable(5)">
+                  Checked In
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                  </svg>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="attendanceBody">
+            {% for att in attendances %}
+            <tr class="att-row" data-index="{{ forloop.counter }}">
+              <td class="td-num">
+                {{ forloop.counter|add:attendances.start_index|add:"-1" }}
+              </td>
+              <td>
+                <div class="member-info">
+                  <div class="member-avatar-initials">
+                    {{ att.attendee.name|slice:":1"|upper }}
+                  </div>
+                  <div>
+                    <strong class="member-name">{{ att.attendee.name }}</strong>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a href="tel:{{ att.attendee.phone_number }}" class="phone-link">
+                  {{ att.attendee.phone_number }}
+                </a>
+              </td>
+              <td class="td-hide-sm">
+                {% if att.attendee.occupation %}
+                  <span class="pill pill--occupation">{{ att.attendee.occupation }}</span>
+                {% else %}
+                  <span class="td-empty">—</span>
+                {% endif %}
+              </td>
+              <td class="td-hide-sm">
+                {% if att.attendee.fellowship %}
+                  <span class="pill pill--fellowship">{{ att.attendee.fellowship }}</span>
+                {% else %}
+                  <span class="td-empty">—</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="checkin-time">
+                  <span class="checkin-time__date">{{ att.checked_in_at|date:"M d, Y" }}</span>
+                  <span class="checkin-time__time">{{ att.checked_in_at|date:"g:i A" }}</span>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="empty-state">
+                <div class="empty-state__inner">
+                  <div class="empty-state__icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                  </div>
+                  <h3>No attendance records</h3>
+                  <p>No one has been checked in for this event yet.</p>
+                  <a href="{% url 'church:create-attendance' %}?event={{ event.id }}" class="btn-add-first">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Record First Attendee
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div id="noSearchResults" class="no-search-results" style="display:none">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <p>No attendees match your search.</p>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <div class="pagination-info">
+          Showing
+          <strong>{{ attendances.start_index|default:"0" }}–{{ attendances.end_index|default:"0" }}</strong>
+          of
+          <strong>{{ attendances.paginator.count|default:"0" }}</strong>
+          attendees
+        </div>
+        <div class="pagination-buttons">
+          {% if attendances.has_previous %}
+          <button onclick="location.href='?page=1'" class="pagination-btn pagination-btn--edge" title="First page">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+            </svg>
+          </button>
+          <button onclick="location.href='?page={{ attendances.previous_page_number }}'" class="pagination-btn" title="Previous page">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          {% endif %}
+
+          {% if attendances.paginator.page_range %}
+            {% for num in attendances.paginator.page_range %}
+              {% if attendances.number == num %}
+                <button class="pagination-btn pagination-btn--active">{{ num }}</button>
+              {% elif num > attendances.number|add:"-3" and num < attendances.number|add:"3" %}
+                <button onclick="location.href='?page={{ num }}'" class="pagination-btn">{{ num }}</button>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if attendances.has_next %}
+          <button onclick="location.href='?page={{ attendances.next_page_number }}'" class="pagination-btn" title="Next page">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <button onclick="location.href='?page={{ attendances.paginator.num_pages }}'" class="pagination-btn pagination-btn--edge" title="Last page">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+            </svg>
+          </button>
+          {% endif %}
+        </div>
+      </div>
+    </div></div></div><style>
+  @media print {
+    .header-actions, .breadcrumb-nav, .toolbar,
+    .pagination, .btn-export, .btn-print { display: none !important; }
+    .dashboard { padding: 0; }
+    .header { box-shadow: none; border: 1px solid #e5e7eb; }
+    .event-hero { page-break-after: avoid; }
+    .th-hide-sm, .td-hide-sm { display: table-cell !important; }
+  }
+</style>
+
+<style>
+/* ── Tokens (inherit from dashboard) ──── */
+:root {
+  --primary-blue:    #3b82f6;
+  --primary-green:   #10b981;
+  --primary-purple:  #8b5cf6;
+  --primary-amber:   #f59e0b;
+  --light-bg:        #f9fafb;
+  --border-color:    #e5e7eb;
+  --text-color:      #1f2937;
+  --text-secondary:  #6b7280;
+  --success-bg:      #f0fdf4;
+  --success-border:  #dcfce7;
+  --success-text:    #166534;
+  --danger:          #ef4444;
+  --shadow:          0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+  --shadow-lg:       0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+  --transition:      all 0.2s ease-in-out;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f3f4f6;
+  color: var(--text-color);
+}
+a { text-decoration: none; color: inherit; }
+.dashboard { min-height: 100vh; padding: 1rem; }
+.main-content { display: flex; flex-direction: column; gap: 1.25rem; }
+
+/* ── Header (identical to dashboard) ── */
+.header {
+  background: white; border-radius: 16px;
+  padding: 1.5rem; margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.header-content {
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.header-left   { display: flex; align-items: center; gap: 1rem; }
+.header-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+  display: flex; align-items: center; justify-content: center;
+}
+.header-icon svg { width: 24px; height: 24px; color: white; }
+.header-title  { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+.header-subtitle { color: var(--text-secondary); font-size: .875rem; }
+.user-profile {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .5rem; background: var(--light-bg);
+  border-radius: 12px; border: 1px solid var(--border-color);
+}
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); }
+.default-avatar { display: flex; align-items: center; justify-content: center; background: var(--success-bg); border: 2px solid var(--primary-green); }
+.default-avatar svg { width: 20px; height: 20px; stroke: var(--primary-green); }
+.user-info     { display: flex; flex-direction: column; }
+.user-name     { font-weight: 600; font-size: .875rem; line-height: 1.2; }
+.user-role     { font-size: .75rem; color: var(--text-secondary); line-height: 1.2; }
+.header-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.action-buttons { display: flex; gap: .5rem; align-items: center; }
+.btn-icon {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .5rem 1rem; border: 1px solid var(--border-color);
+  background: white; color: var(--text-color); border-radius: 8px;
+  font-size: .875rem; font-weight: 500; cursor: pointer; transition: var(--transition);
+}
+.btn-icon:hover { background: var(--light-bg); transform: translateY(-1px); }
+.btn-icon svg  { width: 16px; height: 16px; stroke: var(--text-secondary); }
+.btn-text      { display: inline; }
+.logout-form   { margin: 0; display: inline; }
+
+/* ── Breadcrumb ── */
+.breadcrumb-nav {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .875rem; color: var(--text-secondary);
+  margin-bottom: .25rem;
+}
+.breadcrumb-link {
+  display: flex; align-items: center; gap: .35rem;
+  color: var(--primary-blue); font-weight: 500; transition: var(--transition);
+}
+.breadcrumb-link:hover { text-decoration: underline; }
+.breadcrumb-link svg { width: 14px; height: 14px; stroke: currentColor; }
+.breadcrumb-sep svg  { width: 14px; height: 14px; stroke: var(--border-color); }
+.breadcrumb-current  { color: var(--text-color); font-weight: 500; }
+
+/* ── Event Hero Card ── */
+.event-hero {
+  background: white; border-radius: 16px;
+  padding: 1.75rem; box-shadow: var(--shadow);
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1.5rem;
+  border-left: 4px solid var(--primary-green);
+}
+.event-hero__left  { display: flex; align-items: center; gap: 1.25rem; }
+.event-hero__icon {
+  width: 60px; height: 60px; flex-shrink: 0;
+  border-radius: 14px; background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  display: flex; align-items: center; justify-content: center;
+}
+.event-hero__icon svg { width: 28px; height: 28px; stroke: var(--primary-green); }
+.event-hero__eyebrow {
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--primary-green); margin-bottom: .25rem;
+}
+.event-hero__title {
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--text-color); margin-bottom: .6rem; line-height: 1.2;
+}
+.event-hero__meta { display: flex; gap: .6rem; flex-wrap: wrap; }
+.meta-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .3rem .75rem; background: var(--light-bg);
+  border: 1px solid var(--border-color); border-radius: 20px;
+  font-size: .8rem; color: var(--text-secondary);
+}
+.meta-chip svg { width: 13px; height: 13px; stroke: currentColor; }
+.event-hero__stats { display: flex; align-items: center; gap: 1.5rem; flex-shrink: 0; }
+.event-hero__stat  { text-align: center; }
+.event-hero__stat-num {
+  display: block; font-size: 2rem; font-weight: 800;
+  color: var(--text-color); line-height: 1;
+}
+.event-hero__stat-label {
+  display: block; font-size: .75rem;
+  color: var(--text-secondary); text-transform: uppercase; letter-spacing: .08em; margin-top: .25rem;
+}
+.event-hero__stat-divider {
+  width: 1px; height: 40px; background: var(--border-color);
+}
+
+/* ── Messages ── */
+.messages-container { display: flex; flex-direction: column; gap: .6rem; }
+.alert {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .9rem 1.1rem; border-radius: 10px;
+  font-size: .875rem; border: 1px solid transparent;
+}
+.alert--success { background: var(--success-bg);   color: var(--success-text); border-color: var(--success-border); }
+.alert--error { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.alert--info { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.alert__icon { width: 18px; height: 18px; flex-shrink: 0; stroke: currentColor; }
+.alert > span { flex: 1; line-height: 1.5; }
+.alert__close { background: none; border: none; cursor: pointer; color: inherit; opacity: .5; padding: .25rem; margin-left: auto; border-radius: 4px; }
+.alert__close:hover { opacity: 1; background: rgba(0,0,0,.06); }
+.alert__close svg { width: 14px; height: 14px; stroke: currentColor; }
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex; align-items: center; gap: 1rem;
+  background: white; border-radius: 12px;
+  padding: .875rem 1.25rem; box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+.toolbar__search {
+  position: relative; flex: 1; min-width: 220px;
+}
+.toolbar__search-icon {
+  position: absolute; left: .75rem; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; stroke: var(--text-secondary); pointer-events: none;
+}
+.toolbar__input {
+  width: 100%; padding: .6rem .6rem .6rem 2.25rem;
+  border: 1px solid var(--border-color); border-radius: 8px;
+  font-size: .875rem; transition: var(--transition); background: var(--light-bg);
+}
+.toolbar__input:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(59,130,246,.1); background: white; }
+.toolbar__clear {
+  position: absolute; right: .6rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; padding: .2rem;
+  color: var(--text-secondary); border-radius: 4px; transition: var(--transition);
+}
+.toolbar__clear:hover { color: var(--danger); background: #fef2f2; }
+.toolbar__clear svg { width: 14px; height: 14px; stroke: currentColor; }
+.toolbar__actions { display: flex; gap: .5rem; }
+.btn-export, .btn-print {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .6rem 1rem; border-radius: 8px; font-size: .875rem;
+  font-weight: 500; cursor: pointer; transition: var(--transition); border: 1px solid var(--border-color);
+}
+.btn-export {
+  background: var(--primary-green); color: white; border-color: var(--primary-green);
+}
+.btn-export:hover { filter: brightness(1.08); }
+.btn-export svg, .btn-print svg { width: 16px; height: 16px; stroke: currentColor; }
+.btn-print { background: white; color: var(--text-color); }
+.btn-print:hover { background: var(--light-bg); }
+
+/* ── Table section ── */
+.table-section {
+  background: white; border-radius: 16px;
+  overflow: hidden; box-shadow: var(--shadow);
+}
+.table-header {
+  display: flex; justify-content: space-between;
+  align-items: center; padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.table-title {
+  font-size: 1.1rem; font-weight: 600;
+  display: flex; align-items: center; gap: .6rem;
+}
+.table-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 22px; padding: 0 .5rem;
+  background: var(--primary-blue); color: white;
+  border-radius: 11px; font-size: .75rem; font-weight: 600;
+}
+.table-header__right { display: flex; align-items: center; gap: 1rem; }
+.page-label { font-size: .8rem; color: var(--text-secondary); }
+.table-container { overflow-x: auto; }
+
+/* Sort buttons */
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--light-bg); }
+.sort-btn {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: none; border: none; cursor: pointer;
+  font-size: .875rem; font-weight: 600;
+  color: var(--text-secondary); padding: 0; transition: var(--transition);
+}
+.sort-btn:hover { color: var(--primary-blue); }
+.sort-btn svg { width: 14px; height: 14px; stroke: currentColor; opacity: .4; }
+.sort-btn.asc svg, .sort-btn.desc svg { opacity: 1; color: var(--primary-blue); }
+th { padding: .875rem 1.25rem; text-align: left; }
+td { padding: .875rem 1.25rem; border-top: 1px solid var(--border-color); font-size: .875rem; vertical-align: middle; }
+.th-num, .td-num { width: 48px; text-align: center; color: var(--text-secondary); font-size: .8rem; }
+
+/* Member info */
+.member-info { display: flex; align-items: center; gap: .75rem; }
+.member-avatar-initials {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: var(--primary-blue); font-weight: 700; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.member-name { font-weight: 600; color: var(--text-color); }
+.phone-link { color: var(--primary-blue); font-weight: 500; }
+.phone-link:hover { text-decoration: underline; }
+
+/* Pills */
+.pill {
+  display: inline-block; padding: .25rem .7rem;
+  border-radius: 20px; font-size: .78rem; font-weight: 500;
+}
+.pill--occupation { background: #ede9fe; color: var(--primary-purple); }
+.pill--fellowship { background: #fef3c7; color: #92400e; }
+.td-empty { color: var(--border-color); font-size: .85rem; }
+
+/* Check-in time */
+.checkin-time { display: flex; flex-direction: column; gap: .1rem; }
+.checkin-time__date { font-weight: 500; color: var(--text-color); font-size: .82rem; }
+.checkin-time__time { font-size: .75rem; color: var(--text-secondary); }
+
+/* Row hover */
+.att-row { transition: background .15s; }
+.att-row:hover { background: #f8faff; }
+.att-row.hidden { display: none; }
+
+/* No search results */
+.no-search-results {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .75rem; padding: 3rem; color: var(--text-secondary); text-align: center;
+}
+.no-search-results svg { width: 40px; height: 40px; stroke: var(--border-color); }
+.no-search-results p { font-size: .95rem; margin: 0; }
+
+/* Empty state */
+.empty-state { text-align: center; }
+.empty-state__inner {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .75rem; padding: 3.5rem 2rem;
+}
+.empty-state__icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: var(--light-bg); display: flex; align-items: center; justify-content: center;
+}
+.empty-state__icon svg { width: 32px; height: 32px; stroke: var(--border-color); }
+.empty-state__inner h3 { font-size: 1.1rem; color: var(--text-color); margin: 0; }
+.empty-state__inner p { color: var(--text-secondary); font-size: .875rem; margin: 0; }
+.btn-add-first {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .65rem 1.25rem; background: var(--primary-blue); color: white;
+  border-radius: 8px; font-size: .875rem; font-weight: 500; margin-top: .5rem;
+  transition: var(--transition);
+}
+</style>
+{% endblock %}

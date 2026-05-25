@@ -3,9 +3,11 @@ import os
 import dj_database_url # type: ignore
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load shared env first, then allow local non-Docker overrides.
+load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR / ".env.local", override=True)
 
 # SECURITY
 SECRET_KEY = os.getenv("SECRET_KEY")
