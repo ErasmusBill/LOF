@@ -65,7 +65,7 @@ class PasswordResetRequest(models.Model):
     # Send password reset email
     def send_reset_email(self):
         # Construct a correct URL matching your Django url pattern
-        reset_url = settings.BASE_URL + reverse("tithe:reset_password", args=[self.token])
+        reset_url = settings.BASE_URL.rstrip('/') + reverse("tithe:reset_password", args=[self.token])
 
         subject = "Password Reset Request"
         message = (

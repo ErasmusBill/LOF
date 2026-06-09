@@ -123,7 +123,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = "tithe.CustomUser"
 
-BASE_URL = os.getenv("BASE_URL", "https://fruitfulyouth.org")
+BASE_URL = os.getenv("BASE_URL", "https://fruitfulyouth.org/")
 
 # ================================
 # CACHING
