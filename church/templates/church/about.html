@@ -21,35 +21,35 @@
             <div class="underline"></div>
             <p class="lead">Walking in faith through the generations</p>
         </div>
-        
+
         <div class="timeline">
             <!-- GLIC Foundation -->
             <div class="timeline-item left">
+                <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <div class="date" style="color:rgb(18, 157, 238);">Foundation</div>
+                    <div class="date">Foundation</div>
                     <h3>Gospel Light International Church</h3>
                     <p>Under the visionary leadership of Bishop Matthew Addae Mensah, GLIC was established with a divine mandate to raise disciples who would impact nations. Since its inception, the church has been dedicated to creating a Christ-centered community that nurtures spiritual growth and development. Guided by strong biblical principles and a passion for evangelism, Bishop Mensah has continually inspired the congregation to pursue lives of purpose and service. With a focus on discipling and empowering believers, GLIC has become a transformative force, raising leaders who are equipped to bring hope, healing, and positive change to communities around the world. From local outreach programs to international missions, the church has expanded its vision and influence, all in pursuit of spreading the light of the Gospel to all corners of the earth.</p>
-
                 </div>
             </div>
 
-            <!-- Land of fruitfulness -->
+            <!-- Land of Fruitfulness -->
             <div class="timeline-item right">
+                <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <div class="date" style="color:rgb(18, 157, 238);">Transition</div>
+                    <div class="date">Transition</div>
                     <h3>Land Of Fruitfulness</h3>
                     <p>Through divine direction, Fruitful Youth emerged from the Land of Fruitfulness, marking a significant milestone in our journey. Led by Bishop and Lady Bishop Dodoo Amoo, this ministry was birthed with a mission to inspire, empower, and guide young people toward a path of purpose and spiritual maturity. Rooted in faith and led by strong values, Fruitful Youth is more than just a group; it is a movement that seeks to equip the next generation with the tools they need to navigate life's challenges and fulfill their God-given potential. From dynamic worship sessions to transformative teachings and impactful community outreach, Fruitful Youth is dedicated to nurturing young minds and hearts to become leaders and positive influencers in their communities and beyond. With every gathering, we witness lives being transformed, faith deepening, and a new generation rising to embrace their call to make a difference.</p>
-                    
                 </div>
             </div>
 
             <!-- Current -->
             <div class="timeline-item left">
+                <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <div class="date" style="color:rgb(18, 157, 238);">Present</div>
+                    <div class="date">Present</div>
                     <h3>Fruitful Youth</h3>
-                    <p>Today, under the entire leadership of Gospel Light International Church, we stand as a beacon of hope for young people, guiding them toward a future rooted in faith, integrity, and purpose. Through mentorship, dynamic worship, and impactful teachings, we are committed to addressing the unique challenges facing today’s youth, offering them a safe space to grow spiritually and personally. Our programs encourage young individuals to embrace their potential, find their identity in Christ, and take bold steps to influence their communities positively. As we continue to expand our outreach and deepen our impact, we are seeing lives transformed, minds renewed, and a new generation prepared to carry forward a legacy of faith and excellence. With a vision to ignite passion and purpose in the hearts of every young person, we are building a foundation of hope that will resonate across generations.</p>
-
+                    <p>Today, under the entire leadership of Gospel Light International Church, we stand as a beacon of hope for young people, guiding them toward a future rooted in faith, integrity, and purpose. Through mentorship, dynamic worship, and impactful teachings, we are committed to addressing the unique challenges facing today's youth, offering them a safe space to grow spiritually and personally. Our programs encourage young individuals to embrace their potential, find their identity in Christ, and take bold steps to influence their communities positively. As we continue to expand our outreach and deepen our impact, we are seeing lives transformed, minds renewed, and a new generation prepared to carry forward a legacy of faith and excellence. With a vision to ignite passion and purpose in the hearts of every young person, we are building a foundation of hope that will resonate across generations.</p>
                 </div>
             </div>
         </div>
@@ -57,12 +57,10 @@
 </section>
 
 <!-- Leadership Section -->
- <!----------------------------------------------->
-<!-- Leadership Section -->
 <section class="leadership-section">
     <div class="container">
         <div class="section-title text-center">
-            <h2>Leadership Of Fruithful Youth</h2>
+            <h2>Leadership of Fruitful Youth</h2>
             <div class="underline"></div>
             <p class="lead">Guided by vision, serving with purpose</p>
         </div>
@@ -71,11 +69,14 @@
             {% for leader in leaders %}
             <div class="col-lg-4 col-md-6">
                 <div class="leader-card">
-                    <div class="leader-image media-frame">
+                    <div class="leader-image">
                         {% if leader.image %}
-                        <img src="{{ leader.image.url }}" alt="{{ leader.name }}" class="img-fluid media-image">
+                        <img src="{{ leader.image.url }}" alt="{{ leader.name }}">
                         {% else %}
-                        <div class="media-placeholder">No image uploaded</div>
+                        <div class="img-placeholder">
+                            <i class="fas fa-user"></i>
+                            <span>No photo uploaded</span>
+                        </div>
                         {% endif %}
                     </div>
                     <div class="leader-info">
@@ -100,14 +101,13 @@
         </div>
 
         <div class="row g-4">
-            <!-- What We're About -->
             <div class="col-md-6 col-lg-4">
                 <div class="value-card">
-                    <div class="card-header">
+                    <div class="value-card-header">
                         <i class="fas fa-bullseye"></i>
                         <h3>What We're About</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="value-card-body">
                         <div class="scripture">Matthew 16:13–18</div>
                         <ul>
                             <li>Make disciples committed to Christ</li>
@@ -117,14 +117,13 @@
                 </div>
             </div>
 
-            <!-- Marks of a Disciple -->
             <div class="col-md-6 col-lg-4">
                 <div class="value-card">
-                    <div class="card-header">
+                    <div class="value-card-header">
                         <i class="fas fa-star"></i>
                         <h3>Marks of a Disciple</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="value-card-body">
                         <ul>
                             <li>Learns from Christ</li>
                             <li>Led by the Holy Spirit</li>
@@ -135,14 +134,13 @@
                 </div>
             </div>
 
-            <!-- Marks of a Church -->
             <div class="col-md-6 col-lg-4">
                 <div class="value-card">
-                    <div class="card-header">
+                    <div class="value-card-header">
                         <i class="fas fa-church"></i>
                         <h3>Marks of a Church</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="value-card-body">
                         <ul>
                             <li>Teaching of doctrine</li>
                             <li>Prayer and Worship</li>
@@ -157,7 +155,9 @@
 </section>
 
 <style>
-/* General Styles */
+/* =========================================
+   ROOT VARIABLES
+   ========================================= */
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
@@ -167,6 +167,9 @@
     --transition: all 0.3s ease;
 }
 
+/* =========================================
+   GENERAL
+   ========================================= */
 section {
     padding: 5rem 0;
 }
@@ -192,10 +195,12 @@ section {
     margin: 1rem auto;
 }
 
-/* Hero Banner */
+/* =========================================
+   HERO BANNER
+   ========================================= */
 .hero-banner {
     height: 60vh;
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
                       url('static/images/banner.png');
     background-size: cover;
     background-position: center;
@@ -205,95 +210,9 @@ section {
     color: white;
 }
 
-/* Leadership Cards */
-.leader-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: var(--transition);
-    margin-bottom: 2rem;
-}
-
-.leader-card:hover {
-    transform: translateY(-10px);
-}
-
-.leader-image {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    background: #f1f5f9;
-}
-
-.leader-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-    display: block;
-}
-
-.leader-card:hover .leader-image img {
-    transform: scale(1.1);
-}
-
-.social-links {
-    position: static;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    background: rgba(0,0,0,0.7);
-    padding: 15px 0;
-    transition: var(--transition);
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-
-.social-link {
-    color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background: var(--secondary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.social-link:hover {
-    background: var(--accent-color);
-    color: white;
-    transform: translateY(-3px);
-}
-
-.leader-info {
-    padding: 2rem;
-    text-align: center;
-}
-
-.leader-info h3 {
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.leader-info .position {
-    color: var(--secondary-color);
-    font-weight: 500;
-    display: block;
-    margin-bottom: 1rem;
-}
-
-.leader-info .bio {
-    color: #666;
-    font-style: italic;
-    margin-bottom: 0;
-}
-
-/* Timeline Styles */
+/* =========================================
+   TIMELINE
+   ========================================= */
 .timeline {
     position: relative;
     max-width: 1200px;
@@ -309,6 +228,7 @@ section {
     bottom: 0;
     left: 50%;
     margin-left: -3px;
+    border-radius: 3px;
 }
 
 .timeline-item {
@@ -325,66 +245,245 @@ section {
     left: 50%;
 }
 
-.timeline-content {
-    padding: 20px;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+.timeline-dot {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--secondary-color);
+    border: 3px solid white;
+    border-radius: 50%;
+    top: 20px;
+    right: -9px;
+    z-index: 1;
+    box-shadow: 0 0 0 3px var(--secondary-color);
 }
 
-/* Value Cards */
+.timeline-item.right .timeline-dot {
+    left: -9px;
+    right: auto;
+}
+
+.timeline-content {
+    padding: 24px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.timeline-content .date {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+}
+
+.timeline-content p {
+    color: #555;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* =========================================
+   LEADER CARDS  –  FIXED
+   ========================================= */
+.leader-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.09);
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.leader-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+/* The image frame: square, clipping container */
+.leader-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f0f4f8;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The actual <img>: fills the frame, crops to centre-top */
+.leader-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.leader-card:hover .leader-image img {
+    transform: scale(1.06);
+}
+
+/* Fallback placeholder when no image is uploaded */
+.img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #94a3b8;
+    background: #f0f4f8;
+}
+
+.img-placeholder i {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+.img-placeholder span {
+    font-size: 0.8rem;
+}
+
+/* Text area below the photo */
+.leader-info {
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leader-info h3 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+}
+
+.leader-info .position {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.leader-info .bio {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* =========================================
+   VALUE CARDS
+   ========================================= */
 .value-card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     height: 100%;
     transition: var(--transition);
+    display: flex;
+    flex-direction: column;
 }
 
 .value-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-.value-card .card-header {
+.value-card-header {
     background: var(--primary-color);
     color: white;
     padding: 2rem;
     text-align: center;
 }
 
-.value-card .card-header i {
+.value-card-header i {
     font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.value-card-header h3 {
+    color: white;
+    margin: 0;
+}
+
+.value-card-body {
+    padding: 2rem;
+    flex: 1;
+}
+
+.value-card-body .scripture {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 0.85rem;
     margin-bottom: 1rem;
 }
 
-.value-card .card-body {
-    padding: 2rem;
+.value-card-body ul {
+    padding-left: 1.25rem;
+    margin: 0;
 }
 
-/* Responsive Design */
+.value-card-body ul li {
+    color: #555;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
 @media (max-width: 768px) {
     .hero-banner {
         height: 40vh;
     }
 
+    /* Collapse timeline to single column */
     .timeline::after {
-        left: 31px;
+        left: 20px;
     }
 
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-    }
-
+    .timeline-item,
     .timeline-item.right {
+        width: 100%;
         left: 0;
+        padding-left: 55px;
+        padding-right: 15px;
+    }
+
+    .timeline-dot {
+        left: 11px !important;
+        right: auto !important;
     }
 
     .leader-card {
-        max-width: 350px;
-        margin: 0 auto 2rem;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+
+    .section-title h2 {
+        font-size: 1.8rem;
     }
 }
 </style>

@@ -254,7 +254,7 @@ def request_password_reset(request):
             password_reset_request = form.save()
             password_reset_request.send_reset_email()
             messages.success(request,"Password reset email sent successfully")
-            return HttpResponse("Please rset email sent successfully to your mail, Kinldy click on the link in your mail to reset password")
+            return HttpResponse("Please reset email sent successfully to your mail, Kinldy click on the link in your mail to reset password")
         else:
             return render(request,"tithe/request_password_reset.html",{"form":form})
     else:
